@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Lib", "IMP-Lib\IMP-Lib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Client", "IMP-Client\IMP-Client.csproj", "{984D2579-7212-40AC-9E5B-59264CC9CFC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Data", "IMP-Data\IMP-Data.csproj", "{98E67E9C-7062-4843-B467-88E41A3FA877}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-TestClient", "IMP-TestClient\IMP-TestClient.csproj", "{D31DAEA1-B546-448A-B5B1-7F733120C424}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{984D2579-7212-40AC-9E5B-59264CC9CFC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{984D2579-7212-40AC-9E5B-59264CC9CFC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{984D2579-7212-40AC-9E5B-59264CC9CFC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E67E9C-7062-4843-B467-88E41A3FA877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E67E9C-7062-4843-B467-88E41A3FA877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E67E9C-7062-4843-B467-88E41A3FA877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E67E9C-7062-4843-B467-88E41A3FA877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

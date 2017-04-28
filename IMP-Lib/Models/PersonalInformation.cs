@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -10,6 +12,7 @@ namespace IMP_Lib.Models
     [DataContract]
     public class PersonalInformation
     {
+        public int PersonalInformationId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Country { get; set; }
@@ -18,6 +21,7 @@ namespace IMP_Lib.Models
         public string Description { get; set; }
         public Gender Gender { get; set; }
 
+        [Required]
         public virtual Client Client { get; set; }
 
     }
