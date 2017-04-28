@@ -1,4 +1,5 @@
 ﻿using IMP_Lib;
+using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace IMP_Service
 {
     public class ServerServiceProvider : IServerContract
     {
-        public string Connect()
+        public bool Connect(Client client)
         {
             throw new NotImplementedException();
         }

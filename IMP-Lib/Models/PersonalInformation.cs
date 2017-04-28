@@ -18,6 +18,8 @@ namespace IMP_Lib.Models
         public string Description { get; set; }
         public Gender Gender { get; set; }
 
+        public virtual Client Client { get; set; }
+
     }
     public enum Gender
     {

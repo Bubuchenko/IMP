@@ -26,5 +26,7 @@ namespace IMP_Lib.Models
         public string CPUID { get; set; }
         public string DriveID { get; set; }
 
+        public virtual Client Client { get; set; }
+
     }
 }

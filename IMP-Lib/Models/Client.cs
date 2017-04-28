@@ -14,9 +14,9 @@ namespace IMP_Lib.Models
         public string ID { get; set; }
         public string Username { get; set; }
         public string Fingerprint { get; set; }
-        public IPAddress IPAddress { get; set; }
-        public SystemInfo SystemInfo { get; set; }
-        public PersonalInformation PersonalInformation { get; set; }
+        public ConnectionInfo ConnectionInfo { get; set; }
+        public virtual SystemInfo SystemInfo { get; set; }
+        public virtual PersonalInformation PersonalInformation { get; set; }
         public DateTime CreationDate { get; set; }
     }
 }

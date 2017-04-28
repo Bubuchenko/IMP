@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="IMP_Service.Service1" CodeBehind="Main.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="IMP_Service.MainService" CodeBehind="Main.svc.cs" %>

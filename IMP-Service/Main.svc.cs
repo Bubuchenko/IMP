@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IMP_Lib;
+using IMP_Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -8,12 +10,13 @@ using System.Text;
 
 namespace IMP_Service
 {
-    public class Service1
+    public class MainService : IServerContract
     {
-        public string Connect()
+        public bool Connect(Client client)
         {
-            return "";
-        }
+            ServerState.ConnectedClients.Add(client);
 
+            return true;
+        }
     }
 }

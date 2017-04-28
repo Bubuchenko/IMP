@@ -45,6 +45,7 @@
     <Compile Include="Contracts\IClientContract.cs" />
     <Compile Include="Contracts\IServerContract.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ConnectionInfo.cs" />
     <Compile Include="Models\PersonalInformation.cs" />
     <Compile Include="Models\SystemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

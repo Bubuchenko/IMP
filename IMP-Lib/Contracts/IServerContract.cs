@@ -1,4 +1,5 @@
 ﻿using IMP_Lib.Contracts;
+using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace IMP_Lib
     public interface IServerContract
     {
         [OperationContract]
-        string Connect();
+        bool Connect(Client client);
     }
 
 }
