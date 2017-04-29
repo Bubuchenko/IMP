@@ -11,12 +11,17 @@ namespace IMP_Lib.Models
     [DataContract]
     public class AntiVirus
     {
+        [DataMember]
         public int AntiVirusId { get; set; }
+        [DataMember]
         public string ProductName { get; set; }
+        [DataMember]
         public string PathToFile { get; set; }
+        [DataMember]
         public string ProductState { get; set; }
 
         [Required]
+        [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
     }
 }

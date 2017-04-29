@@ -11,8 +11,11 @@ namespace IMP_Lib.Models
     [DataContract]
     public class InputDevice
     {
+        [DataMember]
         public int InputDeviceId { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public InputDeviceType Type { get; set; }
     }
 }

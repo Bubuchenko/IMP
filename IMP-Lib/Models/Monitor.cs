@@ -12,11 +12,15 @@ namespace IMP_Lib.Models
     [DataContract]
     public class Monitor
     {
+        [DataMember]
         public int MonitorId { get; set; }
+        [DataMember]
         public string Type { get; set; }
+        [DataMember]
         public string Resolution { get; set; }
+        [DataMember]
         public bool IsPrimary { get; set; }
-
+        [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
 
     }

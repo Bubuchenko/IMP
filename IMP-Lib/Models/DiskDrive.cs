@@ -11,15 +11,22 @@ namespace IMP_Lib.Models
     [DataContract]
     public class DiskDrive
     {
+        [DataMember]
         public int DiskDriveId { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public string VolumeLabel { get; set; }
+        [DataMember]
         public string FileSystem { get; set; }
+        [DataMember]
         public DriveType DriveType { get; set; }
+        [DataMember]
         public float TotalSpace { get; set; }
+        [DataMember]
         public float AvailableFreeSpace { get; set; }
 
-
+        [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
     }
 }

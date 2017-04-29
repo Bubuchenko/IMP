@@ -13,9 +13,13 @@ namespace IMP_Lib.Models
     [DataContract(IsReference = true)]
     public class Client
     {
+        [DataMember]
         public int ClientId { get; set; }
+        [DataMember]
         public string Username { get; set; }
+        [DataMember]
         public string Fingerprint { get; set; }
+        [DataMember]
         public DateTime CreationDate { get; set; }
 
         [NotMapped]
@@ -23,6 +27,7 @@ namespace IMP_Lib.Models
 
         [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
+        [DataMember]
         public virtual PersonalInformation PersonalInformation { get; set; }
     }
 }
