@@ -7,6 +7,7 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Management;
 
 namespace IMP_Lib.Models
 {
@@ -28,9 +29,17 @@ namespace IMP_Lib.Models
         public string DefaultBrowser { get; set; }
         public string CPUID { get; set; }
         public string DriveID { get; set; }
+        public string OperatingSystem { get; set; }
 
         [Required]
         public virtual Client Client { get; set; }
+        
 
+      
+        public string GetCpu()
+        {
+            return new ManagementObjectSearcher("root\\CIMV2", "SELECT Name FROM Win32_Processor").Get().Cast<ManagementObject>().FirstOrDefault().GetPropertyValue("Name").ToString();
+        }
+ 
     }
 }

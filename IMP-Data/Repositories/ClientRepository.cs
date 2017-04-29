@@ -25,6 +25,6 @@ namespace IMP_Data.Repositories
                 return db.Clients.Where(f => f.Fingerprint == fingerprint).Any();
             }
         }
-
+        
     }
 }
