@@ -1,15 +1,16 @@
 ﻿using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IMP_Data.Repositories
 {
-    public class ClientRepository
+    public static class ClientRepository
     {
-        public async Task RegisterClient(Client client)
+        public static async Task RegisterClient(Client client)
         {
             using (IMPContext db = new IMPContext())
             {
@@ -18,11 +19,19 @@ namespace IMP_Data.Repositories
             }
         }
 
-        public bool IsClientRegistered(string fingerprint)
+        public static async Task<Client> GetClient(string fingerprint)
         {
             using (IMPContext db = new IMPContext())
             {
-                return db.Clients.Where(f => f.Fingerprint == fingerprint).Any();
+                return await db.Clients.FirstOrDefaultAsync(f => f.Fingerprint == fingerprint);
+            }
+        }
+
+        public static Task<bool> IsClientRegistered(string fingerprint)
+        {
+            using (IMPContext db = new IMPContext())
+            {
+                return db.Clients.Where(f => f.Fingerprint == fingerprint).AnyAsync();
             }
         }
         

@@ -1,4 +1,5 @@
 ﻿using IMP_Lib.Contracts;
+using IMP_Lib.Enums;
 using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace IMP_Lib
     public interface IServerContract
     {
         [OperationContract]
-        bool Connect(Client client);
+        Task<StatusResults> Connect(string fingerprint);
+        Task<RegisterResults>
     }
 
 }

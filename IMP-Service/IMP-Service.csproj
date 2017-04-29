@@ -69,6 +69,7 @@
       <DependentUpon>Main.svc</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerClientHandler.cs" />
     <Compile Include="ServerServiceProvider.cs" />
     <Compile Include="ServerState.cs" />
   </ItemGroup>
@@ -89,6 +90,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IMP-Data\IMP-Data.csproj">
+      <Project>{98E67E9C-7062-4843-B467-88E41A3FA877}</Project>
+      <Name>IMP-Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IMP-Lib\IMP-Lib.csproj">
       <Project>{2a3e2c61-f484-4b66-98ee-dd30cca94840}</Project>
       <Name>IMP-Lib</Name>

@@ -54,8 +54,7 @@ namespace IMP_TestClient
 
             };
 
-            ClientRepository cr = new ClientRepository();
-            await cr.RegisterClient(client);
+            await ClientRepository.RegisterClient(client);
         }
     }
 }

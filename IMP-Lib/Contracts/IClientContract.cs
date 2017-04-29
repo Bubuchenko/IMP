@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IMP_Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -10,6 +11,6 @@ namespace IMP_Lib.Contracts
     [ServiceContract]
     public interface IClientContract
     {
-
+        void Register();
     }
 }

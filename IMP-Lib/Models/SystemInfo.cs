@@ -33,13 +33,5 @@ namespace IMP_Lib.Models
 
         [Required]
         public virtual Client Client { get; set; }
-        
-
-      
-        public string GetCpu()
-        {
-            return new ManagementObjectSearcher("root\\CIMV2", "SELECT Name FROM Win32_Processor").Get().Cast<ManagementObject>().FirstOrDefault().GetPropertyValue("Name").ToString();
-        }
- 
     }
 }

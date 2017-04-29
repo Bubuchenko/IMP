@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Contracts\IClientContract.cs" />
     <Compile Include="Contracts\IServerContract.cs" />
+    <Compile Include="Enums\StatusResults.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ConnectionInfo.cs" />
     <Compile Include="Models\PersonalInformation.cs" />

@@ -7,16 +7,16 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using IMP_Lib.Enums;
+using System.Threading.Tasks;
 
 namespace IMP_Service
 {
     public class MainService : IServerContract
     {
-        public bool Connect(Client client)
+        public Task<StatusResults> Connect(string fingerprint)
         {
-            ServerState.ConnectedClients.Add(client);
-
-            return true;
+            throw new NotImplementedException();
         }
     }
 }

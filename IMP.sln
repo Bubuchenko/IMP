@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Service", "IMP-Service\IMP-Service.csproj", "{126C4637-ADF3-4879-A426-9C38C68DAA10}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Data", "IMP-Data\IMP-Data.csproj", "{98E67E9C-7062-4843-B467-88E41A3FA877}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-TestClient", "IMP-TestClient\IMP-TestClient.csproj", "{D31DAEA1-B546-448A-B5B1-7F733120C424}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-API", "WebApplication1\IMP-API.csproj", "{CF3F19BB-8F60-4350-B10B-221B4D7C8B2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF3F19BB-8F60-4350-B10B-221B4D7C8B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF3F19BB-8F60-4350-B10B-221B4D7C8B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF3F19BB-8F60-4350-B10B-221B4D7C8B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF3F19BB-8F60-4350-B10B-221B4D7C8B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
