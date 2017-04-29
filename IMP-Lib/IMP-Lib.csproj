@@ -34,9 +34,11 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,10 +49,17 @@
   <ItemGroup>
     <Compile Include="Contracts\IClientContract.cs" />
     <Compile Include="Contracts\IServerContract.cs" />
-    <Compile Include="Enums\StatusResults.cs" />
+    <Compile Include="Enums\ConnectResult.cs" />
+    <Compile Include="Enums\InputDeviceType.cs" />
+    <Compile Include="Enums\RegisterResult.cs" />
+    <Compile Include="Enums\StorageDeviceType.cs" />
+    <Compile Include="Models\AntiVirus.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ConnectionInfo.cs" />
+    <Compile Include="Models\InputDevice.cs" />
+    <Compile Include="Models\Monitor.cs" />
     <Compile Include="Models\PersonalInformation.cs" />
+    <Compile Include="Models\DiskDrive.cs" />
     <Compile Include="Models\SystemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

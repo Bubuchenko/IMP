@@ -17,10 +17,10 @@ namespace IMP_Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<PersonalInformation> PersonalInfo { get; set; }
         public DbSet<SystemInfo> SystemInfo { get; set; }
+        public DbSet<AntiVirus> AntiVirus { get; set; }
+        public DbSet<Monitor> Monitors { get; set; }
+        public DbSet<InputDevice> InputDevices { get; set; }
+        public DbSet<DiskDrive> DiskDrives { get; set; }
 
-        public DbSet<Client> GetClients(DbSet<Client> Clients)
-        {
-            return Clients;
-        }
     }
 }

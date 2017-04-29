@@ -12,22 +12,8 @@ using System.Web;
 
 namespace IMP_Service
 {
-    public class ServerServiceProvider : IServerContract
+    public class ServerServiceProvider
     {
-        /// <summary>
-        /// Called by the client when a client connects to the server.
-        /// </summary>
-        /// <param name="fingerprint">The clients fingerprint to determine their identity</param>
-        /// <returns>A result that specifies whether the Connection was valid</returns>
-        public async Task<StatusResults> Connect(string fingerprint)
-        {
-            if (!await ClientRepository.IsClientRegistered(fingerprint))
-                return StatusResults.NotRegistered;
-
-            if(!await ServerClientHandler.AcceptClientConnection(await ClientRepository.GetClient(fingerprint)))
-                return StatusResults.Unknown;
-
-            return StatusResults.Successful;
-        }
+        
     }
 }

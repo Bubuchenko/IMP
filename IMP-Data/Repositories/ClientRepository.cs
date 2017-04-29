@@ -10,12 +10,20 @@ namespace IMP_Data.Repositories
 {
     public static class ClientRepository
     {
-        public static async Task RegisterClient(Client client)
+        public static async Task<bool> RegisterClient(Client client)
         {
-            using (IMPContext db = new IMPContext())
+            try
             {
-                db.Clients.Add(client);
-                await db.SaveChangesAsync();
+                using (IMPContext db = new IMPContext())
+                {
+                    db.Clients.Add(client);
+                    await db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
 

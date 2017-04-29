@@ -18,14 +18,10 @@ namespace IMP_Lib.Models
         public string MachineName { get; set; }
         public string SystemType { get; set; }
         public string SystemLocale { get; set; }
-        public int MonitorsCount { get; set; }
-        public bool Webcam { get; set; }
         public string GPU { get; set; }
         public string CPU { get; set; }
         public int RAM { get; set; }
         public bool X64_Bit { get; set; }
-        public string Harddrives { get; set; }
-        public string AntiVirus { get; set; }
         public string DefaultBrowser { get; set; }
         public string CPUID { get; set; }
         public string DriveID { get; set; }
@@ -33,5 +29,10 @@ namespace IMP_Lib.Models
 
         [Required]
         public virtual Client Client { get; set; }
+        public virtual AntiVirus AntiVirus { get; set; }
+
+        public virtual ICollection<InputDevice> InputDevices { get; set; }
+        public virtual ICollection<Monitor> Monitors { get; set; }
+        public virtual ICollection<DiskDrive> Drives { get; set; }
     }
 }

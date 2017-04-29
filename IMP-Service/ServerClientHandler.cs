@@ -11,6 +11,8 @@ namespace IMP_Service
     {
         public static async Task<bool> AcceptClientConnection(Client client)
         {
+            ServerState.ConnectedClients.Add(client);
+
             return true;
         }
     }

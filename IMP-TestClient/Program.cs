@@ -25,20 +25,16 @@ namespace IMP_TestClient
                 Username = Environment.UserName,
                 SystemInfo = new SystemInfo
                 {
-                    AntiVirus = "Norton 360",
                     CPU = "i7 2600k",
                     CPUID = "123",
                     DefaultBrowser = "Google Chrome",
                     X64_Bit = true,
-                    Webcam = true,
                     GPU = "980 GTX Ti",
                     MachineName = Environment.MachineName,
                     RAM = 16,
-                    MonitorsCount = 4,
                     SystemLocale = "EN-us",
                     SystemType = "Desktop",
                     DriveID = "ABC",
-                    Harddrives = "sad"
                     
                 },
                 PersonalInformation = new PersonalInformation

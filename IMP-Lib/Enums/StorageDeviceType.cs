@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib.Enums
 {
-    public enum StatusResults
+    public enum StorageDeviceType
     {
-        Successful,
-        NotRegistered,
-        Unknown
+        Harddrive,
+        USBStorage
     }
 }

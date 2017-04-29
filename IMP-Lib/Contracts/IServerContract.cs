@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib
 {
-    [ServiceContract(CallbackContract =typeof(IClientContract))]
+    [ServiceContract(CallbackContract = typeof(IClientContract))]
     public interface IServerContract
     {
         [OperationContract]
-        Task<StatusResults> Connect(string fingerprint);
-        Task<RegisterResults>
+        Task<ConnectResult> Connect(string fingerprint);
+        [OperationContract]
+        Task<RegisterResult> Register(Client client);
     }
 
 }
