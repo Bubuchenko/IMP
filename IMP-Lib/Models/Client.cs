@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib.Models
 {
-    [DataContract]
+    [DataContract(IsReference = true)]
     public class Client
     {
         public int ClientId { get; set; }
@@ -21,6 +21,7 @@ namespace IMP_Lib.Models
         [NotMapped]
         public ConnectionInfo ConnectionInfo { get; set; }
 
+        [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
         public virtual PersonalInformation PersonalInformation { get; set; }
     }

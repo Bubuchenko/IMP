@@ -16,7 +16,7 @@ namespace IMP_Client
         static IServerContract defaultChannel;
         static void Main(string[] args)
         {
-            var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider());
+            var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
             defaultChannel = defaultChannelFactory.CreateChannel();
             StartClient().Wait();            
         }
@@ -27,7 +27,7 @@ namespace IMP_Client
             switch(await defaultChannel.Connect("ABC"))
             {
                 case ConnectResult.Successful:
-                    //Do nothing?
+                    Console.WriteLine("Connected, pogchamp!");
                     break;
 
                 case ConnectResult.NotRegistered:
@@ -35,6 +35,7 @@ namespace IMP_Client
                     break;
 
                 case ConnectResult.AlreadyConnected:
+                    Console.WriteLine("Already connected, sadchamp");
                     //Do nothing? Kick from server and retry?
                     break;
 
@@ -66,7 +67,10 @@ namespace IMP_Client
             };
 
             if (await defaultChannel.Register(client) == RegisterResult.Successful)
+            {
+                await StartClient();
                 Console.WriteLine("Registered!");
+            }
         }
     }
 }

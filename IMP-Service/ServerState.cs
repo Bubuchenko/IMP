@@ -10,5 +10,6 @@ namespace IMP_Service
     {
         public static DateTime ServerOnlineSince { get; set; }
         public static List<Client> ConnectedClients = new List<Client>();
+
     }
 }

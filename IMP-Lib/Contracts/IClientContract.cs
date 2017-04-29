@@ -11,6 +11,7 @@ namespace IMP_Lib.Contracts
     [ServiceContract]
     public interface IClientContract
     {
-        void Register();
+        [OperationContract]
+        void Test();
     }
 }

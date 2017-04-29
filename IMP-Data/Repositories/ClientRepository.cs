@@ -31,15 +31,16 @@ namespace IMP_Data.Repositories
         {
             using (IMPContext db = new IMPContext())
             {
+
                 return await db.Clients.FirstOrDefaultAsync(f => f.Fingerprint == fingerprint);
             }
         }
 
-        public static Task<bool> IsClientRegistered(string fingerprint)
+        public static async Task<bool> IsClientRegistered(string fingerprint)
         {
             using (IMPContext db = new IMPContext())
             {
-                return db.Clients.Where(f => f.Fingerprint == fingerprint).AnyAsync();
+                return await db.Clients.Where(f => f.Fingerprint == fingerprint).AnyAsync();
             }
         }
         
