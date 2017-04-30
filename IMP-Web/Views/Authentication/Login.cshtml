@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "IMP - Login";
+}
+
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,100,700' rel='stylesheet' type='text/css'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/css/tether.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <link href="~/Content/IMP.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap")
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+    <video controls="controls" loop muted autoplay class="fullscreen-background">
+        <source src="~/Content/Images/IMP-Login-Background.webm" type="video/webm" />
+    </video>
+
+    <div id="LoginPanel" class="dropshadow">
+        <div id="LoginHeader">
+            <p>Sign in to proceed</p>
+        </div>
+        <div id="input-container">
+
+            <div class="custom-textbox">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <input type="text" placeholder="Username" onfocus="focusTextbox(this)" onblur="blurTextbox(this)" />
+            </div>
+
+            <div class="custom-textbox">
+                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                <input type="password" placeholder="Password" onfocus="focusTextbox(this)" onblur="blurTextbox(this)" />
+            </div>
+
+            <button>Login</button>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    var focusTextbox = function (textbox) {
+        $(textbox).parent().addClass("textboxglow");
+    }
+
+    var blurTextbox = function (textbox) {
+        $(textbox).parent().removeClass("textboxglow");
+    }
+</script>
