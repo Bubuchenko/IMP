@@ -225,7 +225,7 @@ namespace IMP_Client
                     .ForEach(f => inputDevices.Add(new InputDevice { Name = f.Name, Type = InputDeviceType.Video}));
 
                 //Get audio input devices
-                DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice).ToList()
+                DsDevice.GetDevicesOfCat(FilterCategory.AudioInputDevice).ToList()
                     .ForEach(f => inputDevices.Add(new InputDevice { Name = f.Name, Type = InputDeviceType.Audio }));
 
 
@@ -238,25 +238,6 @@ namespace IMP_Client
                 //Other input devices?
 
                 return inputDevices;
-            }
-        }
-
-        private static string VideoInputDevices
-        {
-            get
-            {
-                List<string> videoInputNames = new List<string>();
-                DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice).ToList().ForEach(f => videoInputNames.Add(f.Name));
-                return string.Join(",", videoInputNames.ToArray());
-            }
-        }
-        public static string AudioInputDevices
-        {
-            get
-            {
-                List<string> webcamNames = new List<string>();
-                DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice).ToList().ForEach(f => webcamNames.Add(f.Name));
-                return string.Join(",", webcamNames.ToArray());
             }
         }
 
