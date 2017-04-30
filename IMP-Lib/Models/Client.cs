@@ -18,6 +18,7 @@ namespace IMP_Lib.Models
         public string Username { get; set; }
         public string ClientId { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime LastOnline { get; set; }
 
         [NotMapped]
         public ConnectionInfo ConnectionInfo { get; set; }

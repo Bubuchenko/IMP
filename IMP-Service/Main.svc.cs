@@ -10,11 +10,30 @@ using System.Text;
 using IMP_Lib.Enums;
 using System.Threading.Tasks;
 using IMP_Data.Repositories;
+using System.ServiceModel.Channels;
+using System.Net;
 
 namespace IMP_Service
 {
     public class MainService : IServerContract
     {
+        public MainService()
+        {
+            OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnect);
+            OperationContext.Current.Channel.Closed += new EventHandler(OnClientDisconnect);
+        }
+
+        /// <summary>
+        /// Event handler called when a client disconnects from the server
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClientDisconnect(object sender, EventArgs e)
+        {
+            string SessionID = ((IContextChannel)sender).SessionId;
+            Task.Run(() => ServerClientHandler.CloseClientConnection(SessionID));
+        }
+
         /// <summary>
         /// Called by the client when a client connects to the server.
         /// </summary>
@@ -23,11 +42,14 @@ namespace IMP_Service
         public async Task<ConnectResult> Connect(string MachineName, string MachineSID)
         {
             string ClientId = ServerClientHandler.GenerateClientID(MachineName, MachineSID);
+            string SessionID = OperationContext.Current.SessionId;
 
             if (!await ClientRepository.IsClientRegistered(ClientId))
                 return ConnectResult.NotRegistered;
 
-            if (!await ServerClientHandler.AcceptClientConnection(await ClientRepository.GetClient(ClientId)))
+            Client client = await ClientRepository.GetClient(ClientId);
+
+            if (!await ServerClientHandler.AcceptClientConnection(client, OperationContext.Current))
                 return ConnectResult.AlreadyConnected;
 
             return ConnectResult.Successful;

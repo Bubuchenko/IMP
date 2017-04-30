@@ -9,7 +9,7 @@ namespace IMP_Lib.Models
 {
     public class ConnectionInfo
     {
-        public string ConnectionID { get; set; }
+        public string SessionID { get; set; }
         public DateTime ConnectedSince { get; set; }
         public IPAddress IPAddress { get; set; }
     }

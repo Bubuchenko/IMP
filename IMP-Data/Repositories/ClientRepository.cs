@@ -37,6 +37,15 @@ namespace IMP_Data.Repositories
             }
         }
 
+        public static async Task SetLastSeenDate(string ClientId, DateTime LastOnline)
+        {
+            using (IMPContext db = new IMPContext())
+            {
+                db.Clients.FirstOrDefault(f => f.ClientId == ClientId).LastOnline = LastOnline;
+                await db.SaveChangesAsync();
+            }
+        }
+
         public static async Task<bool> IsClientRegistered(string ClientId)
         {
             using (IMPContext db = new IMPContext())
