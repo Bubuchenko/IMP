@@ -16,6 +16,7 @@ namespace IMP_Data.Repositories
             {
                 using (IMPContext db = new IMPContext())
                 {
+                    client.CreationDate = DateTime.Now;
                     db.Clients.Add(client);
                     await db.SaveChangesAsync();
                     return true;
@@ -27,20 +28,20 @@ namespace IMP_Data.Repositories
             }
         }
 
-        public static async Task<Client> GetClient(string fingerprint)
+        public static async Task<Client> GetClient(string ClientId)
         {
             using (IMPContext db = new IMPContext())
             {
 
-                return await db.Clients.FirstOrDefaultAsync(f => f.Fingerprint == fingerprint);
+                return await db.Clients.FirstOrDefaultAsync(f => f.ClientId == ClientId);
             }
         }
 
-        public static async Task<bool> IsClientRegistered(string fingerprint)
+        public static async Task<bool> IsClientRegistered(string ClientId)
         {
             using (IMPContext db = new IMPContext())
             {
-                return await db.Clients.Where(f => f.Fingerprint == fingerprint).AnyAsync();
+                return await db.Clients.Where(f => f.ClientId == ClientId).AnyAsync();
             }
         }
         

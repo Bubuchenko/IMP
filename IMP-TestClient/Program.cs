@@ -20,13 +20,12 @@ namespace IMP_TestClient
         async static Task TestRegister()
         {
             Client client = new Client{
-                Fingerprint = "ABABABABBABABABAB12121212",
+                ClientId = "ABABABABBABABABAB12121212",
                 CreationDate = DateTime.Now,
                 Username = Environment.UserName,
                 SystemInfo = new SystemInfo
                 {
                     CPU = "i7 2600k",
-                    CPUID = "123",
                     DefaultBrowser = "Google Chrome",
                     X64_Bit = true,
                     GPU = "980 GTX Ti",
@@ -34,7 +33,6 @@ namespace IMP_TestClient
                     RAM = 16,
                     SystemLocale = "EN-us",
                     SystemType = "Desktop",
-                    DriveID = "ABC",
                     
                 },
                 PersonalInformation = new PersonalInformation

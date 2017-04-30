@@ -18,20 +18,21 @@ namespace IMP_Client
         {
             var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
             defaultChannel = defaultChannelFactory.CreateChannel();
-            StartClient().Wait();            
+            Connect().Wait();
+            Console.ReadLine();
         }
 
-        static async Task StartClient()
+        static async Task Connect()
         {
 
-            switch(await defaultChannel.Connect("ABC"))
+            switch (await defaultChannel.Connect(SystemInspector.MachineName, SystemInspector.MachineSID))
             {
                 case ConnectResult.Successful:
-                    Console.WriteLine("Connected, pogchamp!");
+                    Console.WriteLine("Connected!");
                     break;
 
                 case ConnectResult.NotRegistered:
-                    RegisterClient();
+                    await Register();
                     break;
 
                 case ConnectResult.AlreadyConnected:
@@ -43,33 +44,28 @@ namespace IMP_Client
                     //Do some logging?
                     break;
             }
-
-            if (await defaultChannel.Connect("ABC") == IMP_Lib.Enums.ConnectResult.NotRegistered)
-            {
-
-                Client client = new Client()
-                {
-                    Fingerprint = "ABC"
-                };
-
-                if (await defaultChannel.Register(client) == IMP_Lib.Enums.RegisterResult.Successful)
-                {
-                    Console.WriteLine("Registered!");
-                }
-            }
         }
 
-        static async void RegisterClient()
+        static async Task Register()
         {
             Client client = new Client()
             {
-                SystemInfo = await SystemInspector.GetSystemInfo()
+                Username = Environment.UserName,
+                SystemInfo = await SystemInspector.GetSystemInfo(),
             };
 
-            if (await defaultChannel.Register(client) == RegisterResult.Successful)
+            switch (await defaultChannel.Register(client))
             {
-                await StartClient();
-                Console.WriteLine("Registered!");
+                case RegisterResult.Successful:
+                    await Connect();
+                    Console.WriteLine("Registered. Connecting!");
+                    break;
+                case RegisterResult.AlreadyExists:
+                    Console.WriteLine("Already registered. Connecting!");
+                    break;
+                case RegisterResult.Failed:
+                    //Log?
+                    break;
             }
         }
     }

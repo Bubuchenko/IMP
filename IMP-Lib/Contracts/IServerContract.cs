@@ -14,7 +14,7 @@ namespace IMP_Lib
     public interface IServerContract
     {
         [OperationContract]
-        Task<ConnectResult> Connect(string fingerprint);
+        Task<ConnectResult> Connect(string MachineName, string MachineSID);
         [OperationContract]
         Task<RegisterResult> Register(Client client);
     }

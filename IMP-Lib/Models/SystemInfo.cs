@@ -19,6 +19,8 @@ namespace IMP_Lib.Models
         [DataMember]
         public string MachineName { get; set; }
         [DataMember]
+        public string MachineSID { get; set; }
+        [DataMember]
         public string SystemType { get; set; }
         [DataMember]
         public string SystemLocale { get; set; }
@@ -32,10 +34,6 @@ namespace IMP_Lib.Models
         public bool X64_Bit { get; set; }
         [DataMember]
         public string DefaultBrowser { get; set; }
-        [DataMember]
-        public string CPUID { get; set; }
-        [DataMember]
-        public string DriveID { get; set; }
         [DataMember]
         public string OperatingSystem { get; set; }
 

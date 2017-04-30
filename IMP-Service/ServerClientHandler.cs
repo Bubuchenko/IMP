@@ -15,5 +15,14 @@ namespace IMP_Service
 
             return true;
         }
+
+        public static string GenerateClientID(SystemInfo systemInfo)
+        {
+            return string.Format("{0}-{1}", systemInfo.MachineName, systemInfo.MachineSID);
+        }
+        public static string GenerateClientID(string MachineName, string MachineSID)
+        {
+            return string.Format("{0}-{1}", MachineName, MachineSID);
+        }
     }
 }

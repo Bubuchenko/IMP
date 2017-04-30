@@ -5,10 +5,12 @@ using Microsoft.VisualBasic.Devices;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,13 +25,12 @@ namespace IMP_Client
             {
                 AntiVirus = AntiVirus(),
                 CPU = CPU,
-                CPUID = CPUID,
                 DefaultBrowser = DefaultBrowser,
                 Drives = DiskDrives,
-                DriveID = DriveID,
                 GPU = GPU,
                 InputDevices = InputDevices,
                 MachineName = MachineName,
+                MachineSID = MachineSID,
                 Monitors = Monitors,
                 OperatingSystem = OperatingSystem,
                 RAM = RAM,
@@ -37,7 +38,6 @@ namespace IMP_Client
                 SystemType = SystemType,
                 X64_Bit = Is64BitArchitecture,
             };
-            Console.Write(newSystemInfo.CPU);
             return newSystemInfo;
         }
 
@@ -89,21 +89,14 @@ namespace IMP_Client
             }
         }
 
-        public static string CPUID
+        public static string MachineSID
         {
             get
             {
-                return new ManagementObjectSearcher("SELECT processorID FROM Win32_Processor").Get().Cast<ManagementObject>().FirstOrDefault().GetPropertyValue("processorID").ToString();
+                return new SecurityIdentifier((byte[])new DirectoryEntry(string.Format("WinNT://{0},Computer", Environment.MachineName)).Children.Cast<DirectoryEntry>().First().InvokeGet("objectSID"), 0).AccountDomainSid.Value;
             }
         }
 
-        public static string DriveID
-        {
-            get
-            {
-                return new ManagementObjectSearcher("SELECT VolumeSerialNumber FROM win32_logicaldisk").Get().Cast<ManagementObject>().FirstOrDefault().GetPropertyValue("VolumeSerialNumber").ToString();
-            }
-        }
         public static string Username
         {
             get

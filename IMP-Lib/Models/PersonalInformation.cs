@@ -15,9 +15,7 @@ namespace IMP_Lib.Models
         public int PersonalInformationId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        [DataMember]
         public string Country { get; set; }
-        [DataMember]
         public string City { get; set; }
         public int Age { get; set; }
         public string Description { get; set; }
