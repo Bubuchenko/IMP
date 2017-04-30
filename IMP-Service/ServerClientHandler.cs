@@ -40,8 +40,11 @@ namespace IMP_Service
         {
             Client disconnectedClient = ServerState.ConnectedClients.FirstOrDefault(f => f.ConnectionInfo.SessionID == SessionID);
 
-            ServerState.ConnectedClients.RemoveAll(f => f.ClientId == disconnectedClient.ClientId);
+            if (disconnectedClient == null)
+                return;
 
+
+            ServerState.ConnectedClients.RemoveAll(f => f.ClientId == disconnectedClient.ClientId);
             await ClientRepository.SetLastSeenDate(disconnectedClient.ClientId, DateTime.Now);
         }
 

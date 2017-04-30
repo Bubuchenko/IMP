@@ -65,7 +65,11 @@ namespace IMP_Service
             if (await ClientRepository.IsClientRegistered(client.ClientId))
                 return RegisterResult.AlreadyExists;
 
+            string IPaddress = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
+
             client.ClientId = ServerClientHandler.GenerateClientID(client.SystemInfo);
+            client.PersonalInformation = await GeoTracker.GetPersonalInformationByIPAddress(IPAddress.Parse(IPaddress));
+            client.IPAddress = IPaddress;
 
             if (!await ClientRepository.RegisterClient(client))
                 return RegisterResult.Failed;

@@ -19,7 +19,7 @@ namespace IMP_Client
 {
     public static class SystemInspector
     {
-        public static async Task<SystemInfo> GetSystemInfo()
+        public static Task<SystemInfo> GetSystemInfo()
         {
             SystemInfo newSystemInfo = new SystemInfo
             {
@@ -38,7 +38,7 @@ namespace IMP_Client
                 SystemType = SystemType,
                 X64_Bit = Is64BitArchitecture,
             };
-            return newSystemInfo;
+            return Task.FromResult(newSystemInfo);
         }
 
 

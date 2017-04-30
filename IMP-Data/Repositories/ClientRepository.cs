@@ -17,13 +17,16 @@ namespace IMP_Data.Repositories
                 using (IMPContext db = new IMPContext())
                 {
                     client.CreationDate = DateTime.Now;
+                    client.LastOnline = DateTime.Now;
+
                     db.Clients.Add(client);
                     await db.SaveChangesAsync();
                     return true;
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Exception ec = ex;
                 return false;
             }
         }
