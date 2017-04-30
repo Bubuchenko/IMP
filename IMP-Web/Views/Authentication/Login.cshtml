@@ -22,24 +22,28 @@
     <video controls="controls" loop muted autoplay class="fullscreen-background">
         <source src="~/Content/Images/IMP-Login-Background.webm" type="video/webm" />
     </video>
-
-    <div id="LoginPanel" class="dropshadow">
+    
+    <div id="LoginPanel">        
         <div id="LoginHeader">
             <p>Sign in to proceed</p>
         </div>
         <div id="input-container">
 
-            <div class="custom-textbox">
+            <div class="custom-textbox" onclick="$(this).children(2).focus()">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <input type="text" placeholder="Username" onfocus="focusTextbox(this)" onblur="blurTextbox(this)" />
             </div>
 
-            <div class="custom-textbox">
+            <div class="custom-textbox" onclick="$(this).children(2).focus()">
                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                 <input type="password" placeholder="Password" onfocus="focusTextbox(this)" onblur="blurTextbox(this)" />
             </div>
 
-            <button>Login</button>
+            <button class="dropshadow">Login</button>
+
+            <div id="miscellaneous">
+                <label id="remember"><input type="checkbox" name="remember"> Remember me</label> | <label id="requestaccess">Request access</label>
+            </div>
         </div>
     </div>
 
