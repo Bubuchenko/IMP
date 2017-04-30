@@ -63,10 +63,12 @@
   <ItemGroup>
     <Content Include="Main.svc" />
     <Content Include="Web.config" />
+    <Content Include="Web\WebService.svc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeoTracking\GeoTracker.cs" />
     <Compile Include="GeoTracking\IPInfo.cs" />
+    <Compile Include="Web\IWebService.cs" />
     <Compile Include="Main.svc.cs">
       <DependentUpon>Main.svc</DependentUpon>
     </Compile>
@@ -74,6 +76,9 @@
     <Compile Include="ServerClientHandler.cs" />
     <Compile Include="ServerServiceProvider.cs" />
     <Compile Include="ServerState.cs" />
+    <Compile Include="Web\WebService.svc.cs">
+      <DependentUpon>WebService.svc</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -100,6 +105,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>10.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

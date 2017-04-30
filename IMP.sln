@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Data", "IMP-Data\IMP-Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-TestClient", "IMP-TestClient\IMP-TestClient.csproj", "{D31DAEA1-B546-448A-B5B1-7F733120C424}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMP-Web", "IMP-Web\IMP-Web.csproj", "{8930CA6F-B04C-493F-B77A-9EB6F79068A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D31DAEA1-B546-448A-B5B1-7F733120C424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8930CA6F-B04C-493F-B77A-9EB6F79068A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8930CA6F-B04C-493F-B77A-9EB6F79068A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8930CA6F-B04C-493F-B77A-9EB6F79068A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8930CA6F-B04C-493F-B77A-9EB6F79068A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
