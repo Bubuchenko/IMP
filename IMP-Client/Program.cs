@@ -16,10 +16,18 @@ namespace IMP_Client
         static IServerContract defaultChannel;
         static void Main(string[] args)
         {
-            var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
-            defaultChannel = defaultChannelFactory.CreateChannel();
-            Connect().Wait();
-            Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Starting...");
+                var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
+                defaultChannel = defaultChannelFactory.CreateChannel();
+                Connect().Wait();
+                Console.ReadLine();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         static async Task Connect()

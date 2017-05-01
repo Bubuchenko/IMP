@@ -197,19 +197,21 @@ namespace IMP_Client
             {
                 List<DiskDrive> diskdrives = new List<DiskDrive>();
 
-                foreach(DriveInfo drive in DriveInfo.GetDrives())
+                foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
-                    diskdrives.Add(new DiskDrive
+                    if (drive.IsReady)
                     {
-                        AvailableFreeSpace = drive.AvailableFreeSpace,
-                        DriveType = drive.DriveType,
-                        FileSystem = drive.DriveFormat,
-                        Name = drive.Name,
-                        TotalSpace = drive.TotalSize,
-                        VolumeLabel = drive.VolumeLabel
-                    });
+                        diskdrives.Add(new DiskDrive
+                        {
+                            AvailableFreeSpace = drive.AvailableFreeSpace,
+                            DriveType = drive.DriveType,
+                            FileSystem = drive.DriveFormat,
+                            Name = drive.Name,
+                            TotalSpace = drive.TotalSize,
+                            VolumeLabel = drive.VolumeLabel
+                        });
+                    }
                 }
-
                 return diskdrives;
             }
         }
