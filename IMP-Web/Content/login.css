@@ -15,6 +15,39 @@ body {
     box-shadow: 0 0 10px #5d7ace;
 }
 
+.field-validation-error {
+    color: red;
+    width: 100%;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    height: 10px;
+    font-weight: 300;
+}
+
+@-webkit-keyframes autofill {
+    to {
+        color: #fff;
+        background: transparent;
+    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+}
+
+.field-validation-error > ul {
+    list-style: none;
+    text-align: center;
+    display: inline-block;
+    margin-left:-20px;
+    padding: 0px;
+    width: 100%;
+}
+
+
 .fullscreen-background {
     position: fixed;
     top: 50%;
@@ -32,7 +65,6 @@ body {
 #LoginPanel {
     background-color: rgba(33, 33, 33, 0.5);
     width: 400px;
-    height: 400px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -58,9 +90,8 @@ body {
     font-size: 30px;
 }
 
-#input-container {
+#login-form {
     margin-top: 30px;
-    
 }
 
 .custom-textbox {
@@ -81,28 +112,25 @@ body {
    width: 20px;
 }
 
-#input-container input[type="text"], input[type="password"] {
+#login-form input[type="text"], input[type="password"] {
     color: white;
     background: none;
     border: none;
     outline: none;
-    width:82%;
+    width: 82%;
 }
 
-#input-container button {
-    font-size:25px;
+#login-form button {
+    font-size: 25px;
     width: 90%;
     display: block;
     margin: 0 auto;
-    margin-top:30px;
+    margin-top: 20px;
     cursor: pointer;
-}
-
-button {
     background-color: #3053b6;
     border: none;
-    padding:10px;
-    font-weight:300;
+    padding: 10px;
+    font-weight: 300;
     color: white;
 }
 

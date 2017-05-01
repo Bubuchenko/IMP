@@ -4,14 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using IMP_Lib.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using IMP_Data.Models;
 
 namespace IMP_Data
 {
-    public class IMPContext : DbContext
+    public class IMPContext : IdentityDbContext<User>
     {
 
-        public IMPContext() : base("IMPContext")
+        public IMPContext() : base("IMP")
         {
+        }
+
+        public static IMPContext Create()
+        {
+            return new IMPContext();
         }
 
         public DbSet<Client> Clients { get; set; }
