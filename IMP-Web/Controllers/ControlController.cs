@@ -9,6 +9,7 @@ namespace IMP_Web.Controllers
     public class ControlController : Controller
     {
         // GET: ControlPanel
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
