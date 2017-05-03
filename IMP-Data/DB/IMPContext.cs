@@ -14,6 +14,7 @@ namespace IMP_Data
 
         public IMPContext() : base("IMP")
         {
+            
         }
 
         public static IMPContext Create()
@@ -28,6 +29,7 @@ namespace IMP_Data
         public DbSet<Monitor> Monitors { get; set; }
         public DbSet<InputDevice> InputDevices { get; set; }
         public DbSet<DiskDrive> DiskDrives { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
     }
 }

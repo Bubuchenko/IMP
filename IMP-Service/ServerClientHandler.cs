@@ -1,7 +1,9 @@
-﻿using IMP_Data.Repositories;
+﻿using IMP_Data.Models;
+using IMP_Data.Repositories;
 using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
@@ -16,38 +18,27 @@ namespace IMP_Service
         public static async Task<bool> AcceptClientConnection(Client client, OperationContext connectionContext)
         {
             //Client already connected
-            if(ServerState.ConnectedClients.Where(f => f.ClientId == client.ClientId).Any())
+            if(await SessionRepository.ClientHasActiveSession(client.ClientId))
             {
                 return false;
             }
 
-            //Set connection info
-            client.ConnectionInfo = new ConnectionInfo
+            //Create session
+            Session session = new Session
             {
                 SessionID = connectionContext.SessionId,
-                IPAddress = IPAddress.Parse((OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address),
-                ConnectedSince = DateTime.Now
+                SessionStart = DateTime.Now,
+                ClientID = client.ClientId
             };
 
-            await ClientRepository.SetLastSeenDate(client.ClientId, client.ConnectionInfo.ConnectedSince);
-
-            ServerState.ConnectedClients.Add(client);
-
+            await SessionRepository.CreateSession(session);
             return true;
         }
 
         public static async Task CloseClientConnection(string SessionID)
         {
-            Client disconnectedClient = ServerState.ConnectedClients.FirstOrDefault(f => f.ConnectionInfo.SessionID == SessionID);
-
-            if (disconnectedClient == null)
-                return;
-
-
-            ServerState.ConnectedClients.RemoveAll(f => f.ClientId == disconnectedClient.ClientId);
-            await ClientRepository.SetLastSeenDate(disconnectedClient.ClientId, DateTime.Now);
+            await SessionRepository.EndSession(SessionID);
         }
-
 
         public static string GenerateClientID(SystemInfo systemInfo)
         {

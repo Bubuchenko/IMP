@@ -57,7 +57,7 @@ namespace IMP_Web.Controllers
         public ActionResult Login(string returnUrl)
         {
             if (Request.IsAuthenticated)
-                return RedirectToAction("Index", "Control");
+                return RedirectToAction("Dashboard", "Control");
 
             var model = new LoginViewModel
             {

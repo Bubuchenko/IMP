@@ -1,0 +1,36 @@
+﻿.widget-container {
+    background-color: #1a2326 !important;
+    padding: 10px;
+    padding-left: 20px;
+
+}
+
+.fw-semi-bold {
+    font-weight: 600;
+}
+
+header {
+    font-weight: 300;
+    font-size: 20px;
+    color: #f2be34;
+}
+
+
+#map-container {
+    height: 500px;
+    padding: 0px;
+}
+
+#map {
+    height:100%;
+    width: 100%;
+}
+
+.row {
+    padding-bottom: 10px;
+}
+
+.jvectormap-container {
+    background-color: #1a2326 !important;
+}
+

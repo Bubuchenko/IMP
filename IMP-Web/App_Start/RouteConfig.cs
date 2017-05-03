@@ -15,15 +15,15 @@ namespace IMP_Web
 
 
             routes.MapRoute(
-                name: "Control",
-                url: "Control",
-                defaults: new { controller = "Control", action = "Index", id = UrlParameter.Optional }
+                name: "Login",
+                url: "Login",
+                defaults: new { controller = "Auth", action = "Login" }
             );
 
             routes.MapRoute(
-                name: "Login",
-                url: "Login",
-                defaults: new { controller = "Auth", action = "Login", id = UrlParameter.Optional }
+                name: "ControlPanel",
+                url: "{controller}/{action}",
+                defaults: new { controller = "{controller}", action = "{action}" }
             );
 
 

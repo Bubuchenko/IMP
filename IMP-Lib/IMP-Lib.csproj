@@ -56,7 +56,6 @@
     <Compile Include="Enums\StorageDeviceType.cs" />
     <Compile Include="Models\AntiVirus.cs" />
     <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\ConnectionInfo.cs" />
     <Compile Include="Models\InputDevice.cs" />
     <Compile Include="Models\Monitor.cs" />
     <Compile Include="Models\PersonalInformation.cs" />

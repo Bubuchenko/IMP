@@ -1,4 +1,5 @@
-﻿using IMP_Lib.Models;
+﻿using IMP_Data.Models;
+using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,14 +18,12 @@ namespace IMP_Data.Repositories
                 using (IMPContext db = new IMPContext())
                 {
                     client.CreationDate = DateTime.Now;
-                    client.LastOnline = DateTime.Now;
-
                     db.Clients.Add(client);
                     await db.SaveChangesAsync();
                     return true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception ec = ex;
                 return false;
@@ -35,17 +34,7 @@ namespace IMP_Data.Repositories
         {
             using (IMPContext db = new IMPContext())
             {
-
                 return await db.Clients.FirstOrDefaultAsync(f => f.ClientId == ClientId);
-            }
-        }
-
-        public static async Task SetLastSeenDate(string ClientId, DateTime LastOnline)
-        {
-            using (IMPContext db = new IMPContext())
-            {
-                db.Clients.FirstOrDefault(f => f.ClientId == ClientId).LastOnline = LastOnline;
-                await db.SaveChangesAsync();
             }
         }
 
@@ -56,6 +45,28 @@ namespace IMP_Data.Repositories
                 return await db.Clients.Where(f => f.ClientId == ClientId).AnyAsync();
             }
         }
-        
+
+        public static async Task<List<MapViewClient>> GetAllClientsAsMapViewClients()
+        {
+            using (IMPContext db = new IMPContext())
+            {
+                List<Client> clients = await db.Clients.ToListAsync();
+
+                List<MapViewClient> mapViewClients = new List<MapViewClient>();
+
+                clients.ForEach(f => mapViewClients.Add(new MapViewClient
+                {
+                    ID = f.ClientId,
+                    Location =
+                    new float[] {
+                        float.Parse(f.PersonalInformation.Location.Split(',')[0]),
+                        float.Parse(f.PersonalInformation.Location.Split(',')[1]) },
+                    Name = String.Format("{0} ({1})", f.Username, f.SystemInfo.MachineName)
+                }));
+
+                return mapViewClients;
+            }
+        }
+
     }
 }

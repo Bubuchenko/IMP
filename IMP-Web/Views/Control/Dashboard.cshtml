@@ -1,0 +1,52 @@
+﻿@model IMP_Web.Models.ViewModels.DashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-jvectormap-2.0.3.min.js"></script>
+<script src="~/Scripts/jquery-jvectormap-world-mill.js"></script>
+<link href="~/Content/dashboard.css" rel="stylesheet" />
+<script src="~/Scripts/imp-map.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 dropshadow" id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 dropshadow widget-container" id="statistics-container">
+            <header>
+                    Clients <span class="fw-semi-bold">Online</span>
+            </header>
+        </div>
+        <div class="col-lg-3 dropshadow widget-container" id="statistics-container">
+            <header>
+                Client <span class="fw-semi-bold">Growth</span>
+            </header>
+        </div>
+        <div class="col-lg-6 dropshadow widget-container" id="statistics-container">
+            <header>
+                Client <span class="fw-semi-bold">Distribution</span>
+            </header>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+//Marks the button that leads you to this page as selected
+    toggleMenuItem("#@ViewBag.Title-menu-item");
+
+    var map = createMap($("#map"), 'world_mill');
+
+
+    addClientsToMap(map, @Html.Raw(Model.SerializedClients));
+
+</script>
