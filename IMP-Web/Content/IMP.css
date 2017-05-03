@@ -182,15 +182,15 @@ body {
   }
 
   #page-content-wrapper {
-    padding-left: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
     transition: all 0.2s ease;
 }
   #title-bar {
-      margin-left: -10px;
-      margin-right: -10px;
+      
   }
 }
 @media (min-width: 767px) {

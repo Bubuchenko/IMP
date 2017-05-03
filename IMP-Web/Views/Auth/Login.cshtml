@@ -2,8 +2,12 @@
 @{
     Layout = null;
     ViewBag.Title = "IMP - Login";
-    ViewBag.ReturnUrl = Model.ReturnUrl;
-        
+
+
+    if (Model != null)
+    {
+        ViewBag.ReturnUrl = Model.ReturnUrl;
+    }
 }
 
 <!DOCTYPE html>

@@ -78,6 +78,8 @@ namespace IMP_Web.Controllers
                 return View();
             }
 
+            
+
             SignInStatus result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.Remember, false);
 
             switch(result)

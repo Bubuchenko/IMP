@@ -140,3 +140,11 @@ input:-webkit-autofill {
     text-decoration: underline;
     cursor: no-drop;
 }
+
+@media (-webkit-device-pixel-ratio: 3) {
+    #LoginPanel {
+        transform-origin: right;
+        transform: scale(2,2);
+        top: 35%;
+    }
+}
