@@ -17,11 +17,30 @@ body {
     -webkit-animation-iteration-count: infinite;
 }
 
-#title-bar h2 {
-    margin-left:20px;
-    padding-top: 15px;
+#title-bar-header {
+    margin-left: 20px;
+    display:inline-block;
     font-size: 20px;
     font-weight: 500;
+    line-height: 50px;
+}
+
+#title-bar-menu {
+    display: inline-block;
+    float: right;
+    line-height: 50px;
+    font-size: 15px;
+}
+
+#logout-button {
+    display: inline-block;
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#logout-button:hover {
+    background-color: #111;
 }
 
 .dropshadow {

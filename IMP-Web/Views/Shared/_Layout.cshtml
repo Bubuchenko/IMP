@@ -50,7 +50,15 @@
             </div>
         </div>
         <div id="page-content-wrapper">
-            <div id="title-bar" class="dropshadow"><h2>@ViewBag.Title</h2></div>
+            <div id="title-bar" class="dropshadow">
+                <div id="title-bar-header">@ViewBag.Title</div> 
+                <div id="title-bar-menu">
+                    <span id="title-username">@HttpContext.Current.GetOwinContext().Authentication.User.Identity.Name</span>
+                    <div id="logout-button" onclick="window.location.href='@Url.Action("Logout", "Auth")'">
+                        Logout <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
             @RenderBody()
         </div>        
     </div>
