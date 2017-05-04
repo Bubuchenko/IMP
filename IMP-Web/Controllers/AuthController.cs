@@ -78,8 +78,6 @@ namespace IMP_Web.Controllers
                 return View();
             }
 
-            
-
             SignInStatus result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.Remember, false);
 
             switch(result)
@@ -103,6 +101,23 @@ namespace IMP_Web.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Auth");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            var user = new User { UserName = model.UserName, Email = model.Email };
+            var registerResult = await _userManager.CreateAsync(user, model.Password);
+
+            return View();
         }
 
         private IAuthenticationManager AuthenticationManager
