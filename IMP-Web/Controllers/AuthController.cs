@@ -114,7 +114,7 @@ namespace IMP_Web.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             var user = new User { UserName = model.UserName, Email = model.Email };
-            var registerResult = await _userManager.CreateAsync(user, model.Password);
+            var registerResult = await UserManager.CreateAsync(user, model.Password);
 
             return View();
         }

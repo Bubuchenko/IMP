@@ -1,4 +1,6 @@
-﻿using IMP_Data.Models;
+﻿using IMP_Data;
+using IMP_Data.Models;
+using IMP_Lib.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,13 @@ namespace IMP_Web.Models.ViewModels
 {
     public class DashboardViewModel
     {
-        public IEnumerable<MapViewClient> Clients { get; set; }
+        public List<Client> Clients { get; set; }
 
         public string SerializedClients
         {
             get
             {
-                return JsonConvert.SerializeObject(Clients);
+                return Clients.Serialize();
             }
         }
     }

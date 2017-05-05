@@ -11,7 +11,6 @@ namespace IMP_Data
 {
     public class IMPContext : IdentityDbContext<User>
     {
-
         public IMPContext() : base("IMP")
         {
             
@@ -30,6 +29,5 @@ namespace IMP_Data
         public DbSet<InputDevice> InputDevices { get; set; }
         public DbSet<DiskDrive> DiskDrives { get; set; }
         public DbSet<Session> Sessions { get; set; }
-
     }
 }

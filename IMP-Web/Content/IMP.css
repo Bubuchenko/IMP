@@ -12,11 +12,6 @@ body {
     transition: all 0.2s ease;
 }
 
-.pulsate {
-    -webkit-animation: pulsate 2s ease-out;
-    -webkit-animation-iteration-count: infinite;
-}
-
 #title-bar-header {
     margin-left: 20px;
     display:inline-block;
@@ -50,6 +45,15 @@ body {
 .pulsate {
     -webkit-animation: pulsate 1s ease-out;
     -webkit-animation-iteration-count: infinite;
+    -webkit-animation-delay: 6s;
+}
+
+.pulse {
+    -webkit-animation: pulsate 2s ease-out;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-delay: 0s;
+    opacity: 0;
 }
 
 #title-bar {
@@ -224,9 +228,10 @@ body {
 
 @-webkit-keyframes pulsate {
     0% {
-        -webkit-transform-origin: 20% 40%;
+        -webkit-transform-origin: 50% 50%;
         -webkit-transform: scale(0.0, 0.0);
-        opacity: 0.0;
+        background: none;
+        opacity: 0.5;
     }
 
     50% {
@@ -234,8 +239,9 @@ body {
     }
 
     100% {
-        -webkit-transform-origin: 20% 40%;
-        -webkit-transform: scale(1.2, 1.2);
+        -webkit-transform-origin: 50% 50%;
+        -webkit-transform: scale(1.5, 1.5);
+        background: none;
         opacity: 0.0;
     }
 }

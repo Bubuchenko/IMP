@@ -49,13 +49,10 @@ namespace IMP_Client
 
         static async Task Register()
         {
-            Client client = new Client()
-            {
-                Username = Environment.UserName,
-                SystemInfo = await SystemInspector.GetSystemInfo(),
-            };
+            string Username = Environment.UserName;
+            SystemInfo sysInfo = await SystemInspector.GetSystemInfo();
 
-            switch (await defaultChannel.Register(client))
+            switch (await defaultChannel.Register(Username, sysInfo))
             {
                 case RegisterResult.Successful:
                     await Connect();

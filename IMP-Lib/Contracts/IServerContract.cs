@@ -16,7 +16,7 @@ namespace IMP_Lib
         [OperationContract]
         Task<ConnectResult> Connect(string MachineName, string MachineSID);
         [OperationContract]
-        Task<RegisterResult> Register(Client client);
+        Task<RegisterResult> Register(string Username, SystemInfo SystemInformation);
     }
 
 }

@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\IMPContext.cs" />
+    <Compile Include="Extensions\ClientExtensionMethods.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\MapViewClient.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

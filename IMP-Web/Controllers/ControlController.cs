@@ -1,4 +1,5 @@
-﻿using IMP_Data.Models;
+﻿using IMP_Data;
+using IMP_Data.Models;
 using IMP_Data.Repositories;
 using IMP_Lib.Models;
 using IMP_Service;
@@ -16,13 +17,9 @@ namespace IMP_Web.Controllers
     {
         public async Task<ActionResult> Dashboard()
         {
-            List<MapViewClient> clients = await ClientRepository.GetAllClientsAsMapViewClients();
+            List<Client> clients = await ClientRepository.GetAllClients();
 
-            foreach (MapViewClient client in clients)
-            {
-                if (await SessionRepository.ClientHasActiveSession(client.ID))
-                    client.Status = "Online";
-            }
+            await clients.SetOnlineStatuses();
 
             var dvm = new DashboardViewModel
             {
@@ -33,6 +30,11 @@ namespace IMP_Web.Controllers
         }
 
         public ActionResult Clients()
+        {
+            return View();
+        }
+
+        public ActionResult Test()
         {
             return View();
         }

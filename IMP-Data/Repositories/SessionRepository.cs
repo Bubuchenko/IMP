@@ -11,12 +11,11 @@ namespace IMP_Data.Repositories
 {
     public static class SessionRepository
     {
-
         public static async Task<List<Session>> GetActiveSessions()
         {
             using (IMPContext db = new IMPContext())
             {
-                return await db.Sessions.Where(f => f.SessionEnd != null).ToListAsync();
+                return await db.Sessions.Where(f => f.SessionEnd == null).ToListAsync();
             }
         }
 
@@ -33,6 +32,17 @@ namespace IMP_Data.Repositories
                 {
                     throw ex;
                 }
+            }
+        }
+
+        public static async Task<Client> GetClientBySessionID(string SessionID)
+        {
+            using (IMPContext db = new IMPContext())
+            {
+                db.Configuration.ProxyCreationEnabled = false;
+
+                Session Session = await db.Sessions.FirstOrDefaultAsync(x => x.SessionID == SessionID);
+                return await ClientRepository.GetClient(Session.ClientID);
             }
         }
 

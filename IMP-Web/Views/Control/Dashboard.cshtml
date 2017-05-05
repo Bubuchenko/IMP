@@ -10,11 +10,26 @@
 <script src="~/Scripts/jquery-jvectormap-world-mill.js"></script>
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 <script src="~/Scripts/imp-map.js"></script>
+<script src="~/Scripts/SignalRHubs/DashboardHub.js"></script>
+
+
+
+
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 dropshadow" id="map-container">
+        <div class="col-9 dropshadow" id="map-container">
             <div id="map"></div>
+        </div>
+        <div class="col-lg-3 dropshadow widget-container" id="">
+            <header>
+                Client <span class="fw-semi-bold">Locator</span>
+            </header>
+
+            <div class="row">
+                @Html.DropDownList("Antivirus", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.AntiVirus.ProductName)
+               .Select(f => f.SystemInfo.AntiVirus.ProductName).Distinct()), "Select Antivirus...", new { @class = "col-md-11 form-control" } )
+            </div>
         </div>
     </div>
 
@@ -44,9 +59,17 @@
 //Marks the button that leads you to this page as selected
     toggleMenuItem("#@ViewBag.Title-menu-item");
 
+    console.log(@Html.Raw(Model.SerializedClients));
+
     var map = createMap($("#map"), 'world_mill');
 
 
-    addClientsToMap(map, @Html.Raw(Model.SerializedClients));
+    addClientsToMap(@Html.Raw(Model.SerializedClients));
+
+
+    var filterByAntivirus = function () {
+        map.removeAllMarkers();
+
+    }
 
 </script>

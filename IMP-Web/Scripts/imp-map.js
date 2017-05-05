@@ -1,5 +1,5 @@
-﻿var getMarkerStyle = function (status) {
-    if (status === 'Online') {
+﻿var getMarkerStyle = function (Online) {
+    if (Online === true) {
         return {
             fill: 'yellow',
             stroke: '#505050',
@@ -7,10 +7,10 @@
             "stroke-width": 1,
             "stroke-opacity": 1,
             r: 3
-        }
+        };
     }
 
-    if (status === 'Offline') {
+    if (Online === false) {
         return {
             fill: 'red',
             stroke: '#505050',
@@ -18,24 +18,50 @@
             "stroke-width": 1,
             "stroke-opacity": 1,
             r: 3
-        }
+        };
     }
+};
+
+
+var connectPulseStyle = {
+    fill: 'none',
+    stroke: '#f2be35',
+    "fill-opacity": 1,
+    "stroke-width": 1,
+    r: 10
 }
 
 
-var addClientToMap = function (map, client) {
-    var markerStyle = getMarkerStyle(client.Status);
-    map.addMarker(client.ID, { latLng: client.Location, name: client.Name, style: markerStyle });
+var addClientToMap = function (client) {
+    var markerStyle = getMarkerStyle(client.IsOnline);
 
-    if (client.Status === 'Online')
-        $('circle[data-index="' + client.ID + '"]').addClass("pulsate");
-}
+    var Location = client.PersonalInformation.Location.split(',');
 
-var addClientsToMap = function (map, clients) {
+    map.addMarker(client.ClientId, { latLng: Location, name: client.Username, style: markerStyle });
+
+    if (client.IsOnline === true) {
+        $('circle[data-index="' + client.ClientId + '"]').addClass("pulsate");
+
+        //Display a temporary marker
+        map.addMarker(client.ClientId + "-OnlineMarker", { latLng: Location, name: client.Username, style: connectPulseStyle });
+        $('circle[data-index="' + client.ClientId + '-OnlineMarker"]').addClass("pulse");
+
+        //Remove temporary marker after a while
+        setTimeout(function () {
+            map.removeMarkers([client.ClientId + '-OnlineMarker']);
+        }, 10000)
+    }
+};
+
+var addClientsToMap = function (clients) {
     for (var i = 0; i < clients.length; i++)
-        addClientToMap(map, clients[i]);
-}
+        addClientToMap(clients[i]);
+};
 
+var setMapClientStatus = function (client) {
+    map.removeMarkers([client.ClientId]);
+    addClientToMap(client);
+};
 
 var createMap = function (container, map) {
     return map = new jvm.Map({
@@ -45,22 +71,22 @@ var createMap = function (container, map) {
         zoomAnimate: true,
         regionStyle: {
             initial: {
-                fill: '#234f61',
-            },
+                fill: '#234f61'
+            }
         },
         series: {
             regions: {
                 legend: {
                     title: 'War map'
-                },
-            },
+                }
+            }
         },
         markerStyle: {
             hover: {
                 stroke: 'black',
                 "stroke-width": 2,
                 r: 10
-            },
-        },
+            }
+        }
     });
-}
+};

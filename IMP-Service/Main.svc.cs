@@ -12,33 +12,44 @@ using System.Threading.Tasks;
 using IMP_Data.Repositories;
 using System.ServiceModel.Channels;
 using System.Net;
+using Microsoft.Owin.Hosting;
+using System.Configuration;
+using Microsoft.AspNet.SignalR;
+using IMP_Service.Hubs;
+using IMP_Data.Models;
 
 namespace IMP_Service
 {
     public class MainService : IServerContract
     {
+        //Keep a collection of all hubs
+        static List<IHubContext> Hubs;
+        static MainService()
+        {
+            Hubs = new List<IHubContext>
+            {
+                GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<DashboardHub>()
+            };
+        }
+
         public MainService()
         {
             OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnect);
             OperationContext.Current.Channel.Closed += new EventHandler(OnClientDisconnect);
         }
 
-        /// <summary>
-        /// Event handler called when a client disconnects from the server
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnClientDisconnect(object sender, EventArgs e)
+        private async void OnClientDisconnect(object sender, EventArgs e)
         {
             string SessionID = ((IContextChannel)sender).SessionId;
-            Task.Run(() => ServerClientHandler.CloseClientConnection(SessionID));
+            await ServerClientHandler.CloseClientConnection(SessionID);
+
+            Client client = await SessionRepository.GetClientBySessionID(SessionID);
+
+            client.IsOnline = false;
+            Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
         }
 
-        /// <summary>
-        /// Called by the client when a client connects to the server.
-        /// </summary>
-        /// <param name="ClientId">The clients ClientId to determine their identity</param>
-        /// <returns>A result that specifies whether the connection succeeded</returns>
         public async Task<ConnectResult> Connect(string MachineName, string MachineSID)
         {
             string ClientId = ServerClientHandler.GenerateClientID(MachineName, MachineSID);
@@ -52,24 +63,31 @@ namespace IMP_Service
             if (!await ServerClientHandler.AcceptClientConnection(client, OperationContext.Current))
                 return ConnectResult.AlreadyConnected;
 
+            //Notify all hubs
+            client.IsOnline = true;
+            Hubs.ForEach(f => f.Clients.All.clientConnected(client));
+
             return ConnectResult.Successful;
         }
 
-        /// <summary>
-        /// Registers a client to the database
-        /// </summary>
-        /// <param name="client">The client information to be stored in the database</param>
-        /// <returns>A result that specifies whether the registration succeeded</returns>
-        public async Task<RegisterResult> Register(Client client)
+        public async Task<RegisterResult> Register(string Username, SystemInfo SystemInformation)
         {
-            if (await ClientRepository.IsClientRegistered(client.ClientId))
+            string ClientId = ServerClientHandler.GenerateClientID(SystemInformation);
+
+            if (await ClientRepository.IsClientRegistered(ClientId))
                 return RegisterResult.AlreadyExists;
 
             string IPaddress = (OperationContext.Current.IncomingMessageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty).Address;
 
-            client.ClientId = ServerClientHandler.GenerateClientID(client.SystemInfo);
-            client.PersonalInformation = await GeoTracker.GetPersonalInformationByIPAddress(IPAddress.Parse(IPaddress));
-            client.IPAddress = IPaddress;
+            Client client = new Client()
+            {
+                Username = Username,
+                ClientId = ServerClientHandler.GenerateClientID(SystemInformation),
+                PersonalInformation = await GeoTracker.GetPersonalInformationByIPAddress(IPAddress.Parse(IPaddress)),
+                IPAddress = IPaddress,
+                SystemInfo = SystemInformation
+            };
+        
 
             if (!await ClientRepository.RegisterClient(client))
                 return RegisterResult.Failed;

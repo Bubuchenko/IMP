@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IMP_Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,18 +11,16 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib.Models
 {
-    [DataContract]
     public class Client
     {
         public int Id { get; set; }
-        [DataMember]
         public string Username { get; set; }
         public string ClientId { get; set; }
         public DateTime CreationDate { get; set; }
         public string IPAddress { get; set; }
-
-        [DataMember]
+        public bool IsOnline { get; set; }
         public virtual SystemInfo SystemInfo { get; set; }
         public virtual PersonalInformation PersonalInformation { get; set; }
+
     }
 }

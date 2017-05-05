@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib.Models
 {
-    [DataContract]
     public class PersonalInformation
     {
         public int PersonalInformationId { get; set; }
