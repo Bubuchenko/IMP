@@ -11,25 +11,39 @@
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 <script src="~/Scripts/imp-map.js"></script>
 <script src="~/Scripts/SignalRHubs/DashboardHub.js"></script>
-
+<script src="~/Scripts/dashboard.js"></script>
 
 
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-9 dropshadow" id="map-container">
-            <div id="map"></div>
-        </div>
-        <div class="col-lg-3 dropshadow widget-container" id="">
+        <div class="col-md-12 dropshadow widget-container" id="">
             <header>
-                Client <span class="fw-semi-bold">Locator</span>
+                Client <span class="fw-semi-bold">Filter</span>
             </header>
 
-            <div class="row">
-                @Html.DropDownList("Antivirus", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.AntiVirus.ProductName)
-               .Select(f => f.SystemInfo.AntiVirus.ProductName).Distinct()), "Select Antivirus...", new { @class = "col-md-11 form-control" } )
+            <div class="row" style="margin-top:10px">
+                <div class="col-sm-2">
+                    @Html.DropDownList("antivirus-filter", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.AntiVirus.ProductName)
+               .Select(f => f.SystemInfo.AntiVirus.ProductName).Distinct()), "Any Antivirus...",
+               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownList("onlinestatus-filter", new SelectList(new List<string> { "Online", "Offline" }), "Any status...",
+               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.DropDownList("computertype-filter", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.SystemType)
+               .Select(f => f.SystemInfo.SystemType).Distinct()), "Any System type...",
+               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 dropshadow" id="map-container">
+            <div id="map"></div>
         </div>
     </div>
 
@@ -59,17 +73,7 @@
 //Marks the button that leads you to this page as selected
     toggleMenuItem("#@ViewBag.Title-menu-item");
 
-    console.log(@Html.Raw(Model.SerializedClients));
-
     var map = createMap($("#map"), 'world_mill');
 
-
     addClientsToMap(@Html.Raw(Model.SerializedClients));
-
-
-    var filterByAntivirus = function () {
-        map.removeAllMarkers();
-
-    }
-
 </script>

@@ -48,13 +48,15 @@ namespace IMP_Data.Repositories
                 db.Configuration.ProxyCreationEnabled = false;
                 db.Configuration.LazyLoadingEnabled = false;
 
-                return await db.Clients
+                List<Client> clients = await db.Clients
                     .Include(f => f.PersonalInformation)
                     .Include(f => f.SystemInfo)
                     .Include(f => f.SystemInfo.Monitors)
                     .Include(f => f.SystemInfo.AntiVirus)
                     .Include(f => f.SystemInfo.Drives)
                     .Include(f => f.SystemInfo.InputDevices).ToListAsync();
+
+                return await clients.SetOnlineStatuses();
             }
         }
 

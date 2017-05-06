@@ -48,7 +48,9 @@ var addClientToMap = function (client) {
 
         //Remove temporary marker after a while
         setTimeout(function () {
-            map.removeMarkers([client.ClientId + '-OnlineMarker']);
+            try {
+                map.removeMarkers([client.ClientId + '-OnlineMarker']);
+            } catch(ex) { }
         }, 10000)
     }
 };

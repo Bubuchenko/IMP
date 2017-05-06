@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace IMP_API
+namespace IMP_Api
 {
     public static class WebApiConfig
     {
@@ -14,10 +14,16 @@ namespace IMP_API
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+
+            config.Routes.MapHttpRoute(
+                name: "FindBy1",
+                routeTemplate: "Client/FindBy1/{antivirusstatus}/{status}/{systemtype}"
+            );
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "{controller}/{action}/{parameter}",
+                defaults: new { parameter = RouteParameter.Optional }
             );
         }
     }
