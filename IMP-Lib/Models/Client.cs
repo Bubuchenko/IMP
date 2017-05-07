@@ -19,6 +19,7 @@ namespace IMP_Lib.Models
         public DateTime CreationDate { get; set; }
         public string IPAddress { get; set; }
         public bool IsOnline { get; set; }
+        public bool IsFavorite { get; set; }
         public virtual SystemInfo SystemInfo { get; set; }
         public virtual PersonalInformation PersonalInformation { get; set; }
 

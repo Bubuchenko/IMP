@@ -1,4 +1,5 @@
 ﻿using IMP_Data;
+using IMP_Data.Enums;
 using IMP_Data.Extensions;
 using IMP_Data.Repositories;
 using IMP_Lib.Models;
@@ -16,19 +17,32 @@ namespace IMP_Api.Controllers
     {
 
         [HttpGet]
-        public async Task<IHttpActionResult> FindBy1(string antivirusstatus, string status, string systemtype)
+        public async Task<IHttpActionResult> FindByAntivirusStatusSystemTypeCreationDateOS(string antivirusstatus, string antivirusname, string status, string systemtype, string creationdate, string operatingsystem)
         {
+
             IEnumerable<Client> clients = await ClientRepository.GetAllClients();
 
+            AntivirusStatus antivirusStatus;
+            DateTime creationDate;
+
             bool isOnline = status == "Online" ? true : false;
+            bool isValidAntivirusStatus = Enum.TryParse<AntivirusStatus>(antivirusstatus, true, out antivirusStatus);
+            bool isValidCreationDate = DateTime.TryParse(creationdate, out creationDate);
 
-            if (antivirusstatus != null)
-                clients = clients.Where(f => f.SystemInfo.AntiVirus.ProductName == antivirusstatus);
-            if (status != null)
+
+            if (!string.IsNullOrEmpty(antivirusstatus) && isValidAntivirusStatus == true)
+                clients = clients.Where(f => f.SystemInfo.AntiVirus.FirstOrDefault().GetAntivirusState()
+                .Status == antivirusStatus);
+            if (!string.IsNullOrEmpty(creationdate) && isValidCreationDate)
+                clients = clients.Where(f => f.CreationDate >= creationDate);
+            if (!string.IsNullOrEmpty(antivirusname))
+                clients = clients.Where(f => f.SystemInfo.AntiVirus.FirstOrDefault().ProductName == antivirusname);
+            if (!string.IsNullOrEmpty(status))
                 clients = clients.Where(f => f.IsOnline == isOnline);
-            if (systemtype != null)
+            if (!string.IsNullOrEmpty(systemtype))
                 clients = clients.Where(f => f.SystemInfo.SystemType == systemtype);
-
+            if (!string.IsNullOrEmpty(operatingsystem))
+                clients = clients.Where(f => f.SystemInfo.OperatingSystem == operatingsystem.TrimEnd(' '));
 
 
             return Ok(clients.ToList().Serialize());
@@ -42,20 +56,6 @@ namespace IMP_Api.Controllers
             List<Client> clients = await ClientRepository.GetAllClients();
             string SerializedClients = clients.Where(f => f.IsOnline == online).ToList().Serialize();
             return Ok(SerializedClients);
-        }
-
-        [HttpGet]
-        public async Task<IHttpActionResult> Antivirus(string parameter)
-        {
-            List<Client> clients = await ClientRepository.GetAllClients();
-            string SerializedClients = clients.Where(f => f.SystemInfo.AntiVirus.ProductName == parameter).ToList().Serialize();
-            return Ok(SerializedClients);
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
         }
     }
 }

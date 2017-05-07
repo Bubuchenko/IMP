@@ -8,6 +8,7 @@
 <link href="~/Content/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-jvectormap-2.0.3.min.js"></script>
 <script src="~/Scripts/jquery-jvectormap-world-mill.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 <link href="~/Content/dashboard.css" rel="stylesheet" />
 <script src="~/Scripts/imp-map.js"></script>
 <script src="~/Scripts/SignalRHubs/DashboardHub.js"></script>
@@ -18,25 +19,38 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12 dropshadow widget-container" id="">
+        <div class="col-md-12 dropshadow widget-container" id="client-filter">
             <header>
                 Client <span class="fw-semi-bold">Filter</span>
             </header>
 
-            <div class="row" style="margin-top:10px">
-                <div class="col-sm-2">
-                    @Html.DropDownList("antivirus-filter", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.AntiVirus.ProductName)
-               .Select(f => f.SystemInfo.AntiVirus.ProductName).Distinct()), "Any Antivirus...",
-               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
-                </div>
-                <div class="col-sm-2">
-                    @Html.DropDownList("onlinestatus-filter", new SelectList(new List<string> { "Online", "Offline" }), "Any status...",
-               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
-                </div>
-                <div class="col-sm-2">
-                    @Html.DropDownList("computertype-filter", new SelectList(Model.Clients.OrderBy(x => x.SystemInfo.SystemType)
-               .Select(f => f.SystemInfo.SystemType).Distinct()), "Any System type...",
-               new { @class = "input-sm form-control", @onchange = "applyFilter()" })
+            <div style="margin: 0 auto;">
+                <div class="row" style="margin-top:10px">
+                    <div class="col-lg-2">
+                        @Html.DropDownList("antivirusname-filter", Model.AntivirusNames, "Any Antivirus...",
+               new { @class = "input-sm form-control", @data_bind = "value: antivirusName, event:{ change: applyFilter }" })
+                    </div>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("antivirusstatus-filter", Model.AntivirusStatuses, "Any Antivirus Status...",
+               new { @class = "input-sm form-control", @data_bind = "value: antivirusStatus, event:{ change: applyFilter }" })
+                    </div>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("onlinestatus-filter", Model.Statuses, "Any status...",
+               new { @class = "input-sm form-control", @data_bind = "value: onlineStatus, event:{ change: applyFilter }" })
+                    </div>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("computertype-filter", Model.SystemTypes, "Any System type...",
+               new { @class = "input-sm form-control", @data_bind = "value: systemType, event:{ change: applyFilter }" })
+                    </div>
+                    <div class="col-lg-2">
+                        @Html.DropDownList("operatingsystem-filter", Model.OperatingSystems, "Any Operating system...",
+               new { @class = "input-sm form-control", @data_bind = "value: operatingSystem, event:{ change: applyFilter }" })
+                    </div>
+                    <div class="col-lg-2">
+                        @Html.DropDownListFor(f => f.CreationDateSelections, Model.CreationDateSelections, "Any registration date...",
+               new { @class = "input-sm form-control", @data_bind = "value: creationDate, event:{ change: applyFilter }" })
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,20 +62,21 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-3 dropshadow widget-container" id="statistics-container">
-            <header>
-                    Clients <span class="fw-semi-bold">Online</span>
+        <div class="col-md-2 dropshadow widget-container" id="statistics-container">
+            <center>
+                <header>
+                    <span class="fw-semi-bold">Online</span> Clients 
+                   <h1 id="usersonline" data-bind="text: usersOnline"></h1>
             </header>
+        </center>
         </div>
-        <div class="col-lg-3 dropshadow widget-container" id="statistics-container">
-            <header>
-                Client <span class="fw-semi-bold">Growth</span>
-            </header>
-        </div>
-        <div class="col-lg-6 dropshadow widget-container" id="statistics-container">
-            <header>
-                Client <span class="fw-semi-bold">Distribution</span>
-            </header>
+        <div class="col-md-2 dropshadow widget-container" id="statistics-container">
+            <center>
+                <header>
+                    <span class="fw-semi-bold">Total</span> Clients
+                    <h1 data-bind="text: totalUsers"></h1>
+                </header>
+            </center>
         </div>
     </div>
 </div>
@@ -70,10 +85,18 @@
 
 
 <script>
-//Marks the button that leads you to this page as selected
+
+    //Marks the button that leads you to this page as selected
     toggleMenuItem("#@ViewBag.Title-menu-item");
-
     var map = createMap($("#map"), 'world_mill');
-
     addClientsToMap(@Html.Raw(Model.SerializedClients));
+
+
+
+    
+    ko.applyBindings(viewModel);
+
+    viewModel.usersOnline(@Model.Clients.Where(f => f.IsOnline).Count())
+    viewModel.totalUsers(@Model.Clients.Count);
+
 </script>

@@ -22,7 +22,6 @@
     }
 };
 
-
 var connectPulseStyle = {
     fill: 'none',
     stroke: '#f2be35',

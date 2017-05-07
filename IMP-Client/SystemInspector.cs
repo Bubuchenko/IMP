@@ -42,17 +42,24 @@ namespace IMP_Client
         }
 
 
-        public static AntiVirus AntiVirus()
+        public static List<AntiVirus> AntiVirus()
         {
-            ManagementObject AntiVirusInfo = new ManagementObjectSearcher("root\\SecurityCenter2", "SELECT displayName, pathToSignedProductExe, productState FROM AntiVirusProduct").
-            Get().Cast<ManagementObject>().FirstOrDefault();
+            List<ManagementObject> AntiViruses = new ManagementObjectSearcher("root\\SecurityCenter2", "SELECT displayName, pathToSignedProductExe, productState FROM AntiVirusProduct").
+            Get().Cast<ManagementObject>().ToList();
 
-            return new AntiVirus
+            List<AntiVirus> antivirusList = new List<AntiVirus>();
+
+            foreach (var antivirus in AntiViruses)
             {
-                ProductName = AntiVirusInfo.GetPropertyValue("displayName").ToString(),
-                PathToFile = AntiVirusInfo.GetPropertyValue("pathToSignedProductExe").ToString(),
-                ProductState = AntiVirusInfo.GetPropertyValue("productState").ToString()
-            };
+                antivirusList.Add(new AntiVirus
+                {
+                    ProductName = antivirus.GetPropertyValue("displayName").ToString(),
+                    PathToFile = antivirus.GetPropertyValue("pathToSignedProductExe").ToString(),
+                    ProductState = antivirus.GetPropertyValue("productState").ToString()
+                });
+            }
+
+            return antivirusList;
         }
 
         public static string GPU

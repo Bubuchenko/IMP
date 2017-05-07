@@ -6,15 +6,14 @@
 
     //RECEIVE
     hub.client.clientConnected = function (client) {
-        console.log(client);
+        viewModel.usersOnline((viewModel.usersOnline() + 1));
         setMapClientStatus(client);
     };
 
     hub.client.clientDisconnected = function (client) {
-        console.log(client);
+        viewModel.usersOnline((viewModel.usersOnline() - 1));
         setMapClientStatus(client);
     };
-
 
     // Start the connection.
     $.connection.hub.start().done(function () {

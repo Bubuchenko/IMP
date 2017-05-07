@@ -29,6 +29,14 @@ namespace IMP_Web.Controllers
             return View(dvm);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Client(string id)
+        {
+            Client client = await ClientRepository.GetClient(id);
+
+            return View(client);
+        }
+
         public ActionResult Clients()
         {
             return View();

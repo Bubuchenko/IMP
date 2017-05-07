@@ -204,10 +204,14 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\clientControl.css" />
     <Content Include="Content\dashboard.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\desktop_icon.png" />
     <Content Include="Content\Images\IMP.png" />
+    <Content Include="Content\Images\monitor.ico" />
+    <Content Include="Content\Images\star-icon.png" />
     <Content Include="Content\IMP.css" />
     <Content Include="Content\jquery-jvectormap-2.0.3.css" />
     <Content Include="Content\login.css" />
@@ -238,8 +242,10 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\clientControl.js" />
     <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\IMP.js" />
+    <Content Include="Scripts\SignalRHubs\ClientControlHub.js" />
     <Content Include="Scripts\SignalRHubs\DashboardHub.js" />
     <Content Include="Scripts\imp-map.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -278,6 +284,7 @@
     <Content Include="Views\Control\Dashboard.cshtml" />
     <Content Include="Views\Control\Clients.cshtml" />
     <Content Include="Views\Auth\Register.cshtml" />
+    <Content Include="Views\Control\Client.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

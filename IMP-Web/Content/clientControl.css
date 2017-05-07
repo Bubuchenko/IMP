@@ -1,0 +1,36 @@
+﻿#system-summary h5 {
+    margin-bottom: 0;
+}
+
+#system-summary header {
+    margin-bottom: 20px;
+}
+
+#system-summary > div > div.col-sm-5 {
+    text-align: center;
+}
+
+
+#system-summary > div > div.col-lg-3 {
+    text-align: center;
+}
+
+#system-summary > div > div.col-sm-5 > center > div {
+    margin-top: -20px;
+    word-break: break-all;
+    text-align: center;
+}
+
+.monitor-container {
+    text-align: center;
+}
+
+.monitor-container img {
+    width:100px
+}
+
+@media (max-width: 767px) {
+    #system-summary {
+        text-align: center;
+    }
+}

@@ -24,6 +24,8 @@ namespace IMP_Service
     {
         //Keep a collection of all hubs
         static List<IHubContext> Hubs;
+        bool IsDisconnected = false;
+
         static MainService()
         {
             Hubs = new List<IHubContext>
@@ -41,6 +43,10 @@ namespace IMP_Service
 
         private async void OnClientDisconnect(object sender, EventArgs e)
         {
+            if (IsDisconnected)
+                return;
+            IsDisconnected = true;
+
             string SessionID = ((IContextChannel)sender).SessionId;
             await ServerClientHandler.CloseClientConnection(SessionID);
 

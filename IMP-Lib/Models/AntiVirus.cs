@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IMP_Lib.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace IMP_Lib.Models
         [DataMember]
         public string ProductState { get; set; }
 
-        [Required]
         [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
+
     }
 }

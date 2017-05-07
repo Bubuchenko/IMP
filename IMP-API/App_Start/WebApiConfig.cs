@@ -16,8 +16,8 @@ namespace IMP_Api
 
 
             config.Routes.MapHttpRoute(
-                name: "FindBy1",
-                routeTemplate: "Client/FindBy1/{antivirusstatus}/{status}/{systemtype}"
+                name: "FindByAntivirusStatusSystemTypeCreationDateOS",
+                routeTemplate: "Client/FindByAntivirusStatusSystemTypeCreationDate/{antivirusstatus}/{antivirusname}/{status}/{systemtype}/{creationdate}/{operatingsystem}"
             );
 
             config.Routes.MapHttpRoute(

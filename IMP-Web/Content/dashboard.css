@@ -1,24 +1,19 @@
-﻿.widget-container {
-    background-color: #1a2326 !important;
-    padding: 10px;
-    padding-left: 20px;
-
+﻿.widget-container .form-control {
+    margin-bottom:5px;
 }
 
-.fw-semi-bold {
-    font-weight: 600;
+.widget-container .col-lg-2 {
+    min-width:200px;
+    padding-right: 0;
 }
 
-header {
-    font-weight: 300;
-    font-size: 20px;
-    color: #f2be34;
+#client-filter {
+    padding-right: 25px;
 }
-
 
 #map-container {
     height: 500px;
-    padding: 0px;
+    padding: 0;
 }
 
 #map {
@@ -34,3 +29,6 @@ header {
     background-color: #1a2326 !important;
 }
 
+
+@media (max-width: 767px) {
+}

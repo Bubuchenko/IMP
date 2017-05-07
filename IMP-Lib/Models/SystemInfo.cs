@@ -41,14 +41,23 @@ namespace IMP_Lib.Models
         [Required]
         [DataMember]
         public virtual Client Client { get; set; }
-        [DataMember]
-        public virtual AntiVirus AntiVirus { get; set; }
 
+        [DataMember]
+        public virtual ICollection<AntiVirus> AntiVirus { get; set; }
         [DataMember]
         public virtual ICollection<InputDevice> InputDevices { get; set; }
         [DataMember]
         public virtual ICollection<Monitor> Monitors { get; set; }
         [DataMember]
         public virtual ICollection<DiskDrive> Drives { get; set; }
+
+        [NotMapped]
+        public string FriendlySystemType
+        {
+            get
+            {
+                return X64_Bit == true ? "64-bit" : "32-bit";
+            }
+        }
     }
 }

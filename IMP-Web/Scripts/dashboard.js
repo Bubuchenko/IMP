@@ -1,25 +1,31 @@
 ﻿var applyFilter = function () {
-    var status = $("#onlinestatus-filter").val();
-    var antivirusName = $("#antivirus-filter").val();
-    var systemtype = $("#systemtype-filter").val();
 
-    if (status == null)
-        status = "";
-    if (antivirusName == null)
-        antivirusName = "";
-    if (systemtype == null)
-        systemtype = "";
+    $.get('/IMP-Api/Client/FindByAntivirusStatusSystemTypeCreationDateOS',
+        {
+            antivirusstatus: viewModel.antivirusStatus(),
+            antivirusname: viewModel.antivirusName(),
+            status: viewModel.onlineStatus(),
+            systemtype: viewModel.systemType(),
+            creationdate: viewModel.creationDate(),
+            operatingsystem: viewModel.operatingSystem()
+        },
+        function (data) {
+            map.removeAllMarkers();
+            console.log(JSON.parse(data));
+            addClientsToMap(JSON.parse(data));
+        });
+};
 
 
-$.get('/IMP-Api/Client/FindBy1',
-    {
-        antivirusstatus: antivirusName,
-        status: status,
-        systemtype: systemtype
-    },
-    function (data) {
-        map.removeAllMarkers();
-        console.log(JSON.parse(data));
-        addClientsToMap(JSON.parse(data));
-    });
+var viewModel = {
+    totalUsers: ko.observable(),
+    usersOnline: ko.observable(),
+
+    antivirusName: ko.observable(),
+    antivirusStatus: ko.observable(),
+    onlineStatus: ko.observable(),
+    computerType: ko.observable(),
+    operatingSystem: ko.observable(),
+    creationDate: ko.observable(),
+    systemType: ko.observable()
 };

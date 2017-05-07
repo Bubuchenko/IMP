@@ -35,7 +35,8 @@ namespace IMP_Data.Repositories
                     .Include(f => f.SystemInfo.Drives)
                     .Include(f => f.SystemInfo.InputDevices).FirstOrDefaultAsync(f => f.ClientId == ClientId);
 
-                client.IsOnline = await SessionRepository.ClientHasActiveSession(ClientId);
+                if(client != null)
+                    client.IsOnline = await SessionRepository.ClientHasActiveSession(ClientId);
 
                 return client;
             }
