@@ -31,7 +31,8 @@ namespace IMP_Service
             Hubs = new List<IHubContext>
             {
                 GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<DashboardHub>()
+                GlobalHost.ConnectionManager.GetHubContext<DashboardHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>()
             };
         }
 

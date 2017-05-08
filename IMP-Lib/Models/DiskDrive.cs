@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,8 +26,16 @@ namespace IMP_Lib.Models
         public float TotalSpace { get; set; }
         [DataMember]
         public float AvailableFreeSpace { get; set; }
-
         [DataMember]
         public virtual SystemInfo SystemInfo { get; set; }
+
+        [DataMember]
+        public float PercentFreeSpace
+        {
+            get
+            {
+                return (AvailableFreeSpace / TotalSpace) * 100;
+            }
+        }
     }
 }

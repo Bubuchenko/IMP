@@ -51,7 +51,7 @@ namespace IMP_Lib.Models
         [DataMember]
         public virtual ICollection<DiskDrive> Drives { get; set; }
 
-        [NotMapped]
+        [DataMember]
         public string FriendlySystemType
         {
             get

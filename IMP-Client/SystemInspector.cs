@@ -231,7 +231,7 @@ namespace IMP_Client
 
                 //Add video input devices
                 DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice).ToList()
-                    .ForEach(f => inputDevices.Add(new InputDevice { Name = f.Name, Type = InputDeviceType.Video}));
+                    .ForEach(f => inputDevices.Add(new InputDevice { Name = f.Name, Type = InputDeviceType.Webcam}));
 
                 //Get audio input devices
                 DsDevice.GetDevicesOfCat(FilterCategory.AudioInputDevice).ToList()

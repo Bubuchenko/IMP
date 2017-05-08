@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace IMP_Lib.Enums
 {
-    public enum InputDeviceType
+    public enum MonitorSizeType
     {
-        Webcam,
-        Audio,
-        Keyboard,
-        Mouse,
-        Controller
+        Small,
+        Medium,
+        Large,
+        ExtraLarge
     }
 }

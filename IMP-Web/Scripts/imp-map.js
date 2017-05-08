@@ -69,25 +69,11 @@ var createMap = function (container, map) {
         container: container,
         map: map,
         regionSelectable: false,
-        zoomAnimate: true,
+        zoomAnimate: false,
         regionStyle: {
             initial: {
                 fill: '#234f61'
             }
         },
-        series: {
-            regions: {
-                legend: {
-                    title: 'War map'
-                }
-            }
-        },
-        markerStyle: {
-            hover: {
-                stroke: 'black',
-                "stroke-width": 2,
-                r: 10
-            }
-        }
     });
 };

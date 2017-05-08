@@ -1,4 +1,8 @@
-﻿.widget-container .form-control {
+﻿#statistics-container header h1 {
+    color: white;
+}
+
+.widget-container .form-control {
     margin-bottom:5px;
 }
 
@@ -23,10 +27,6 @@
 
 .row {
     padding-bottom: 10px;
-}
-
-.jvectormap-container {
-    background-color: #1a2326 !important;
 }
 
 

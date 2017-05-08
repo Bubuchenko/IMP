@@ -1,36 +1,170 @@
-﻿#system-summary h5 {
-    margin-bottom: 0;
+﻿* {
+    transition: all 0.5s ease;
 }
 
-#system-summary header {
+.invisible {
+    opacity: 0;
+}
+
+.widget-container {
+    min-width: 400px !important;
+}
+
+.container-fluid > .row .row {
+    margin: 0;
+}
+
+#system-summary h5 {
+    margin-bottom: 0;
+    margin-top:0px;
+}
+
+#system-summary {
+}
+
+.container-fluid {
+    margin: 0;
+}
+
+#system-summary-icon {
+    display: inline-block;
+    text-align: center;
+}
+
+
+#left-side {
+    padding-left: 0px;
+}
+
+#control-menu {
+    padding-left: 0px;
+    height: 400px;
+    background-color: #1a2326;
+    margin-bottom:5px;
+
+}
+
+#content {
+    padding: 5px;
+}
+
+#control-menu header {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+#client-map {
+    height:300px;
+    margin-top: 1px;
+    padding: 0;
+}
+
+.monitor-container header {
     margin-bottom: 20px;
 }
 
-#system-summary > div > div.col-sm-5 {
-    text-align: center;
+.monitor {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
 }
 
-
-#system-summary > div > div.col-lg-3 {
-    text-align: center;
-}
-
-#system-summary > div > div.col-sm-5 > center > div {
-    margin-top: -20px;
-    word-break: break-all;
-    text-align: center;
+.monitor:hover {
+    background-color: #111;
+    transition: all 1s ease;
 }
 
 .monitor-container {
     text-align: center;
+    min-width: 150px;
 }
 
 .monitor-container img {
-    width:100px
+    width:100px;
+    transform-origin: bottom;
 }
 
-@media (max-width: 767px) {
+.drive-container {
+    text-align: center;
+    min-width: 250px;
+}
+
+.drive-container .progress {
+    margin-bottom: 0px;
+    margin-top: 10px;
+}
+
+.drive {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.drive:hover {
+    background-color: #111;
+    transition: all 1s ease;
+}
+
+.drive-container header {
+    margin-bottom: 20px;
+}
+
+
+.drive img {
+    transform-origin: bottom;
+    width: 100px;
+}
+
+.input-device-container {
+    text-align: center;
+}
+
+.input-device-container img {
+    width: 50px;
+}
+
+.input-device {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.input-device:hover {
+    background-color: #111;
+    transition: all 1s ease;
+}
+
+
+#system-summary > div > div:nth-child(3) {
+    text-align: center;
+    display:inline-block;
+}
+
+#system-summary > div > div.col-xs-4 {
+    text-align: center;
+}
+
+
+#system-summary header {
+    margin-bottom: 10px;
+}
+
+#system-summary > div > div.col-sm-5 {
+}
+
+
+#system-summary > div > div.col-lg-3 {
+}
+
+#system-summary > div > div.col-sm-5 > center > div {
+}
+
+
+@media (max-width: 967px) {
     #system-summary {
+        max-width: none;
+        width: 100%;
         text-align: center;
     }
 }

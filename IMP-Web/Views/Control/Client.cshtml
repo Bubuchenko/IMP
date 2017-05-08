@@ -10,60 +10,162 @@
 <script src="~/Scripts/jquery-jvectormap-2.0.3.min.js"></script>
 <script src="~/Scripts/jquery-jvectormap-world-mill.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+<script src="~/Scripts/knockout.punches.min.js"></script>
 <link href="~/Content/clientControl.css" rel="stylesheet" />
 <script src="~/Scripts/imp-map.js"></script>
 <script src="~/Scripts/SignalRHubs/ClientControlHub.js"></script>
 <script src="~/Scripts/clientControl.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>
 
 
 
 
 <div class="container-fluid">
+        <!-- SYSTEM SUMMARY TILE -->
     <div class="row">
-        <div class="col-lg-12 dropshadow widget-container" id="system-summary">
-            <header>
-                System <span class="fw-semi-bold">Summary</span>
-            </header>
-            <div class="row">
-                <div class="col-lg-3 col-lg-offset-1">
-                    <div class="col-sm-12">
-                        <img src="~/Content/Images/desktop_icon.png" style="max-width: 178px;">
-                    </div>
-                    <div class="col-sm-12">
+        <div class="col-xs-6" id="left-side">
+            <div class="col-12 dropshadow widget-container" id="system-summary">
+                <header>
+                    System <span class="fw-semi-bold">Summary</span>
+                </header>
+                <div class="row">
+                    <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="showMenu()">
+                        <img src="~/Content/Images/Systemtypes/{{viewModel.Client().SystemInfo.SystemType}}_icon.png" style="max-width: 178px;">
                         <h5> Machinename </h5>
-                        @Model.SystemInfo.MachineName
+                        
                     </div>
-                </div>
-                <div class="col-lg-9">
-                    <h5>Operating system</h5>  @Model.SystemInfo.OperatingSystem (@Model.SystemInfo.FriendlySystemType)
-                    <h5>CPU</h5> @Model.SystemInfo.CPU
-                    <h5>GPU</h5> @Model.SystemInfo.GPU
-                    <h5>RAM</h5> @Model.SystemInfo.RAM MB
-                    <h5>Locale</h5> @Model.SystemInfo.SystemLocale
+                    <div class="col-xs-12 col-md-7">
+                        <h5>Operating system</h5>  {{ viewModel.Client().SystemInfo.OperatingSystem }} ({{ viewModel.Client().SystemInfo.FriendlySystemType }})
+                        <h5>CPU</h5> {{ viewModel.Client().SystemInfo.CPU }} 
+                        <h5>GPU</h5> {{ viewModel.Client().SystemInfo.GPU }} 
+                        <h5>RAM</h5> {{ viewModel.Client().SystemInfo.RAM }} MB
+                        <h5>Locale</h5> {{ viewModel.Client().SystemInfo.SystemLocale }} 
+                    </div>
                 </div>
             </div>
-        </div>
 
-        @foreach (IMP_Lib.Models.Monitor monitor in Model.SystemInfo.Monitors)
-        {
-        <div class="col-lg-2 dropshadow widget-container monitor-container">
-            <center>
+            <!-- DISPLAY OVERVIEW TILE -->
+            <div class="col-xs-12 dropshadow d-block widget-container monitor-container">
                 <header>
-                        @monitor.Type 
+                    System <span class="fw-semi-bold">Displays</span>
                 </header>
-            </center>
-            <img src="~/Content/Images/monitor.ico"/><br />
-            @monitor.Resolution
+
+
+                {{#foreach: viewModel.Client().SystemInfo.Monitors }}
+                <div class="monitor">
+
+                    <img src="~/Content/Images/television.png" />
+
+                    <h5>{{ Type }}</h5>
+                    <span> {{ Resolution }}</span>
+
+                    {{#if IsPrimary}}
+                    <span class="label label-primary">Primary</span>
+                    {{/if}}
+                </div>
+                {{/foreach}}
+            </div>
+
+            <!-- DRIVE SUMMARY TILE -->
+            <div class="col-xs-12 dropshadow d-inline-block widget-container drive-container">
+                <header>
+                    System <span class="fw-semi-bold">Drives</span>
+                </header>
+
+
+                {{#foreach: viewModel.Client().SystemInfo.Drives }}
+
+                    <div class="drive">
+                        <img src="~/Content/Images/hard-drive-icon.png" />
+
+                        <h5> {{ Name }} </h5>
+                        <span class="label label-primary">{{ DriveType }}</span>
+                        <span> {{ VolumeLabel }}</span>
+
+                        <div class="progress">
+                            <div class="progress-bar" @*progress-bar-{{ PercentFreeSpace | driveSpaceLabel }}"*@ role="progressbar" data-bind="style: { width: 100 - PercentFreeSpace + '%' }">
+                            </div>
+                        </div>
+
+                        <span> {{ AvailableFreeSpace | freeSpaceGB }} GB free</span>
+
+                    </div>
+
+
+                {{/foreach}}
+
+            </div>
+
+            <!-- INPUT DEVICE TILE -->
+            <div class="col-xs-12 dropshadow d-inline-block widget-container input-device-container">
+                <header>
+                    Input <span class="fw-semi-bold">Devices</span>
+                </header>
+
+
+                {{#foreach: viewModel.Client().SystemInfo.InputDevices }}
+
+                <div class="input-device ">
+
+                    <img src="~/Content/Images/Inputdevices/{{Type}}_icon.png" />
+
+                    <h5> {{ Type }}</h5>
+                    <span>{{ Name }}</span>
+                </div>
+
+                {{/foreach}}
+            </div>
+
+            @*<div id="client-map" class="col-xs-12 dropshadow">
+            </div>*@
         </div>
-        }
-
+        <div class="col-xs-6 dropshadow" id="control-menu">
+            <header>
+                Action <span class="fw-semi-bold">Panel</span>
+            </header>
+            <div id="content">
+                {{ viewModel }}
+                <div>Hello {{ name }}.</div>
+            </div>
+        </div>
     </div>
-
 </div>
 
+
 <script>
-    $(function () {
-        $('.monitor-container').matchHeight();
-    });
+
+    var showMenu = function () {
+        $('#left-side').toggleClass("col-xs-6").toggleClass("col-xs-4");
+        $('#control-menu').toggleClass("col-xs-6").toggleClass("col-xs-8").toggleClass("invisible");
+        //document.getElementById("content").innerHTML = '<object type="text/html" data="~/Views/Control/SystemControl.cshtml">~/Views/Control/SystemControl.cshtml"></object>';
+    }
+
+
+
+
+    @*var map = createMap($("#client-map"), 'world_mill');
+    addClientToMap(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model))));*@
+
+
+    ko.punches.enableAll();
+    var viewModel = {
+        Client: ko.observable(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model)))),
+        name: ko.observable("patat")
+    };
+
+    ko.filters.freeSpaceGB = function (value) {
+        return (value / 1024 / 1024 / 1024).toFixed(2);
+    };
+
+    ko.filters.driveSpaceLabel = function (freeSpace) {
+        if (freeSpace < 15)
+            return "danger";
+        else if (freeSpace < 25)
+            return "warning";
+        else
+            return "primary";
+
+    };
+
+    ko.applyBindings(viewModel);
+
 </script>

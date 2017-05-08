@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $.connection.hub.url = "http://localhost:99/signalr";
+    $.connection.hub.url = "http://94.209.146.117:99/signalr";
     $.connection.hub.logging = true;
 
     var hub = $.connection.dashboardHub;

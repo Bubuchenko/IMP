@@ -68,6 +68,7 @@
     <Content Include="App_Code\Initializer.cs" />
     <Compile Include="GeoTracking\GeoTracker.cs" />
     <Compile Include="GeoTracking\IPInfo.cs" />
+    <Compile Include="Hubs\ClientControlHub.cs" />
     <Compile Include="Hubs\DashboardHub.cs" />
     <Compile Include="Hubs\IMPHub.cs" />
     <Compile Include="Main.svc.cs">
