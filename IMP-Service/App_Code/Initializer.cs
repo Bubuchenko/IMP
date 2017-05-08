@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using IMP_Data.Repositories;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +15,7 @@ namespace IMP_Service.App_Code
         //Runs before first request
         public static void AppInitialize()
         {
+            SessionRepository.CloseAllActiveSessions().Wait();
             //Start SignalR server
             WebApp.Start(ConfigurationManager.AppSettings["SignalRHostAddress"]);
 

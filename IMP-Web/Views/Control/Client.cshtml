@@ -16,9 +16,6 @@
 <script src="~/Scripts/SignalRHubs/ClientControlHub.js"></script>
 <script src="~/Scripts/clientControl.js"></script>
 
-
-
-
 <div class="container-fluid">
         <!-- SYSTEM SUMMARY TILE -->
     <div class="row">
@@ -29,8 +26,9 @@
                 </header>
                 <div class="row">
                     <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="showMenu()">
-                        <img src="~/Content/Images/Systemtypes/{{viewModel.Client().SystemInfo.SystemType}}_icon.png" style="max-width: 178px;">
+                        <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;">
                         <h5> Machinename </h5>
+                        {{ viewModel.Client().SystemInfo.MachineName }}
                         
                     </div>
                     <div class="col-xs-12 col-md-7">
@@ -82,14 +80,13 @@
                         <span> {{ VolumeLabel }}</span>
 
                         <div class="progress">
-                            <div class="progress-bar" @*progress-bar-{{ PercentFreeSpace | driveSpaceLabel }}"*@ role="progressbar" data-bind="style: { width: 100 - PercentFreeSpace + '%' }">
+                            <div class="{{ PercentFreeSpace | driveSpaceLabel | prepend:'progress-bar progress-bar-' }}" role="progressbar" style.width="{{ 100 - PercentFreeSpace | append:'px' }}">
                             </div>
                         </div>
 
                         <span> {{ AvailableFreeSpace | freeSpaceGB }} GB free</span>
 
                     </div>
-
 
                 {{/foreach}}
 
@@ -114,18 +111,20 @@
 
                 {{/foreach}}
             </div>
-
-            @*<div id="client-map" class="col-xs-12 dropshadow">
-            </div>*@
         </div>
         <div class="col-xs-6 dropshadow" id="control-menu">
             <header>
                 Action <span class="fw-semi-bold">Panel</span>
             </header>
+
             <div id="content">
-                {{ viewModel }}
-                <div>Hello {{ name }}.</div>
+                <button onclick="test()">Test</button>    
             </div>
+
+        </div>
+
+        <!-- MAP TILE -->
+        <div id="client-map" class="col-xs-6 dropshadow">
         </div>
     </div>
 </div>
@@ -134,28 +133,33 @@
 <script>
 
     var showMenu = function () {
-        $('#left-side').toggleClass("col-xs-6").toggleClass("col-xs-4");
-        $('#control-menu').toggleClass("col-xs-6").toggleClass("col-xs-8").toggleClass("invisible");
+        //$('#left-side').toggleClass("col-xs-6").toggleClass("col-xs-4");
+        //$('#control-menu').toggleClass("col-xs-6").toggleClass("col-xs-8").toggleClass("invisible");
         //document.getElementById("content").innerHTML = '<object type="text/html" data="~/Views/Control/SystemControl.cshtml">~/Views/Control/SystemControl.cshtml"></object>';
+
+        $.get('/IMP-Api/Client/Id/',
+            {
+                parameter: 'BUBUCHENKO-S-1-5-21-3710005488-3752961230-307625830'
+            },
+            function (data) {
+                console.log(JSON.parse(data));
+                viewModel.Client(JSON.parse(data));
+            });
     }
 
 
-
-
-    @*var map = createMap($("#client-map"), 'world_mill');
-    addClientToMap(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model))));*@
-
-
-    ko.punches.enableAll();
+    //Set up KnockoutJS + Punches
     var viewModel = {
         Client: ko.observable(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model)))),
-        name: ko.observable("patat")
     };
 
+    ko.punches.enableAll();
+    ko.punches.textFilter.enableForBinding('style.width');
+    ko.filters.append = (str1, str2) => str1 + str2;
+    ko.filters.prepend = (str1, str2) => str2 + str1;
     ko.filters.freeSpaceGB = function (value) {
         return (value / 1024 / 1024 / 1024).toFixed(2);
     };
-
     ko.filters.driveSpaceLabel = function (freeSpace) {
         if (freeSpace < 15)
             return "danger";
@@ -165,7 +169,9 @@
             return "primary";
 
     };
-
     ko.applyBindings(viewModel);
+
+    var map = createMap($("#client-map"), 'world_mill');
+    addClientToMap(viewModel.Client());
 
 </script>

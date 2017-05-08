@@ -62,6 +62,9 @@ namespace IMP_Service
             string ClientId = ServerClientHandler.GenerateClientID(MachineName, MachineSID);
             string SessionID = OperationContext.Current.SessionId;
 
+
+            
+
             if (!await ClientRepository.IsClientRegistered(ClientId))
                 return ConnectResult.NotRegistered;
 

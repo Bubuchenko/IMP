@@ -57,5 +57,12 @@ namespace IMP_Api.Controllers
             string SerializedClients = clients.Where(f => f.IsOnline == online).ToList().Serialize();
             return Ok(SerializedClients);
         }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> Id(string parameter)
+        {
+            Client client = await ClientRepository.GetClient(parameter);
+            return Ok(client.Serialize());
+        }
     }
 }

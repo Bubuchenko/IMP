@@ -1,5 +1,6 @@
 ﻿using IMP_Data.Models;
 using IMP_Data.Repositories;
+using IMP_Lib.Contracts;
 using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ namespace IMP_Service
                 ClientID = client.ClientId
             };
 
+            WCFServer.Connections.Add(client.ClientId, connectionContext.GetCallbackChannel<IClientContract>());
             await SessionRepository.CreateSession(session);
             return true;
         }
@@ -38,6 +40,8 @@ namespace IMP_Service
         public static async Task CloseClientConnection(string SessionID)
         {
             await SessionRepository.EndSession(SessionID);
+            Client Client = await SessionRepository.GetClientBySessionID(SessionID);
+            WCFServer.Connections.Remove(Client.ClientId);
         }
 
         public static string GenerateClientID(SystemInfo systemInfo)

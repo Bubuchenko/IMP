@@ -90,12 +90,8 @@
     toggleMenuItem("#@ViewBag.Title-menu-item");
     var map = createMap($("#map"), 'world_mill');
     addClientsToMap(@Html.Raw(Model.SerializedClients));
-
-
-
     
     ko.applyBindings(viewModel);
-
     viewModel.usersOnline(@Model.Clients.Where(f => f.IsOnline).Count())
     viewModel.totalUsers(@Model.Clients.Count);
 

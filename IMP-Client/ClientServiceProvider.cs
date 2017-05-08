@@ -14,7 +14,7 @@ namespace IMP_Client
     {
         public void Test()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Hello!");
         }
     }
 }

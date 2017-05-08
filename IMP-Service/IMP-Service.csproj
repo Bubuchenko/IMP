@@ -65,6 +65,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WCFServer.cs" />
     <Content Include="App_Code\Initializer.cs" />
     <Compile Include="GeoTracking\GeoTracker.cs" />
     <Compile Include="GeoTracking\IPInfo.cs" />

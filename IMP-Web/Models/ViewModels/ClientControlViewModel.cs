@@ -1,11 +1,12 @@
-﻿using System;
+﻿using IMP_Lib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace IMP_Web.Models.ViewModels
 {
-    public class ClientControlViewModel
+    public class ClientControlViewModel : Client
     {
     }
 }

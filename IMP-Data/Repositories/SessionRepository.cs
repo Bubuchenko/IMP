@@ -46,6 +46,14 @@ namespace IMP_Data.Repositories
             }
         }
 
+        public static async Task CloseAllActiveSessions()
+        {
+            using (IMPContext db = new IMPContext())
+            {
+                await db.Sessions.Where(f => f.SessionEnd == null).ForEachAsync(f => f.SessionEnd = DateTime.Now);
+            }
+        }
+
         public static async Task EndSession(string SessionID)
         {
             using (IMPContext db = new IMPContext())
