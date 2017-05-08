@@ -10,10 +10,6 @@ namespace IMP_Service.Hubs
 {
     public class ClientControlHub : IMPHub
     {
-        public string Test(string ClientID)
-        {
-            WCFServer.Connections[ClientID].Test();
-            return "OK";
-        }
+        
     }
 }

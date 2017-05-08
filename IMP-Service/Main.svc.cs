@@ -32,7 +32,8 @@ namespace IMP_Service
             {
                 GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
                 GlobalHost.ConnectionManager.GetHubContext<DashboardHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>()
+                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<CmdHub>()
             };
         }
 

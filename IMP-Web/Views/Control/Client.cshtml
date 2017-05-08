@@ -19,27 +19,28 @@
 <div class="container-fluid">
         <!-- SYSTEM SUMMARY TILE -->
     <div class="row">
-        <div class="col-xs-6" id="left-side">
+        <div class="col-md-6" id="left-side">
             <div class="col-12 dropshadow widget-container" id="system-summary">
                 <header>
                     System <span class="fw-semi-bold">Summary</span>
                 </header>
                 <div class="row">
-                    <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="showMenu()">
+                    <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="">
                         <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;">
                         <h5> Machinename </h5>
                         {{ viewModel.Client().SystemInfo.MachineName }}
-                        
+
                     </div>
                     <div class="col-xs-12 col-md-7">
                         <h5>Operating system</h5>  {{ viewModel.Client().SystemInfo.OperatingSystem }} ({{ viewModel.Client().SystemInfo.FriendlySystemType }})
-                        <h5>CPU</h5> {{ viewModel.Client().SystemInfo.CPU }} 
-                        <h5>GPU</h5> {{ viewModel.Client().SystemInfo.GPU }} 
+                        <h5>CPU</h5> {{ viewModel.Client().SystemInfo.CPU }}
+                        <h5>GPU</h5> {{ viewModel.Client().SystemInfo.GPU }}
                         <h5>RAM</h5> {{ viewModel.Client().SystemInfo.RAM }} MB
-                        <h5>Locale</h5> {{ viewModel.Client().SystemInfo.SystemLocale }} 
+                        <h5>Locale</h5> {{ viewModel.Client().SystemInfo.SystemLocale }}
                     </div>
                 </div>
             </div>
+
 
             <!-- DISPLAY OVERVIEW TILE -->
             <div class="col-xs-12 dropshadow d-block widget-container monitor-container">
@@ -112,13 +113,21 @@
                 {{/foreach}}
             </div>
         </div>
-        <div class="col-xs-6 dropshadow" id="control-menu">
+        <div class="col-xs-12 col-md-6 dropshadow" id="control-menu">
             <header>
                 Action <span class="fw-semi-bold">Panel</span>
             </header>
 
-            <div id="content">
-                <button onclick="test()">Test</button>    
+            <div id="content" class="row">
+                <div class="media col-sm-12 col-md-6" id="cmd-button" onclick="window.open('@Url.Action("Cmd", "Control", new { id = Model.ClientId })','IMP Commander - @Model.Username','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=852,height=700')">
+                    <div class="media-left">
+                            <i class="fa fa-terminal terminal-icon dropshadow" aria-hidden="true"></i>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Remote command prompt</h4>
+                        <text>Opens a terminal in a new window which allows you to execute commands on the client system</text>
+                    </div>
+                </div>
             </div>
 
         </div>

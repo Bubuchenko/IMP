@@ -211,6 +211,7 @@
     <Content Include="Content\dashboard.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Images\command_window.png" />
     <Content Include="Content\Images\hard-drive-icon.png" />
     <Content Include="Content\Images\Inputdevices\microphone_icon.png" />
     <Content Include="Content\Images\Inputdevices\webcam_icon.png" />
@@ -221,6 +222,7 @@
     <Content Include="Content\Images\television.png" />
     <Content Include="Content\IMP.css" />
     <Content Include="Content\jquery-jvectormap-2.0.3.css" />
+    <Content Include="Content\jquery.terminal-1.3.1.min.css" />
     <Content Include="Content\login.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -249,8 +251,10 @@
     <Content Include="Scripts\clientControl.js" />
     <Content Include="Scripts\dashboard.js" />
     <Content Include="Scripts\IMP.js" />
+    <Content Include="Scripts\jquery.terminal-1.3.1.min.js" />
     <Content Include="Scripts\knockout.punches.min.js" />
     <Content Include="Scripts\SignalRHubs\ClientControlHub.js" />
+    <Content Include="Scripts\SignalRHubs\CMDHub.js" />
     <Content Include="Scripts\SignalRHubs\DashboardHub.js" />
     <Content Include="Scripts\imp-map.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -291,6 +295,7 @@
     <Content Include="Views\Auth\Register.cshtml" />
     <Content Include="Views\Control\Client.cshtml" />
     <Content Include="Views\Control\SystemControl.cshtml" />
+    <Content Include="Views\Control\Cmd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

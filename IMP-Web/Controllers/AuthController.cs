@@ -135,6 +135,5 @@ namespace IMP_Web.Controllers
             }
             return RedirectToAction("Login", "Auth");
         }
-
     }
 }

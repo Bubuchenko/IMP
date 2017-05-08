@@ -6,6 +6,49 @@
     opacity: 0;
 }
 
+.terminal-icon {
+    background-color: #111;
+    font-size: 15px;
+    height: 40px;
+    padding: 5px 20px 5px 10px;
+    border: 1px solid #1a2326;
+    text-align: center;
+    max-width: 80px;
+    display: block;
+}
+
+.media {
+    border-radius: 5px;
+}
+
+#cmd-button {
+    cursor: pointer;
+    padding: 10px;
+}
+
+#cmd-button:hover {
+    background-color: #111;
+}
+
+.media-heading {
+    font-size: 12px;
+}
+
+.media-body text {
+    font-size: 10px;
+}
+#cmd-icon {
+    text-align: center;
+}
+
+#content {
+    margin-top:10px;
+}
+
+#content .media-body {
+
+}
+
 .widget-container {
     min-width: 400px !important;
 }

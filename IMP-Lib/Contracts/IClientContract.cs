@@ -12,6 +12,6 @@ namespace IMP_Lib.Contracts
     public interface IClientContract
     {
         [OperationContract]
-        void Test();
+        Task<string> CMDCommand(string command);
     }
 }
