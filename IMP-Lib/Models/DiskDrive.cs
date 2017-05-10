@@ -36,6 +36,7 @@ namespace IMP_Lib.Models
             {
                 return (AvailableFreeSpace / TotalSpace) * 100;
             }
+            protected set { }
         }
     }
 }

@@ -32,6 +32,7 @@ namespace IMP_Lib.Models
             {
                 return int.Parse(Resolution.Split('x')[0]);
             }
+            protected set { }
         }
 
         [DataMember]
@@ -41,6 +42,7 @@ namespace IMP_Lib.Models
             {
                 return int.Parse(Resolution.Split('x')[1]);
             }
+            protected set { }
         }
 
         [DataMember]
@@ -50,6 +52,7 @@ namespace IMP_Lib.Models
             {
                 return Width * Height;
             }
+            protected set { }
         }
     }
 }

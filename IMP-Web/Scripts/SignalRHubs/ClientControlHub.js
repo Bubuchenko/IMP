@@ -16,6 +16,16 @@
         if (client.ClientId == viewModel.Client().ClientId) {
             setMapClientStatus(client);
         }
+    }
+
+    hub.client.newFileUpload = function (message) {
+        alert(message);
+    };
+
+
+    hub.client.fileProgessUpdate = function (filename, progress) {
+        console.log(filename + " is at " + progress);
+        
     };
 
     // Start the connection.
@@ -23,8 +33,6 @@
         //SEND
         //hub.server.send();
          test = function () {
-             hub.server.test("BUBUCHENKO-S-1-5-21-3710005488-3752961230-307625830").done(function (result) {
-                 
-             })
+             hub.server.uploadFile("BUBUCHENKO-S-1-5-21-3710005488-3752961230-307625830", "abc");
         }
     });

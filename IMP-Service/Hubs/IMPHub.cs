@@ -11,16 +11,6 @@ namespace IMP_Service.Hubs
 {
     public class IMPHub : Hub
     {
-        public void ClientConnected(Client client)
-        {
-            client.IsOnline = true;
-            Clients.All.clientConnected(client);
-        }
 
-        public void ClientDisconnected(Client client)
-        {
-            client.IsOnline = false;
-            Clients.All.clientDisconnected(client);
-        }
     }
 }

@@ -37,7 +37,6 @@ namespace IMP_Lib.Models
         [DataMember]
         public string OperatingSystem { get; set; }
 
-
         [Required]
         [DataMember]
         public virtual Client Client { get; set; }
@@ -58,6 +57,7 @@ namespace IMP_Lib.Models
             {
                 return X64_Bit == true ? "64-bit" : "32-bit";
             }
+            protected set { }
         }
     }
 }

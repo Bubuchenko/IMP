@@ -16,6 +16,16 @@ namespace IMP_Data
             
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DiskDrive>().Ignore(f => f.PercentFreeSpace);
+            modelBuilder.Entity<Monitor>().Ignore(f => f.Width);
+            modelBuilder.Entity<Monitor>().Ignore(f => f.Height);
+            modelBuilder.Entity<Monitor>().Ignore(f => f.Size);
+            modelBuilder.Entity<SystemInfo>().Ignore(f => f.FriendlySystemType);
+            base.OnModelCreating(modelBuilder);
+        }
+
         public static IMPContext Create()
         {
             return new IMPContext();

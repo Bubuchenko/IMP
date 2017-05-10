@@ -1,4 +1,5 @@
 ﻿using IMP_Lib;
+using IMP_Lib.Contracts;
 using IMP_Lib.Enums;
 using IMP_Lib.Models;
 using System;
@@ -14,18 +15,23 @@ namespace IMP_Client
     {
 
         static IServerContract defaultChannel;
+
+        private static DuplexChannelFactory<IServerContract> DefaultChannelFactory { get; set; }
+        public static ChannelFactory<IFileTransferContract> FileChannelFactory { get; set; }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Starting...");
-            var defaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
-            defaultChannel = defaultChannelFactory.CreateChannel();
+            DefaultChannelFactory = new DuplexChannelFactory<IServerContract>(new ClientServiceProvider(), "Main");
+            FileChannelFactory = new ChannelFactory<IFileTransferContract>("FileTransfer");
+            defaultChannel = DefaultChannelFactory.CreateChannel();
+
             Connect().Wait();
             Console.ReadLine();
         }
 
         static async Task Connect()
         {
-
             switch (await defaultChannel.Connect(SystemInspector.MachineName, SystemInspector.MachineSID))
             {
                 case ConnectResult.Successful:
@@ -55,11 +61,11 @@ namespace IMP_Client
             switch (await defaultChannel.Register(Username, sysInfo))
             {
                 case RegisterResult.Successful:
+                    Console.WriteLine("Registered! Connecting...");
                     await Connect();
-                    Console.WriteLine("Registered. Connecting!");
                     break;
                 case RegisterResult.AlreadyExists:
-                    Console.WriteLine("Already registered. Connecting!");
+                    Console.WriteLine("Already registered. Connecting...");
                     break;
                 case RegisterResult.Failed:
                     //Log?

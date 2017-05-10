@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="IMP_Service.FileTransferService" CodeBehind="FileTransfer.svc.cs" %>

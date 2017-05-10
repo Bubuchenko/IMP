@@ -26,7 +26,7 @@
                 </header>
                 <div class="row">
                     <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="">
-                        <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;">
+                        <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;" onclick="downloadFile()">
                         <h5> Machinename </h5>
                         {{ viewModel.Client().SystemInfo.MachineName }}
 
@@ -141,19 +141,12 @@
 
 <script>
 
-    var showMenu = function () {
+    var downloadFile = function () {
         //$('#left-side').toggleClass("col-xs-6").toggleClass("col-xs-4");
         //$('#control-menu').toggleClass("col-xs-6").toggleClass("col-xs-8").toggleClass("invisible");
         //document.getElementById("content").innerHTML = '<object type="text/html" data="~/Views/Control/SystemControl.cshtml">~/Views/Control/SystemControl.cshtml"></object>';
 
-        $.get('/IMP-Api/Client/Id/',
-            {
-                parameter: 'BUBUCHENKO-S-1-5-21-3710005488-3752961230-307625830'
-            },
-            function (data) {
-                console.log(JSON.parse(data));
-                viewModel.Client(JSON.parse(data));
-            });
+        test();
     }
 
 

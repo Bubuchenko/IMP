@@ -8,10 +8,11 @@ using IMP_Lib.Models;
 using System.ServiceModel;
 using System.Diagnostics;
 using System.IO;
+using IMP_Lib;
 
 namespace IMP_Client
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false, IncludeExceptionDetailInFaults = true)]
     class ClientServiceProvider : IClientContract
     {
         public async Task<string> CMDCommand(string command)
@@ -55,6 +56,27 @@ namespace IMP_Client
                 //Trim out input and initial CMD header info
                 return result.Substring(result.IndexOf(input) + input.Length, result.Length - (result.IndexOf(input) + input.Length));
             }
+        }
+
+        public async Task<string> Upload(string filePath, string ConnectionID, string ClientID)
+        {
+            IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
+
+            FileTransfer fileTransferInfo = new FileTransfer
+            {
+                FilePath = filePath,
+                ConnectionID = ConnectionID,
+                ClientID = ClientID
+            };
+
+            using (Stream sourceStream = File.OpenRead(filePath)) 
+            {
+                fileTransferInfo.Data = sourceStream;
+                fileTransferInfo.FileSize = sourceStream.Length;
+                await fileChannel.Upload(fileTransferInfo);
+            }
+
+            return "Ok";
         }
     }
 }

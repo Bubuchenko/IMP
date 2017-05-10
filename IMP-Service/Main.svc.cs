@@ -23,20 +23,7 @@ namespace IMP_Service
     public class MainService : IServerContract
     {
         //Keep a collection of all hubs
-        static List<IHubContext> Hubs;
         bool IsDisconnected = false;
-
-        static MainService()
-        {
-            Hubs = new List<IHubContext>
-            {
-                GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<DashboardHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<CmdHub>()
-            };
-        }
-
         public MainService()
         {
             OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnect);
@@ -55,16 +42,14 @@ namespace IMP_Service
             Client client = await SessionRepository.GetClientBySessionID(SessionID);
 
             client.IsOnline = false;
-            Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
+            WCFServer.Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
         }
 
         public async Task<ConnectResult> Connect(string MachineName, string MachineSID)
         {
             string ClientId = ServerClientHandler.GenerateClientID(MachineName, MachineSID);
             string SessionID = OperationContext.Current.SessionId;
-
-
-            
+           
 
             if (!await ClientRepository.IsClientRegistered(ClientId))
                 return ConnectResult.NotRegistered;
@@ -76,7 +61,7 @@ namespace IMP_Service
 
             //Notify all hubs
             client.IsOnline = true;
-            Hubs.ForEach(f => f.Clients.All.clientConnected(client));
+            WCFServer.Hubs.ForEach(f => f.Clients.All.clientConnected(client));
 
             return ConnectResult.Successful;
         }

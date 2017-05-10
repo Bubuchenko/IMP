@@ -17,5 +17,8 @@ namespace IMP_Lib.Models
         public string Name { get; set; }
         [DataMember]
         public InputDeviceType Type { get; set; }
+        [DataMember]
+        public virtual SystemInfo SystemInfo { get; set; }
+
     }
 }
