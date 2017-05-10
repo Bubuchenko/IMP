@@ -11,6 +11,12 @@ namespace IMP_Service.Hubs
 {
     public class ClientControlHub : IMPHub
     {
+        static ClientControlHub()
+        {
+            
+        }
+
+
         public async Task<string> UploadFile(string ClientID, string filePath)
         {
             filePath = @"C:\IMP\Test.txt";

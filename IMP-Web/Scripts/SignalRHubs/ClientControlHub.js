@@ -24,7 +24,7 @@
 
 
     hub.client.fileProgessUpdate = function (filename, progress) {
-        console.log(filename + " is at " + progress);
+        console.log(filename + " is at " + progress + "%");
         
     };
 

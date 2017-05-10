@@ -16,14 +16,8 @@ namespace IMP_Service
 {
     public static class ServerClientHandler
     {
-        public static async Task<bool> AcceptClientConnection(Client client, OperationContext connectionContext)
+        public static async Task AcceptClientConnection(Client client, OperationContext connectionContext)
         {
-            //Client already connected
-            if(await SessionRepository.ClientHasActiveSession(client.ClientId))
-            {
-                return false;
-            }
-
             //Create session
             Session session = new Session
             {
@@ -34,7 +28,6 @@ namespace IMP_Service
 
             WCFServer.Connections.Add(client.ClientId, connectionContext.GetCallbackChannel<IClientContract>());
             await SessionRepository.CreateSession(session);
-            return true;
         }
 
         public static async Task CloseClientConnection(string SessionID)

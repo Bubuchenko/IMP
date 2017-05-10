@@ -22,47 +22,52 @@ namespace IMP_Service
 {
     public class MainService : IServerContract
     {
-        //Keep a collection of all hubs
+
+        public delegate void ClientConnected(Client client);
+        public static event ClientConnected OnClientConnect;
+
+        public delegate void ClientDisconnected(Client client);
+        public static event ClientDisconnected OnClientDisconnect;
+
+
         bool IsDisconnected = false;
         public MainService()
         {
-            OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnect);
-            OperationContext.Current.Channel.Closed += new EventHandler(OnClientDisconnect);
+            OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnected);
+            OperationContext.Current.Channel.Closed += new EventHandler(OnClientDisconnected);
         }
 
-        private async void OnClientDisconnect(object sender, EventArgs e)
+        private async void OnClientDisconnected(object sender, EventArgs e)
         {
+            //Faulted & Closed are often called twice, so make sure our event only gets called once
             if (IsDisconnected)
                 return;
             IsDisconnected = true;
 
             string SessionID = ((IContextChannel)sender).SessionId;
             await ServerClientHandler.CloseClientConnection(SessionID);
-
             Client client = await SessionRepository.GetClientBySessionID(SessionID);
 
-            client.IsOnline = false;
-            WCFServer.Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
+            OnClientDisconnect.Invoke(client);
         }
 
         public async Task<ConnectResult> Connect(string MachineName, string MachineSID)
         {
             string ClientId = ServerClientHandler.GenerateClientID(MachineName, MachineSID);
             string SessionID = OperationContext.Current.SessionId;
-           
 
+            //Client not registered yet
             if (!await ClientRepository.IsClientRegistered(ClientId))
                 return ConnectResult.NotRegistered;
 
-            Client client = await ClientRepository.GetClient(ClientId);
-
-            if (!await ServerClientHandler.AcceptClientConnection(client, OperationContext.Current))
+            //Client already connected
+            if (await SessionRepository.ClientHasActiveSession(ClientId))
                 return ConnectResult.AlreadyConnected;
 
-            //Notify all hubs
-            client.IsOnline = true;
-            WCFServer.Hubs.ForEach(f => f.Clients.All.clientConnected(client));
+            Client client = await ClientRepository.GetClient(ClientId);
+            await ServerClientHandler.AcceptClientConnection(client, OperationContext.Current);
 
+            OnClientConnect.Invoke(client);
             return ConnectResult.Successful;
         }
 

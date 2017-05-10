@@ -28,17 +28,25 @@ namespace IMP_Service
 
             GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>().Clients.Client(file.ConnectionID).newFileUpload(string.Format("{0} has started uploading {1}", client.Username, file.FileName));
 
-            using (Stream output = File.Create(@"C:\Output\" + file.FileName))
+            using (Stream output = File.Create(file.FilePath))
             {
                 byte[] buffer = new byte[4 * 1024];
                 int length;
 
+                double progress = 0;
+                double progressCheck = 1;
 
                 while ((length = await file.Data.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     await output.WriteAsync(buffer, 0, length);
+                    progress = ((double)output.Position / (double)file.FileSize) * (double)100;
 
-                    GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>().Clients.Client(file.ConnectionID).fileProgessUpdate(file.FileName, length);
+                    if(progress > progressCheck)
+                    {
+                        GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>().Clients.Client(file.ConnectionID).fileProgessUpdate(file.FileName, progress);
+                        progressCheck++;
+                    }
+
                 }
             }
         }
