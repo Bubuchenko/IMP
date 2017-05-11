@@ -64,8 +64,10 @@ namespace IMP_Service
             if (await SessionRepository.ClientHasActiveSession(ClientId))
                 return ConnectResult.AlreadyConnected;
 
+            
+            await ServerClientHandler.AcceptClientConnection(ClientId, OperationContext.Current);
+
             Client client = await ClientRepository.GetClient(ClientId);
-            await ServerClientHandler.AcceptClientConnection(client, OperationContext.Current);
 
             OnClientConnect.Invoke(client);
             return ConnectResult.Successful;

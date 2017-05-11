@@ -25,8 +25,8 @@
                     System <span class="fw-semi-bold">Summary</span>
                 </header>
                 <div class="row">
-                    <div class="col-xs-12 col-md-5" id="system-summary-icon" onclick="">
-                        <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;" onclick="downloadFile()">
+                    <div class="col-xs-12 col-md-5" id="system-summary-icon">
+                        <img src="~/Content/Images/Systemtypes/{{ viewModel.Client().SystemInfo.SystemType }}_icon.png" style="max-width: 178px;" onclick="test()">
                         <h5> Machinename </h5>
                         {{ viewModel.Client().SystemInfo.MachineName }}
 
@@ -141,12 +141,12 @@
 
 <script>
 
-    var downloadFile = function () {
+    var test = function () {
         //$('#left-side').toggleClass("col-xs-6").toggleClass("col-xs-4");
         //$('#control-menu').toggleClass("col-xs-6").toggleClass("col-xs-8").toggleClass("invisible");
         //document.getElementById("content").innerHTML = '<object type="text/html" data="~/Views/Control/SystemControl.cshtml">~/Views/Control/SystemControl.cshtml"></object>';
 
-        test();
+        downloadFile("ZUTTOREI-PC-S-1-5-21-3586656024-2830546649-2047223343", "C:\\output\\patat.txt", "C:\\users\zuttorei\\PATATATATTATACAT.txt");
     }
 
 

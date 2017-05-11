@@ -1,5 +1,6 @@
 ﻿using IMP_Data.Models;
 using IMP_Data.Repositories;
+using IMP_Lib.Enums;
 using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,33 @@ namespace IMP_Service.Hubs
 {
     public class ClientControlHub : IMPHub
     {
-        static ClientControlHub()
+
+        public async Task UploadFile(string ClientID, string Source, string Destination)
         {
-            
+            FileTransfer fileTransfer = new FileTransfer
+            {
+                ConnectionID = Context.ConnectionId,
+                ClientID = ClientID,
+                Source = Source,
+                Destination = Destination,
+                TransferType = FileTransferType.UPLOAD,
+            };
+
+            await WCFServer.Connections[ClientID].Upload(fileTransfer);
         }
 
-
-        public async Task<string> UploadFile(string ClientID, string filePath)
+        public async Task DownloadFile(string ClientID, string Source, string Destination)
         {
-            filePath = @"C:\IMP\Test.txt";
-            return await WCFServer.Connections[ClientID].Upload(filePath, Context.ConnectionId, ClientID);
+            FileTransfer fileTransfer = new FileTransfer
+            {
+                ConnectionID = Context.ConnectionId,
+                ClientID = ClientID,
+                Source = Source,
+                Destination = Destination,
+                TransferType = FileTransferType.UPLOAD,
+            };
+
+            await WCFServer.Connections[ClientID].Download(fileTransfer);
         }
 
     }

@@ -58,25 +58,47 @@ namespace IMP_Client
             }
         }
 
-        public async Task<string> Upload(string filePath, string ConnectionID, string ClientID)
+        public async Task Download(FileTransfer fileTransfer)
         {
             IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
 
-            FileTransfer fileTransferInfo = new FileTransfer
-            {
-                FilePath = filePath,
-                ConnectionID = ConnectionID,
-                ClientID = ClientID
-            };
+            var data = await fileChannel.Download(fileTransfer);
 
-            using (Stream sourceStream = File.OpenRead(filePath)) 
+            using (Stream input = data.GetFileStream())
             {
-                fileTransferInfo.Data = sourceStream;
-                fileTransferInfo.FileSize = sourceStream.Length;
-                await fileChannel.Upload(fileTransferInfo);
+                using (Stream output = File.Create(fileTransfer.Destination))
+                {
+                    byte[] buffer = new byte[4 * 1024];
+                    int length;
+
+                    double progressCheck = 0;
+
+                    while ((length = await input.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await output.WriteAsync(buffer, 0, length);
+                        fileTransfer.Progress = ((double)output.Position / (double)input.Length) * (double)100;
+
+                        if (fileTransfer.Progress > progressCheck)
+                        {
+                            Task.Run(() => fileChannel.ReportFileDownloadStatus(fileTransfer.GetStatus()));
+                            progressCheck += fileTransfer.ProgressPercentReport; //Report progress every 5%
+                        }
+                    }
+                }
             }
 
-            return "Ok";
+            fileChannel.ReportFileDownloadCompleted(fileTransfer.GetStatus());
+        }
+
+        public async Task Upload(FileTransfer fileTransfer)
+        {
+            IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
+
+            using (Stream sourceStream = File.OpenRead(fileTransfer.Source))
+            {
+                fileTransfer.SetFileStream(sourceStream);
+                await fileChannel.Upload(fileTransfer);
+            }
         }
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="Contracts\IFileTransferContract.cs" />
     <Compile Include="Contracts\IServerContract.cs" />
     <Compile Include="Enums\ConnectResult.cs" />
+    <Compile Include="Enums\FileTransferType.cs" />
     <Compile Include="Enums\InputDeviceType.cs" />
     <Compile Include="Enums\MonitorTypes.cs" />
     <Compile Include="Enums\RegisterResult.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Models\AntiVirus.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\FileTransfer.cs" />
+    <Compile Include="Models\FileTransferStatus.cs" />
     <Compile Include="Models\InputDevice.cs" />
     <Compile Include="Models\Monitor.cs" />
     <Compile Include="Models\PersonalInformation.cs" />

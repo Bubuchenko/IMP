@@ -1,6 +1,7 @@
 ﻿using IMP_Lib.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -15,6 +16,11 @@ namespace IMP_Lib
     {
         [OperationContract]
         Task Upload(FileTransfer file);
-        void Download();
+        [OperationContract]
+        Task<FileTransfer> Download(FileTransfer fileTransfer);
+        [OperationContract]
+        void ReportFileDownloadStatus(FileTransferStatus fileTransfer);
+        [OperationContract]
+        void ReportFileDownloadCompleted(FileTransferStatus fileTransferStatus);
     }
 }

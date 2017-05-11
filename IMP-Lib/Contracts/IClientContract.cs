@@ -14,6 +14,8 @@ namespace IMP_Lib.Contracts
         [OperationContract]
         Task<string> CMDCommand(string command);
         [OperationContract]
-        Task<string> Upload(string filePath, string ConnectionID, string ClientID);
+        Task Upload(FileTransfer fileTransfer);
+        [OperationContract]
+        Task Download(FileTransfer fileTransfer);
     }
 }

@@ -1,7 +1,8 @@
 ﻿    $.connection.hub.url = "http://94.209.146.117:99/signalr";
     $.connection.hub.logging = true;
 
-    var test;
+    var uploadFile;
+    var downloadFile;
 
     var hub = $.connection.clientControlHub;
 
@@ -32,7 +33,11 @@
     $.connection.hub.start().done(function () {
         //SEND
         //hub.server.send();
-         test = function () {
-             hub.server.uploadFile("BUBUCHENKO-S-1-5-21-3710005488-3752961230-307625830", "abc");
+        uploadFile = function (clientID, source, destination) {
+            hub.server.uploadFile(clientID, source, destination);
+        }
+
+        downloadFile = function (clientID, source, destination) {
+            hub.server.downloadFile(clientID, source, destination);
         }
     });

@@ -48,5 +48,12 @@ namespace IMP_Web.Controllers
             Client client = await ClientRepository.GetClient(id);
             return View(client);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> FileBrowser(string id)
+        {
+            Client client = await ClientRepository.GetClient(id);
+            return View(client);
+        }
     }
 }

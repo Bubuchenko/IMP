@@ -17,38 +17,60 @@ namespace IMP_Service
 {
     public class FileTransferService : IFileTransferContract
     {
-        public void Download()
+        public delegate void FileProgressUpdate(FileTransferStatus fileTransferStatus);
+        public static event FileProgressUpdate OnFileProgressUpdate;
+
+        public delegate void FileTransferStarted(FileTransferStatus fileTransferStatus);
+        public static event FileTransferStarted OnFileTransferStarted;
+
+        public delegate void FileTransferCompleted(FileTransferStatus fileTransferStatus);
+        public static event FileTransferCompleted OnFileTransferCompleted;
+
+        public Task<FileTransfer> Download(FileTransfer fileTransfer)
+
         {
-            throw new NotImplementedException();
+            OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
+            using (Stream sourceStream = File.OpenRead(fileTransfer.Source))
+            {
+                fileTransfer.SetFileStream(sourceStream);
+                return Task.FromResult(fileTransfer);
+            }
         }
 
-        public async Task Upload(FileTransfer file)
+        public void ReportFileDownloadStatus(FileTransferStatus fileTransferStatus)
         {
-            Client client = await ClientRepository.GetClient(file.ClientID);
+            OnFileProgressUpdate.Invoke(fileTransferStatus);
+        }
 
-            GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>().Clients.Client(file.ConnectionID).newFileUpload(string.Format("{0} has started uploading {1}", client.Username, file.FileName));
+        public void ReportFileDownloadCompleted(FileTransferStatus fileTransferStatus)
+        {
+            OnFileTransferCompleted.Invoke(fileTransferStatus);
+        }
 
-            using (Stream output = File.Create(file.FilePath))
+        public async Task Upload(FileTransfer fileTransfer)
+        {
+            OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
+
+            using (Stream output = File.Create(fileTransfer.Destination))
             {
                 byte[] buffer = new byte[4 * 1024];
                 int length;
+                double progressCheck = 0;
 
-                double progress = 0;
-                double progressCheck = 1;
-
-                while ((length = await file.Data.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                while ((length = await fileTransfer.GetFileStream().ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     await output.WriteAsync(buffer, 0, length);
-                    progress = ((double)output.Position / (double)file.FileSize) * (double)100;
+                    fileTransfer.Progress = ((double)output.Position / (double)fileTransfer.FileSize) * (double)100;
 
-                    if(progress > progressCheck)
+                    if (fileTransfer.Progress > progressCheck)
                     {
-                        GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>().Clients.Client(file.ConnectionID).fileProgessUpdate(file.FileName, progress);
-                        progressCheck++;
+                        OnFileProgressUpdate.Invoke(fileTransfer.GetStatus());
+                        progressCheck += fileTransfer.ProgressPercentReport;
                     }
-
                 }
             }
+
+            OnFileTransferCompleted.Invoke(fileTransfer.GetStatus());
         }
     }
 }

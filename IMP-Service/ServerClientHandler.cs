@@ -16,17 +16,17 @@ namespace IMP_Service
 {
     public static class ServerClientHandler
     {
-        public static async Task AcceptClientConnection(Client client, OperationContext connectionContext)
+        public static async Task AcceptClientConnection(string ClientId, OperationContext connectionContext)
         {
             //Create session
             Session session = new Session
             {
                 SessionID = connectionContext.SessionId,
                 SessionStart = DateTime.Now,
-                ClientID = client.ClientId
+                ClientID = ClientId
             };
 
-            WCFServer.Connections.Add(client.ClientId, connectionContext.GetCallbackChannel<IClientContract>());
+            WCFServer.Connections.Add(ClientId, connectionContext.GetCallbackChannel<IClientContract>());
             await SessionRepository.CreateSession(session);
         }
 
