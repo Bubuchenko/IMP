@@ -8,15 +8,94 @@
 <html>
 <head>
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/FileBrowser.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+    <script src="~/Scripts/knockout.punches.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
-    <link href="~/Content/fancytree/ui.fancytree.min.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery.fancytree-all.min.js"></script>
+    <link href="~/Content/IMP.css" rel="stylesheet" />
+    <link href="~/Content/FileBrowser.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
     <meta name="viewport" content="width=device-width" />
     <title>FileBrowser</title>
 </head>
 <body>
+    <div class="container-fluid">
+        <div id="header" class="row dropshadow">
+            <div class="col-auto">
+                <span>C: > Users > Bubuchenko > Desktop > Secret files > Part one </span>
+            </div>
+        </div>
+        <div id="content">
+            <table class="table">
+                <thead>
+                    <tr class="dropshadow">
+                        <th></th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Last modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
+                        <td>Music</td>
+                        <td>Empty</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
+                        <td>Videos</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
+                        <td>Nipples</td>
+                        <td>Empty</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><i class="fa fa-file" aria-hidden="true"></i></i></th>
+                        <td>Patat.txt</td>
+                        <td>359 KB</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><i class="fa fa-file" aria-hidden="true"></i></i></th>
+                        <td>Roaster.mp4</td>
+                        <td>4.69 MB</td>
+                        <td></td>
+                    </tr>
 
 
+                </tbody>
+            </table>
+        </div>
+        <div id="filetransfers">
+
+        </div>
+    </div>
 </body>
 </html>
+<script>
+
+    var viewModel = {
+        Client: ko.observable(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model)))),
+        Directory: ko.observable()
+    };
+
+
+
+    ko.punches.enableAll();
+    ko.applyBindings(viewModel);
+</script>
+
