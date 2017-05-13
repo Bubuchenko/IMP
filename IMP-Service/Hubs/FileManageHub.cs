@@ -20,6 +20,7 @@ namespace IMP_Service.Hubs
             List<WindowsItem> content = await WCFServer.Connections[ClientID].GetDirectoryContents(Path);
             return content.Serialize<List<WindowsItem>>();
         }
+
         public async Task UploadFile(string ClientID, string Source)
         {
             FileTransfer fileTransfer = new FileTransfer
@@ -46,6 +47,16 @@ namespace IMP_Service.Hubs
             await WCFServer.Connections[ClientID].Download(fileTransfer);
         }
 
+        public async Task<string> CreateFile(string ClientID, string Path, string Name)
+        {
+            return await WCFServer.Connections[ClientID].CreateFile(Path, Name);
+        }
+
+        public async Task<string> CreateFolder(string ClientID, string Path, string Name)
+        {
+            return await WCFServer.Connections[ClientID].CreateFolder(Path, Name);
+        }
+
         public async Task<string> Delete(string ClientID, string Path)
         {
             return await WCFServer.Connections[ClientID].Delete(Path);
@@ -54,6 +65,16 @@ namespace IMP_Service.Hubs
         public async Task<string> Open(string ClientID, string Path)
         {
             return await WCFServer.Connections[ClientID].Open(Path);
+        }
+
+        public async Task<string> Rename(string ClientID, string Path, string NewName)
+        {
+            return await WCFServer.Connections[ClientID].Rename(Path, NewName);
+        }
+
+        public async Task<string> Move(string ClientID, string Path, string NewPath)
+        {
+            return await WCFServer.Connections[ClientID].Move(Path, NewPath);
         }
     }
 }

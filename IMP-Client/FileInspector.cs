@@ -14,36 +14,72 @@ namespace IMP_Client
     {
         public static List<WindowsItem> GetDirectoryStructure(string path)
         {
-            path = path + "\\";
-
-            List<WindowsItem> Items = new List<WindowsItem>();
-
-            string[] folders = Directory.GetDirectories(path);
-            for (int i = 0; i < folders.Length; i++)
+            try
             {
-                Items.Add(new WindowsItem
-                {
-                    Type = WindowsItemType.Folder,
-                    LastModified = File.GetLastWriteTimeUtc(folders[i]),
-                    Path = folders[i],
-                    Size = IsDirectoryEmpty(folders[i]) ? 0 : 1
-                });
-            }
+                path = path + "\\";
 
-            string[] files = Directory.GetFiles(path);
-            for (int i = 0; i < files.Length; i++)
+                List<WindowsItem> Items = new List<WindowsItem>();
+
+                string[] folders = Directory.GetDirectories(path);
+                for (int i = 0; i < folders.Length; i++)
+                {
+                    Items.Add(new WindowsItem
+                    {
+                        Type = WindowsItemType.Folder,
+                        LastModified = File.GetLastWriteTimeUtc(folders[i]),
+                        Path = folders[i],
+                        Size = IsDirectoryEmpty(folders[i]) ? 0 : 1
+                    });
+                }
+
+                string[] files = Directory.GetFiles(path);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    Items.Add(new WindowsItem
+                    {
+                        Type = WindowsItemType.File,
+                        LastModified = File.GetLastWriteTimeUtc(files[i]),
+                        Path = files[i],
+                        Size = new FileInfo(files[i]).Length
+                    });
+                }
+
+                return Items;
+            }
+            catch
             {
-                Items.Add(new WindowsItem
-                {
-                    Type = WindowsItemType.File,
-                    LastModified = File.GetLastWriteTimeUtc(files[i]),
-                    Path = files[i],
-                    Size = new FileInfo(files[i]).Length
-                });
+                return null;
             }
-
-            return Items;
         }
+
+        public static string CreateFile(string path, string name)
+        {
+            try
+            {
+                using (File.Create(Path.Combine(path, name)))
+                {
+                    return "";
+                }
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string CreateFolder(string path, string name)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(path, name));
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
 
         public static string Delete(string path)
         {
@@ -53,6 +89,24 @@ namespace IMP_Client
                     Directory.Delete(path, true);
                 else
                     File.Delete(path);
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string Move(string path, string newPath)
+        {
+            try
+            {
+                if (IsDirectory(path))
+                    Directory.Move(path, newPath);
+                else
+                    File.Move(path, Path.Combine(Path.GetDirectoryName(newPath), Path.GetFileName(path)));
+                
 
                 return "";
             }
@@ -80,9 +134,9 @@ namespace IMP_Client
             try
             {
                 if (IsDirectory(path))
-                    File.Move(path, newName);
+                    Directory.Move(path, Path.Combine(Path.GetDirectoryName(path), newName));
                 else
-                    Directory.Move(path, newName);
+                    File.Move(path, Path.Combine(Path.GetDirectoryName(path), newName));
 
                 return "";
             }

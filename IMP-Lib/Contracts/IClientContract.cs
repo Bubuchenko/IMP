@@ -27,6 +27,11 @@ namespace IMP_Lib.Contracts
         Task<string> Delete(string path);
         [OperationContract]
         Task<string> Rename(string path, string newName);
-
+        [OperationContract]
+        Task<string> Move(string path, string newPath);
+        [OperationContract]
+        Task<string> CreateFile(string path, string name);
+        [OperationContract]
+        Task<string> CreateFolder(string path, string name);
     }
 }

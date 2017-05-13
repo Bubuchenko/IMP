@@ -26,6 +26,9 @@ namespace IMP_Service
                 ClientID = ClientId
             };
 
+            if (WCFServer.Connections.ContainsKey(ClientId))
+                WCFServer.Connections.Remove(ClientId);
+
             WCFServer.Connections.Add(ClientId, connectionContext.GetCallbackChannel<IClientContract>());
             await SessionRepository.CreateSession(session);
         }
@@ -34,7 +37,9 @@ namespace IMP_Service
         {
             await SessionRepository.EndSession(SessionID);
             Client Client = await SessionRepository.GetClientBySessionID(SessionID);
-            WCFServer.Connections.Remove(Client.ClientId);
+
+            if(WCFServer.Connections.ContainsKey(Client.ClientId))
+                WCFServer.Connections.Remove(Client.ClientId);
         }
 
         public static string GenerateClientID(SystemInfo systemInfo)

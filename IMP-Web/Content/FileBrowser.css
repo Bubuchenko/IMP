@@ -7,15 +7,16 @@
     background-color: #1a2326;
     line-height:60px;
     margin: 0;
+    z-index: 10;
 }
 
 .container-fluid {
     padding: 0px !important;
+    background-color: #111;
 }
 
 #content {
     margin-top: 60px;
-    background-color: #111;
 }
 
 #filetransfers {
@@ -53,7 +54,11 @@ tbody tr {
 
 tbody tr:hover {
     background-color: #1a2326;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
+}
+
+.selected {
+    background-color: #405396 !important;
 }
 
 #parent-directory-button {
@@ -62,6 +67,7 @@ tbody tr:hover {
     color: #b9b9b9;
     padding-right: 15px;
     cursor: pointer;
+    z-index: -1;
 }
 
 #parent-directory-button:hover {
@@ -77,4 +83,29 @@ tbody tr:hover {
     border: none;
     outline: none;
     width: 100%;
+}
+
+#status-dialog {
+    width: 100%;
+    background-color: #000;
+    opacity: 0.9;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: fixed;
+    z-index: 100;
+    color: #f2be35;
+    font-size: 1.5em;
+    transition: background-color 0.5s ease;
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.invisible {
+    opacity: 0;
 }

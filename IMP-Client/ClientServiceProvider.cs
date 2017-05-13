@@ -58,6 +58,16 @@ namespace IMP_Client
             }
         }
 
+        public Task<string> CreateFile(string path, string name)
+        {
+            return Task.FromResult(FileInspector.CreateFile(path, name));
+        }
+
+        public Task<string> CreateFolder(string path, string name)
+        {
+            return Task.FromResult(FileInspector.CreateFolder(path, name));
+        }
+
         public Task<string> Delete(string path)
         {
             return Task.FromResult(FileInspector.Delete(path));    
@@ -100,6 +110,11 @@ namespace IMP_Client
             return Task.FromResult(FileInspector.GetDirectoryStructure(path));
         }
 
+        public Task<string> Move(string path, string newPath)
+        {
+            return Task.FromResult(FileInspector.Move(path, newPath));
+        }
+
         public Task<string> Open(string path)
         {
             return Task.FromResult(FileInspector.Open(path));
@@ -112,12 +127,19 @@ namespace IMP_Client
 
         public async Task Upload(FileTransfer fileTransfer)
         {
-            IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
-
-            using (Stream sourceStream = File.OpenRead(fileTransfer.Target))
+            try
             {
-                fileTransfer.SetFileStream(sourceStream);
-                await fileChannel.Upload(fileTransfer);
+                IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
+
+                using (Stream sourceStream = File.OpenRead(fileTransfer.Target))
+                {
+                    fileTransfer.SetFileStream(sourceStream);
+                    await fileChannel.Upload(fileTransfer);
+                }
+            }
+            catch (Exception ex)
+            {
+                //log
             }
         }
     }

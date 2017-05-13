@@ -15,18 +15,19 @@
 	<script src="~/Scripts/bootstrap.js"></script>
 	<script src="~/Scripts/FileBrowser.js"></script>
 
-
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 	<script src="~/Scripts/knockout.punches.min.js"></script>
 	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+	<script src="~/Scripts/jquery.contextMenu.min.js"></script>
 
 	<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
 	<script src="http://94.209.146.117:99/signalr/hubs"></script>
 	<script src="~/Scripts/SignalRHubs/FileManageHub.js"></script>
+    <script src="~/Scripts/sweetalert2.min.js"></script>
 
-    <link href="~/Content/jquery.contextMenu.min.css" rel="stylesheet" />
+
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+	<link href="~/Content/jquery.contextMenu.min.css" rel="stylesheet" />
 	<link href="~/Content/IMP.css" rel="stylesheet" />
 	<link href="~/Content/FileBrowser.css" rel="stylesheet" />
 	<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -34,10 +35,15 @@
 	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
 	<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
+
+
 	<meta name="viewport" content="width=device-width" />
-	<title>FileBrowser</title>
+	<title>FileBrowser - @Model.Client.SystemInfo.MachineName</title>
 </head>
 <body>
+    <div id="status-dialog" class="invisible">
+            {{ viewModel.Client().Username }} is offline
+    </div>
 	<div class="container-fluid">
 		<div id="header" class="row dropshadow">
 			<div class="col-sm-12">
@@ -54,16 +60,16 @@
 						<th>Last modified</th>
 					</tr>
 				</thead>
-                <tbody data-bind="foreach: DirectoryItems"> 
-                    <tr class="windows-item" data-bind="attr: { id: Path }, event: { dblclick: browseDirectory.bind($data, Path, Type) }">
-                        <th>
-                            <i aria-hidden="true" data-bind="attr: { class: getItemIcon(Type) }"></i>
-                        </th>
-                        <td data-bind="text: Name"></td>
-                        <td data-bind="text: getFriendlySize(Type, Size)"></td>
-                        <td data-bind="text: getFriendlyDate(LastModified)"></td>
-                    </tr>
-                </tbody>
+				<tbody data-bind="foreach: DirectoryItems"> 
+					<tr class="windows-item" data-bind="attr: { id: Path }, event: { dblclick: browseDirectory.bind($data, Path, Type) }">
+						<th>
+							<i aria-hidden="true" data-bind="attr: { class: getItemIcon(Type) }"></i>
+						</th>
+						<td data-bind="text: Name"></td>
+						<td data-bind="text: getFriendlySize(Type, Size)"></td>
+						<td data-bind="text: getFriendlyDate(LastModified)"></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 
@@ -77,136 +83,283 @@
 
 <script>
 	var viewModel = {
-        Client: ko.observable(@Html.Raw((IMP_Data.JSONSerializeExtensionMethods.Serialize<IMP_Lib.Models.Client>(Model.Client)))),
-        DirectoryItems: ko.observable(),
-        CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')")
-    };
+		Client: ko.observable(@Html.Raw((IMP_Data.JSONSerializeExtensionMethods.Serialize<IMP_Lib.Models.Client>(Model.Client)))),
+		DirectoryItems: ko.observable(),
+		CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')")
+	};
 
-    viewModel.CurrentDirectory.subscribe(function (newValue) {
-        if (newValue.length == 2)
-            viewModel.CurrentDirectory(newValue + "\\");
-    });
+	viewModel.CurrentDirectory.subscribe(function (newValue) {
+		if (newValue.length == 2)
+			viewModel.CurrentDirectory(newValue + "\\");
+	});
 
-    var getItemIcon = function (itemType) {
-        switch (itemType) 
-        {
-            case "File":
-                return 'fa fa-file';
-            case "Folder":
-                return 'fa fa-folder';
-        }
-    }
 
-    var test = function (hi) {
-        alert(hi);
-    }
+	var getItemIcon = function (itemType) {
+		switch (itemType) 
+		{
+			case "File":
+				return 'fa fa-file';
+			case "Folder":
+				return 'fa fa-folder';
+		}
+	}
 
-    var getFriendlySize = function (type, bytes) {
-        if (type == "File")
-            return Math.round(bytes / 1024).toLocaleString() + " KB";
-        else
-            if (bytes == 1)
-                return "";
-            else
-                return "(empty)";
-    }
+	var getFriendlySize = function (type, bytes) {
+		if (type == "File")
+			return Math.round(bytes / 1024).toLocaleString() + " KB";
+		else
+			if (bytes == 1)
+				return "";
+			else
+				return "(empty)";
+	}
 
-    var getFriendlyDate = function (date) {
-        return new Date(date).toLocaleString();
-    }
+	var getFriendlyDate = function (date) {
+		return new Date(date).toLocaleString();
+	}
 
-    var getFileName = function (path) {
-        return path.split('\\').pop().split('/').pop();
+	var getFileName = function (path) {
+		return path.split('\\').pop().split('/').pop();
     }
 
     var browseDirectory = function (path, type) {
         console.log(path);
-        if (type == "Folder") {
+        if (type == "Folder" || type == null) {
             $.when(getDirectoryContent(viewModel.Client().ClientId, path)).done(function (result) {
-                viewModel.DirectoryItems(JSON.parse(result));
-                viewModel.CurrentDirectory(path);
+                if (result.length > 0) {
+                    viewModel.DirectoryItems(JSON.parse(result));
+                    viewModel.CurrentDirectory(path);
+                } else {
+                    swal("Access to directory denied");
+                }
             });
         }
     }
 
-    
-    $("#parent-directory-button").click(function () {
-        toParentDirectory();
+	
+	$("#parent-directory-button").click(function () {
+		toParentDirectory();
+	});
+
+    $(document).ready(function () {
+
+        var isDragging = false;
+
+        $("tbody").on("mousedown", ".windows-item", function (event) {
+            if (event.button == 2)
+                $(event.target).parent().addClass("selected");
+            else
+                $(event.target).parent().toggleClass("selected");
+        });
+
+
+        $("tbody").on("mousedown", ".windows-item", function (event) {
+            isDragging = true;
+        });
+
+        $("tbody").on("mouseup", ".windows-item", function (event) {
+            isDragging = false;
+        });
+
+        $("tbody").on("mouseenter", ".windows-item", function (event) {
+            if (isDragging)
+                $(event.target).parent().toggleClass("selected");
+        });
+
+        //Browse to specified path when ENTER is pressed
+        $("#currentDirectoryViewer").keypress(function (event) {
+            if (event.keyCode == 13) {
+                var enteredPath = $(event.target).val();
+                browseDirectory(enteredPath);
+            }
+        });
+
+        //Select all items with CTRL - A
+        $(document).keydown(function (e) {
+            if (e.keyCode == 65 && e.ctrlKey) {
+                e.preventDefault();
+                $(".windows-item").toggleClass("selected");
+            }
+            if (e.keyCode == 27)
+                $(".windows-item").removeClass("selected");
+        });
     });
 
 
-    var toParentDirectory = function () {
-        //Prevent from browsing "lower than" the root directory
-        if (viewModel.CurrentDirectory().length <= 3)
-            return;
-        var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
-        browseDirectory(parentDirectory, "Folder");
+    var refreshDirectory = function() {
+        browseDirectory(viewModel.CurrentDirectory());
     }
 
-    ko.punches.enableAll();
-    ko.applyBindings(viewModel);
+    var disablePage = function () {
+        $(".container-fluid").addClass("disabled");
+        $("body").css("overflow", "hidden");
+        $("#status-dialog").removeClass("invisible");
+    }
 
-    $.contextMenu({
-        selector: '.windows-item',
-        items: {
-            Open: {
-                name: "Open",
-                icon: "fa-play-circle",
+    var enablePage = function () {
+        $(".container-fluid").removeClass("disabled");
+        $("body").css("overflow", "visible");
+        $("#status-dialog").addClass("invisible");
+    }
+
+	var toParentDirectory = function () {
+		//Prevent from browsing "lower than" the root directory
+		if (viewModel.CurrentDirectory().length <= 3)
+			return;
+		var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
+		browseDirectory(parentDirectory, "Folder");
+	}
+
+	ko.punches.enableAll();
+	ko.applyBindings(viewModel);
+
+	$.contextMenu({
+		selector: '.windows-item',
+		items: {
+			Open: {
+				name: "Open",
+				icon: "fa-play-circle",
                 callback: function (key, opt) {
-                    var path = opt.$trigger[0].id;
-                    $.when(openItem(viewModel.Client().ClientId, path)).done(function (result) {
-                        if (result != "")
-                            alert(result);
 
+                    $(".selected").each(function (i, obj) {
+                        $.when(openItem(viewModel.Client().ClientId, obj.id)).done(function (result) {
+                            if (result != "")
+                                swal(result);
+
+                        });
                     });
-                }
-            },
-            Rename: {
-                name: "Rename",
-                icon: "fa-pencil",
-                callback: function (key, opt) {
-                    console.log(opt.$trigger[0].id);
-                }
-            },
-            Move: {
-                name: "Move",
-                icon: "fa-suitcase",
-                callback: function (key, opt) {
-                    console.log(opt.$trigger[0].id);
-                }
-            },
-            Delete: {
-                name: "Delete",
-                icon: "fa-trash-o",
-                callback: function (key, opt) {
+				}
+			},
+			Rename: {
+				name: "Rename",
+				icon: "fa-pencil",
+				callback: function (key, opt) {
                     var path = opt.$trigger[0].id;
-                    $.when(deleteItem(viewModel.Client().ClientId, path)).done(function (result) {
-                        if (result == "")
-                            opt.$trigger[0].remove();
-                        else
-                            alert(result);
-                            
-                    });
-                }
-            },
-            Upload: {
-                name: "Upload to server",
-                icon: "fa-upload",
-                callback: function (key, opt) {
-                    var path = opt.$trigger[0].id;
-                    uploadFile(viewModel.Client().ClientId, path, "C:\\output\\" + getFileName(path));
-                }
-            },
-            Download: {
-                name: "Download to client",
-                icon: "fa-download",
-                callback: function (key, opt) {
+                    var fileName = getFileName(path);
+                    swal({
+                        title: 'Rename folder',
+                        input: 'text',
+                        inputValue: fileName,
+                        showCancelButton: true
+                    }).then(function (newName) {
+                        $.when(renameItem(viewModel.Client().ClientId, path, newName)).done(function (result) {
+                            if (result == "")
+                                refreshDirectory();
+                            else
+                                swal(result);
 
+                        });
+                    })
+                        
+				}
+			},
+			Move: {
+				name: "Move",
+				icon: "fa-suitcase",
+                callback: function (key, opt) {
+                    var path = opt.$trigger[0].id;
+                    swal({
+                        title: 'Move item',
+                        text: 'Enter a destination to move the item to',
+                        input: 'text',
+                        inputValue: path,
+                        showCancelButton: true
+                    }).then(function (newPath) {
+                        $.when(moveItem(viewModel.Client().ClientId, path, newPath)).done(function (result) {
+                            if (result == "")
+                                refreshDirectory();
+                            else
+                                swal(result);
+                        });
+                    })
+                }
+			},
+			Delete: {
+				name: "Delete",
+				icon: "fa-trash-o",
+                callback: function (key, opt) {
+                    swal({
+                        title: 'Confirmation',
+                        text: 'Are you sure you want to delete the selected items?',
+                        type: 'warning',
+                        showCancelButton: true
+
+                    }).then(function () {
+                        $(".selected").each(function (i, obj) {
+                            $.when(deleteItem(viewModel.Client().ClientId, obj.id)).done(function (result) {
+                                if (result == "")
+                                    refreshDirectory();
+                                else
+                                    swal(result);
+
+                            });
+                        });
+                    });
+				}
+			},
+			Upload: {
+				name: "Upload to server",
+				icon: "fa-upload",
+				callback: function (key, opt) {
+                    $(".selected").each(function (i, obj) {
+                        uploadFile(viewModel.Client().ClientId, obj.id);
+                    });
+				}
+			},
+			Download: {
+				name: "Download to client",
+				icon: "fa-download",
+				callback: function (key, opt) {
+                    
+				}
+            },
+            CreateFile: {        
+                name: "Create file",
+                icon: "fa-file-o",
+                callback: function (key, opt) {
+                    swal({
+                        title: 'Create new file',
+                        text: 'Enter a file name',
+                        input: 'text',
+                        showCancelButton: true
+                    }).then(function (fileName) {
+                        $.when(createFile(viewModel.Client().ClientId, viewModel.CurrentDirectory(), fileName)).done(function (result) {
+                            if (result == "")
+                                refreshDirectory();
+                            else
+                                swal(result);
+                        });
+                    })
+                }
+            },
+            CreateFolder: {
+                name: "Create folder",
+                icon: "fa-folder-o",
+                callback: function (key, opt) {
+                    swal({
+                        title: 'Create new folder',
+                        text: 'Enter a folder name',
+                        input: 'text',
+                        showCancelButton: true
+                    }).then(function (folderName) {
+                        $.when(createFolder(viewModel.Client().ClientId, viewModel.CurrentDirectory(), folderName)).done(function (result) {
+                            if (result == "")
+                                refreshDirectory();
+                            else
+                                swal(result);
+                        });
+                    })
+                }
+            },
+            Reload: {
+                name: "Refresh current directory",
+                icon: "fa-refresh",
+                callback: function (key, opt) {
+                    refreshDirectory();
                 }
             }
-        }
+		}
     });
-    
+
 
 </script>
-

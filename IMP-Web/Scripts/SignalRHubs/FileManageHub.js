@@ -4,21 +4,25 @@ $.connection.hub.logging = true;
 var uploadFile;
 var downloadFile;
 var openItem;
+var renameItem;
+var moveItem;
 var deleteItem;
 var getDirectoryContent;
+var createFolder;
+var createFile;
 
 var hub = $.connection.fileManageHub;
 
 //RECEIVE
 hub.client.clientConnected = function (client) {
     if (client.ClientId == viewModel.Client().ClientId) {
-        
+        enablePage();
     }
 };
 
 hub.client.clientDisconnected = function (client) {
     if (client.ClientId == viewModel.Client().ClientId) {
-        alert("d/c'd");
+        disablePage();
     }
 }
 
@@ -69,6 +73,44 @@ $.connection.hub.start().done(function () {
         return promise;
     };
 
+    renameItem = function (clientID, path, newName) {
+        var promise = new Promise(function (resolve, reject) {
+            var result = hub.server.rename(clientID, path, newName);
+            resolve(result);
+        });
 
+        return promise;
+    };
+
+
+    moveItem = function (clientID, path, newPath) {
+        var promise = new Promise(function (resolve, reject) {
+            var result = hub.server.move(clientID, path, newPath);
+            resolve(result);
+        });
+
+        return promise;
+    };
+
+    createFolder = function (clientID, path, name) {
+        var promise = new Promise(function (resolve, reject) {
+            var result = hub.server.createFolder(clientID, path, name);
+            resolve(result);
+        });
+
+        return promise;
+    };
+
+    createFile = function (clientID, path, name) {
+        var promise = new Promise(function (resolve, reject) {
+            var result = hub.server.createFile(clientID, path, name);
+            resolve(result);
+        });
+
+        return promise;
+    };
+
+
+    //Load the directly once we're connected
     browseDirectory(viewModel.CurrentDirectory(), "Folder");
 });

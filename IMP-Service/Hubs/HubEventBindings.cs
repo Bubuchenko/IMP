@@ -58,7 +58,8 @@ namespace IMP_Service.Hubs
                 GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
                 GlobalHost.ConnectionManager.GetHubContext<DashboardHub>(),
                 GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<CmdHub>()
+                GlobalHost.ConnectionManager.GetHubContext<CmdHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<FileManageHub>()
             };
 
             Hubs.ForEach(f => f.Clients.All.clientConnected(client));
@@ -71,7 +72,8 @@ namespace IMP_Service.Hubs
                 GlobalHost.ConnectionManager.GetHubContext<IMPHub>(),
                 GlobalHost.ConnectionManager.GetHubContext<DashboardHub>(),
                 GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
-                GlobalHost.ConnectionManager.GetHubContext<CmdHub>()
+                GlobalHost.ConnectionManager.GetHubContext<CmdHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<FileManageHub>()
             };
 
             Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
