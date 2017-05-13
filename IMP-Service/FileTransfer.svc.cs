@@ -12,6 +12,7 @@ using IMP_Lib;
 using IMP_Data.Repositories;
 using Microsoft.AspNet.SignalR;
 using IMP_Service.Hubs;
+using System.Configuration;
 
 namespace IMP_Service
 {
@@ -27,10 +28,11 @@ namespace IMP_Service
         public static event FileTransferCompleted OnFileTransferCompleted;
 
         public Task<FileTransfer> Download(FileTransfer fileTransfer)
-
         {
+            string fileSource = Path.Combine(ConfigurationManager.AppSettings["FileDirectory"], Path.GetFileName(fileTransfer.Target));
+
             OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
-            using (Stream sourceStream = File.OpenRead(fileTransfer.Source))
+            using (Stream sourceStream = File.OpenRead(fileSource))
             {
                 fileTransfer.SetFileStream(sourceStream);
                 return Task.FromResult(fileTransfer);
@@ -49,9 +51,10 @@ namespace IMP_Service
 
         public async Task Upload(FileTransfer fileTransfer)
         {
-            OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
+            string fileDestination = Path.Combine(ConfigurationManager.AppSettings["FileDirectory"], Path.GetFileName(fileTransfer.Target));
 
-            using (Stream output = File.Create(fileTransfer.Destination))
+            OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
+            using (Stream output = File.Create(fileDestination))
             {
                 byte[] buffer = new byte[4 * 1024];
                 int length;

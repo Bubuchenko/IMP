@@ -49,11 +49,14 @@ namespace IMP_Web.Controllers
             return View(client);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> FileBrowser(string id)
+        public async Task<ActionResult> FileBrowser(string clientID, string Drive)
         {
-            Client client = await ClientRepository.GetClient(id);
-            return View(client);
+            FileBrowserViewModel vm = new FileBrowserViewModel()
+            {
+                Client = await ClientRepository.GetClient(clientID),
+                Drive = Drive
+            };
+            return View(vm);
         }
     }
 }

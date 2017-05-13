@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IMP_Client
+namespace IMP_Lib.Enums
 {
-    public class FileIO
+    public enum WindowsItemType
     {
-        public static string GetDirectoryStructure(string path)
-        {
-
-        }
+        File,
+        Folder
     }
 }

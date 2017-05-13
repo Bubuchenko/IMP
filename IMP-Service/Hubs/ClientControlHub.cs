@@ -12,34 +12,5 @@ namespace IMP_Service.Hubs
 {
     public class ClientControlHub : IMPHub
     {
-
-        public async Task UploadFile(string ClientID, string Source, string Destination)
-        {
-            FileTransfer fileTransfer = new FileTransfer
-            {
-                ConnectionID = Context.ConnectionId,
-                ClientID = ClientID,
-                Source = Source,
-                Destination = Destination,
-                TransferType = FileTransferType.UPLOAD,
-            };
-
-            await WCFServer.Connections[ClientID].Upload(fileTransfer);
-        }
-
-        public async Task DownloadFile(string ClientID, string Source, string Destination)
-        {
-            FileTransfer fileTransfer = new FileTransfer
-            {
-                ConnectionID = Context.ConnectionId,
-                ClientID = ClientID,
-                Source = Source,
-                Destination = Destination,
-                TransferType = FileTransferType.UPLOAD,
-            };
-
-            await WCFServer.Connections[ClientID].Download(fileTransfer);
-        }
-
     }
 }

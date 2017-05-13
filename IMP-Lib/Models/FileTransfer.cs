@@ -25,7 +25,7 @@ namespace IMP_Lib.Models
         {
             get
             {
-                return Path.GetFileName(Source);
+                return Path.GetFileName(Target);
             }
             private set { }
         }
@@ -37,9 +37,7 @@ namespace IMP_Lib.Models
         [MessageHeader]
         public string ConnectionID { get; set; }
         [MessageHeader]
-        public string Source { get; set; }
-        [MessageHeader]
-        public string Destination { get; set; }
+        public string Target { get; set; }
         [MessageHeader]
         public long FileSize { get; private set; }
         [MessageHeader]

@@ -61,6 +61,7 @@
     <Compile Include="Enums\MonitorTypes.cs" />
     <Compile Include="Enums\RegisterResult.cs" />
     <Compile Include="Enums\StorageDeviceType.cs" />
+    <Compile Include="Enums\WindowsItemTypes.cs" />
     <Compile Include="Models\AntiVirus.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\FileTransfer.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Models\PersonalInformation.cs" />
     <Compile Include="Models\DiskDrive.cs" />
     <Compile Include="Models\SystemInfo.cs" />
+    <Compile Include="Models\WindowsItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

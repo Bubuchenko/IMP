@@ -58,6 +58,11 @@ namespace IMP_Client
             }
         }
 
+        public Task<string> Delete(string path)
+        {
+            return Task.FromResult(FileInspector.Delete(path));    
+        }
+
         public async Task Download(FileTransfer fileTransfer)
         {
             IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
@@ -66,7 +71,7 @@ namespace IMP_Client
 
             using (Stream input = data.GetFileStream())
             {
-                using (Stream output = File.Create(fileTransfer.Destination))
+                using (Stream output = File.Create(fileTransfer.Target))
                 {
                     byte[] buffer = new byte[4 * 1024];
                     int length;
@@ -81,7 +86,7 @@ namespace IMP_Client
                         if (fileTransfer.Progress > progressCheck)
                         {
                             Task.Run(() => fileChannel.ReportFileDownloadStatus(fileTransfer.GetStatus()));
-                            progressCheck += fileTransfer.ProgressPercentReport; //Report progress every 5%
+                            progressCheck += fileTransfer.ProgressPercentReport; //Report progress every n%
                         }
                     }
                 }
@@ -90,11 +95,26 @@ namespace IMP_Client
             fileChannel.ReportFileDownloadCompleted(fileTransfer.GetStatus());
         }
 
+        public Task<List<WindowsItem>> GetDirectoryContents(string path)
+        {
+            return Task.FromResult(FileInspector.GetDirectoryStructure(path));
+        }
+
+        public Task<string> Open(string path)
+        {
+            return Task.FromResult(FileInspector.Open(path));
+        }
+
+        public Task<string> Rename(string path, string newName)
+        {
+            return Task.FromResult(FileInspector.Rename(path, newName));
+        }
+
         public async Task Upload(FileTransfer fileTransfer)
         {
             IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
 
-            using (Stream sourceStream = File.OpenRead(fileTransfer.Source))
+            using (Stream sourceStream = File.OpenRead(fileTransfer.Target))
             {
                 fileTransfer.SetFileStream(sourceStream);
                 await fileChannel.Upload(fileTransfer);

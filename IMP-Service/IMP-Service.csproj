@@ -70,6 +70,7 @@
       <DependentUpon>FileTransfer.svc</DependentUpon>
     </Compile>
     <Compile Include="Hubs\CmdHub.cs" />
+    <Compile Include="Hubs\FileManageHub.cs" />
     <Compile Include="Hubs\HubEventBindings.cs" />
     <Compile Include="WCFServer.cs" />
     <Content Include="App_Code\Initializer.cs" />

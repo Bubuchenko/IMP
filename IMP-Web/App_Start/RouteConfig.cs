@@ -26,6 +26,11 @@ namespace IMP_Web
                 defaults: new { controller = "{controller}", action = "{action}" }
             );
 
+            routes.MapRoute(
+                name: "FileBrowser",
+                url: "{controller}/{action}/{clientID}/{Drive}",
+                defaults: new { controller = "Control", action = "FileBrowser" }
+            );
 
             routes.MapRoute(
                 name: "Default",

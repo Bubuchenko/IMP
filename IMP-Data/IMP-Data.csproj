@@ -44,6 +44,7 @@
     <Compile Include="Enums\AntivirusStateTypes.cs" />
     <Compile Include="Extensions\AntivirusExtensionMethods.cs" />
     <Compile Include="Extensions\ClientExtensionMethods.cs" />
+    <Compile Include="Extensions\JSONSerializeExtensionMethods.cs" />
     <Compile Include="Extensions\LinqExtensionMethods.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AntivirusState.cs" />

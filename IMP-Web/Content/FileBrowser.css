@@ -13,12 +13,6 @@
     padding: 0px !important;
 }
 
-#header > div > span {
-    margin: 0 0 0 10px;
-    line-height: 60px;
-    color: #f2be35;
-}
-
 #content {
     margin-top: 60px;
     background-color: #111;
@@ -32,7 +26,6 @@
     left: 0;
     background-color: #1a2326;
 }
-
 
 .fa-folder {
     color: #f2be35;
@@ -49,4 +42,39 @@ tr > th:nth-child(1) {
 thead tr th {
     border-left: 1px solid #1a2326;
     border-right: 1px solid #1a2326;
+}
+
+tbody tr {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    user-select: none;
+}
+
+tbody tr:hover {
+    background-color: #1a2326;
+    transition: all 0.3s ease;
+}
+
+#parent-directory-button {
+    text-align: center;
+    transform: scaleX(-1);
+    color: #b9b9b9;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+#parent-directory-button:hover {
+    background-color: #1a2326;
+}
+
+#currentDirectoryViewer {
+    margin: 0 0 0 10px;
+    line-height: 60px;
+    color: #f2be35;
+    white-space: nowrap;
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
 }

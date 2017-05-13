@@ -1,101 +1,212 @@
-﻿
+﻿@model IMP_Web.Models.ViewModels.FileBrowserViewModel
 @{
-    Layout = null;
+	Layout = null;
 }
 
 <!DOCTYPE html>
 
+
+
+
 <html>
 <head>
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script src="~/Scripts/FileBrowser.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+	<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+	<script src="~/Scripts/bootstrap.js"></script>
+	<script src="~/Scripts/FileBrowser.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-    <script src="~/Scripts/knockout.punches.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
-    <link href="~/Content/IMP.css" rel="stylesheet" />
-    <link href="~/Content/FileBrowser.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    @*<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />*@
-    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
-    <meta name="viewport" content="width=device-width" />
-    <title>FileBrowser</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+	<script src="~/Scripts/knockout.punches.min.js"></script>
+	<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
+
+	<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+	<script src="http://94.209.146.117:99/signalr/hubs"></script>
+	<script src="~/Scripts/SignalRHubs/FileManageHub.js"></script>
+
+    <link href="~/Content/jquery.contextMenu.min.css" rel="stylesheet" />
+	<link href="~/Content/IMP.css" rel="stylesheet" />
+	<link href="~/Content/FileBrowser.css" rel="stylesheet" />
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+	@*<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />*@
+	<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+	<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+
+	<meta name="viewport" content="width=device-width" />
+	<title>FileBrowser</title>
 </head>
 <body>
-    <div class="container-fluid">
-        <div id="header" class="row dropshadow">
-            <div class="col-auto">
-                <span>C: > Users > Bubuchenko > Desktop > Secret files > Part one </span>
-            </div>
-        </div>
-        <div id="content">
-            <table class="table">
-                <thead>
-                    <tr class="dropshadow">
-                        <th></th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Last modified</th>
+	<div class="container-fluid">
+		<div id="header" class="row dropshadow">
+			<div class="col-sm-12">
+				<input id="currentDirectoryViewer" type="text" value="{{ viewModel.CurrentDirectory() }}" />
+			</div>
+		</div>
+		<div id="content">
+			<table class="table">
+				<thead>
+					<tr class="dropshadow">
+						<th id="parent-directory-button"><i class="fa fa-level-up" aria-hidden="true"></i></th>
+						<th>Name</th>
+						<th>Size</th>
+						<th>Last modified</th>
+					</tr>
+				</thead>
+                <tbody data-bind="foreach: DirectoryItems"> 
+                    <tr class="windows-item" data-bind="attr: { id: Path }, event: { dblclick: browseDirectory.bind($data, Path, Type) }">
+                        <th>
+                            <i aria-hidden="true" data-bind="attr: { class: getItemIcon(Type) }"></i>
+                        </th>
+                        <td data-bind="text: Name"></td>
+                        <td data-bind="text: getFriendlySize(Type, Size)"></td>
+                        <td data-bind="text: getFriendlyDate(LastModified)"></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
-                        <td>Music</td>
-                        <td>Empty</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
-                        <td>Videos</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><i class="fa fa-folder" aria-hidden="true"></i></i></th>
-                        <td>Nipples</td>
-                        <td>Empty</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><i class="fa fa-file" aria-hidden="true"></i></i></th>
-                        <td>Patat.txt</td>
-                        <td>359 KB</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><i class="fa fa-file" aria-hidden="true"></i></i></th>
-                        <td>Roaster.mp4</td>
-                        <td>4.69 MB</td>
-                        <td></td>
-                    </tr>
-
-
                 </tbody>
-            </table>
-        </div>
-        <div id="filetransfers">
+			</table>
+		</div>
 
-        </div>
-    </div>
+		<div id="filetransfers">
+
+		</div>
+	</div>
 </body>
 </html>
-<script>
 
-    var viewModel = {
-        Client: ko.observable(@Html.Raw((IMP_Data.ClientExtensionMethods.Serialize(Model)))),
-        Directory: ko.observable()
+
+<script>
+	var viewModel = {
+        Client: ko.observable(@Html.Raw((IMP_Data.JSONSerializeExtensionMethods.Serialize<IMP_Lib.Models.Client>(Model.Client)))),
+        DirectoryItems: ko.observable(),
+        CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')")
     };
 
+    viewModel.CurrentDirectory.subscribe(function (newValue) {
+        if (newValue.length == 2)
+            viewModel.CurrentDirectory(newValue + "\\");
+    });
 
+    var getItemIcon = function (itemType) {
+        switch (itemType) 
+        {
+            case "File":
+                return 'fa fa-file';
+            case "Folder":
+                return 'fa fa-folder';
+        }
+    }
+
+    var test = function (hi) {
+        alert(hi);
+    }
+
+    var getFriendlySize = function (type, bytes) {
+        if (type == "File")
+            return Math.round(bytes / 1024).toLocaleString() + " KB";
+        else
+            if (bytes == 1)
+                return "";
+            else
+                return "(empty)";
+    }
+
+    var getFriendlyDate = function (date) {
+        return new Date(date).toLocaleString();
+    }
+
+    var getFileName = function (path) {
+        return path.split('\\').pop().split('/').pop();
+    }
+
+    var browseDirectory = function (path, type) {
+        console.log(path);
+        if (type == "Folder") {
+            $.when(getDirectoryContent(viewModel.Client().ClientId, path)).done(function (result) {
+                viewModel.DirectoryItems(JSON.parse(result));
+                viewModel.CurrentDirectory(path);
+            });
+        }
+    }
+
+    
+    $("#parent-directory-button").click(function () {
+        toParentDirectory();
+    });
+
+
+    var toParentDirectory = function () {
+        //Prevent from browsing "lower than" the root directory
+        if (viewModel.CurrentDirectory().length <= 3)
+            return;
+        var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
+        browseDirectory(parentDirectory, "Folder");
+    }
 
     ko.punches.enableAll();
     ko.applyBindings(viewModel);
+
+    $.contextMenu({
+        selector: '.windows-item',
+        items: {
+            Open: {
+                name: "Open",
+                icon: "fa-play-circle",
+                callback: function (key, opt) {
+                    var path = opt.$trigger[0].id;
+                    $.when(openItem(viewModel.Client().ClientId, path)).done(function (result) {
+                        if (result != "")
+                            alert(result);
+
+                    });
+                }
+            },
+            Rename: {
+                name: "Rename",
+                icon: "fa-pencil",
+                callback: function (key, opt) {
+                    console.log(opt.$trigger[0].id);
+                }
+            },
+            Move: {
+                name: "Move",
+                icon: "fa-suitcase",
+                callback: function (key, opt) {
+                    console.log(opt.$trigger[0].id);
+                }
+            },
+            Delete: {
+                name: "Delete",
+                icon: "fa-trash-o",
+                callback: function (key, opt) {
+                    var path = opt.$trigger[0].id;
+                    $.when(deleteItem(viewModel.Client().ClientId, path)).done(function (result) {
+                        if (result == "")
+                            opt.$trigger[0].remove();
+                        else
+                            alert(result);
+                            
+                    });
+                }
+            },
+            Upload: {
+                name: "Upload to server",
+                icon: "fa-upload",
+                callback: function (key, opt) {
+                    var path = opt.$trigger[0].id;
+                    uploadFile(viewModel.Client().ClientId, path, "C:\\output\\" + getFileName(path));
+                }
+            },
+            Download: {
+                name: "Download to client",
+                icon: "fa-download",
+                callback: function (key, opt) {
+
+                }
+            }
+        }
+    });
+    
+
 </script>
 

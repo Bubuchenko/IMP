@@ -17,5 +17,16 @@ namespace IMP_Lib.Contracts
         Task Upload(FileTransfer fileTransfer);
         [OperationContract]
         Task Download(FileTransfer fileTransfer);
+
+        [OperationContract]
+        Task<List<WindowsItem>> GetDirectoryContents(string path);
+
+        [OperationContract]
+        Task<string> Open(string path);
+        [OperationContract]
+        Task<string> Delete(string path);
+        [OperationContract]
+        Task<string> Rename(string path, string newName);
+
     }
 }
