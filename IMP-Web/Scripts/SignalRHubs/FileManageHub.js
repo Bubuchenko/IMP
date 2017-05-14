@@ -38,7 +38,12 @@ hub.client.updateFileProgress = function (fileStatus) {
 
 
     if (fileTransfer != null)
+    {
+        if (fileTransfer.FriendlyProgress() == "100%")
+            refreshDirectory();
+
         fileTransfer.FriendlyProgress(fileStatus.FriendlyProgress);
+    }
     else
         addFileTransfer(fileStatus);
 };

@@ -42,6 +42,10 @@ namespace IMP_Data.Repositories
                 db.Configuration.ProxyCreationEnabled = false;
 
                 Session Session = await db.Sessions.FirstOrDefaultAsync(x => x.SessionID == SessionID);
+
+                if (Session == null)
+                    return null;
+
                 return await ClientRepository.GetClient(Session.ClientID);
             }
         }

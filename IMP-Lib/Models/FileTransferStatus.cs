@@ -23,6 +23,7 @@ namespace IMP_Lib.Models
         [MessageHeader]
         public string ConnectionID { get; set; }
         [Range(0, 100)]
+        [MessageHeader]
         public double Progress { get; set; }
         [MessageHeader]
         public FileTransferType TransferType { get; set; }

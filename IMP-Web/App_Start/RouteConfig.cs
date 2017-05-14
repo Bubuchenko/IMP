@@ -27,6 +27,12 @@ namespace IMP_Web
             );
 
             routes.MapRoute(
+                name: "FileUpload",
+                url: "File/Upload/{file}",
+                defaults: new { controller = "File", action = "Upload" }
+            );
+
+            routes.MapRoute(
                 name: "FileBrowser",
                 url: "{controller}/{action}/{clientID}/{Drive}",
                 defaults: new { controller = "Control", action = "FileBrowser" }

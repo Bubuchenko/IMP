@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace IMP_Lib.Models
 {
     [MessageContract]
-    public class FileTransfer
+    public class FileTransfer :IDisposable
     {
         public FileTransfer()
         {
@@ -50,7 +50,6 @@ namespace IMP_Lib.Models
         [MessageHeader]
         public FileTransferType TransferType { get; set; }
         [MessageHeader]
-        [Range(0, 100)]
         public double Progress { get; set; }
         //Report progress every 5%
         [MessageHeader]
@@ -78,8 +77,14 @@ namespace IMP_Lib.Models
                 ConnectionID = this.ConnectionID,
                 FileTransferID = this.FileTransferID,
                 Progress = this.Progress,
-                StartTime = this.StartTime
+                StartTime = this.StartTime,
+                TransferType = this.TransferType
             };
+        }
+
+        public void Dispose()
+        {
+            Data.Dispose();
         }
     }
 }

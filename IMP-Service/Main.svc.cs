@@ -34,6 +34,7 @@ namespace IMP_Service
         public MainService()
         {
             OperationContext.Current.Channel.Faulted += new EventHandler(OnClientDisconnected);
+            OperationContext.Current.Channel.Closing += new EventHandler(OnClientDisconnected);
             OperationContext.Current.Channel.Closed += new EventHandler(OnClientDisconnected);
         }
 
@@ -46,6 +47,10 @@ namespace IMP_Service
 
             string SessionID = ((IContextChannel)sender).SessionId;
             Client client = await SessionRepository.GetClientBySessionID(SessionID);
+
+            if (client == null)
+                return;
+
             await ServerClientHandler.CloseClientConnection(client.ClientId, SessionID);
 
             OnClientDisconnect.Invoke(client);

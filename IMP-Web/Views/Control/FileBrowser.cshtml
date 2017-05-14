@@ -6,8 +6,6 @@
 <!DOCTYPE html>
 
 
-
-
 <html>
 <head>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
@@ -26,8 +24,9 @@
 	<script src="http://94.209.146.117:99/signalr/hubs"></script>
 	<script src="~/Scripts/SignalRHubs/FileManageHub.js"></script>
 	<script src="~/Scripts/sweetalert2.min.js"></script>
+	<script src="~/Scripts/dropzone.js"></script>
 
-
+	<link href="~/Content/dropzone.css" rel="stylesheet" />
 	<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
 	<link href="~/Content/jquery.contextMenu.min.css" rel="stylesheet" />
 	<link href="~/Content/IMP.css" rel="stylesheet" />
@@ -46,6 +45,7 @@
 	<div id="status-dialog" class="invisible">
 			{{ viewModel.Client().Username }} is offline
 	</div>
+
 	<div class="container-fluid">
 		<div id="header" class="row dropshadow">
 			<div class="col-sm-12">
@@ -53,6 +53,11 @@
 			</div>
 		</div>
 		<div id="content">
+
+			<div id="filedrop-dialog">
+				<i class="fa fa-download" aria-hidden="true"></i>
+			</div>
+
 			<table class="table">
 				<thead>
 					<tr class="dropshadow">
@@ -111,7 +116,7 @@
 	var viewModel = {
 		Client: ko.observable(@Html.Raw((IMP_Data.JSONSerializeExtensionMethods.Serialize<IMP_Lib.Models.Client>(Model.Client)))),
 		DirectoryItems: ko.observable(),
-		CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')"),
+		CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')" + '\\'),
 		FileTransfers: ko.observableArray()
 	};
 
@@ -125,18 +130,93 @@
 				StartTime: ft.StartTime
 			};
 
-
-		console.log(observableFt);
 		viewModel.FileTransfers.push(observableFt);
-	};
-	
+    };
+
+
+    viewModel.CurrentDirectory.subscribe(function (newValue) {
+        if (newValue[newValue.length - 1] != '\\')
+            newValue = newValue + '\\';
+
+        viewModel.CurrentDirectory(newValue);
+    });
+
+
+    //FILE DROP
+	$(function () {
+		$("#filedrop-dialog").hide();
+
+		var counter = 0;
+        var filedropZone = new Dropzone("html",
+            {
+                url: '@Url.Action("Upload", "File")',
+                createImageThumbnails: false,
+                clickable: false
+            });
+
+		filedropZone.on("dragenter", function (event) {
+			event.preventDefault();
+			counter++;
+			$("#filedrop-dialog").fadeIn("fast");
+		});
+		filedropZone.on("dragleave", function (event) {
+			counter--;
+			if (counter == 0) {
+				$("#filedrop-dialog").fadeOut("fast");
+			}
+		});
+		filedropZone.on("addedfile", function (file) {
+            $("#filedrop-dialog").fadeOut("fast");
+            displayFileTransfers(); 
+
+            var fileTransfer = ko.utils.arrayFirst(viewModel.FileTransfers(), function (fileTransfer) {
+                return fileTransfer.FileTransferID() == file.name;
+            });
+
+            if (fileTransfer != null)
+                viewModel.FileTransfers.splice(viewModel.FileTransfers.indexOf(fileTransfer), 1);
+
+        });
+
+        filedropZone.on("uploadprogress", function (file, progress, bytesSent) {
+            var fileTransfer = ko.utils.arrayFirst(viewModel.FileTransfers(), function (fileTransfer) {
+                return fileTransfer.FileTransferID() == file.name;
+            });
+
+            if (fileTransfer != null) {
+                fileTransfer.FriendlyProgress(progress + "%");
+            }
+            else {
+                var fileTransfer = {
+                    TransferType: "UPLOADTOSERVER",
+                    FileTransferID: file.name,
+                    FileName: file.name,
+                    FriendlyProgress: 0,
+                    StartTime: new Date()
+                }
+                addFileTransfer(fileTransfer);
+            }
+        });
+
+        filedropZone.on("success", function (file, response) {
+            var fileTransfer = ko.utils.arrayFirst(viewModel.FileTransfers(), function (fileTransfer) {
+                return fileTransfer.FileTransferID() == file.name;
+            });
+
+            if (fileTransfer != null) {
+                fileTransfer.FriendlyProgress("100%");
+            }
+
+            downloadFile(viewModel.Client().ClientId, viewModel.CurrentDirectory() + file.name);
+        });
+
+	});
 
 
 	viewModel.CurrentDirectory.subscribe(function (newValue) {
 		if (newValue.length == 2)
 			viewModel.CurrentDirectory(newValue + "\\");
 	});
-
 
 	var getItemIcon = function (itemType) {
 		switch (itemType) 
@@ -168,7 +248,9 @@
 
 	var getTransferTypeIcon = function (transferType) {
 		if (transferType == "UPLOAD")
-			return 'fa fa-arrow-circle-up';
+            return 'fa fa-arrow-circle-up';
+        else if (transferType == "UPLOADTOSERVER")
+            return 'fa fa-cloud-upload';
 		else
 			return 'fa fa-arrow-circle-down';
 	};
@@ -179,8 +261,8 @@
 				if (result.length > 0) {
 					viewModel.DirectoryItems(JSON.parse(result));
 					viewModel.CurrentDirectory(path);
-                    $("tbody").hide();
-                    $("tbody").fadeIn("fast");
+					$("tbody").hide();
+					$("tbody").fadeIn("fast");
 				} else {
 					swal("Access to directory denied");
 				}
@@ -227,55 +309,55 @@
 				var enteredPath = $(event.target).val();
 				browseDirectory(enteredPath);
 			}
-        });
+		});
 
-        $(document).keypress(function (e) {
-            if (e.keyCode == 32) {
-                refreshDirectory();
-            }
-        });
+		$(document).keypress(function (e) {
+			if (e.keyCode == 32) {
+				refreshDirectory();
+			}
+		});
 
-        $(document).keydown(function (e) {
-            //Select all items with CTRL + A
+		$(document).keydown(function (e) {
+			//Select all items with CTRL + A
 			if (e.keyCode == 65 && e.ctrlKey) {
 				e.preventDefault();
 				$(".windows-item").toggleClass("selected");
-            }
-            //Deselect all items with escape
+			}
+			//Deselect all items with escape
 			if (e.keyCode == 27)
-                $(".windows-item").removeClass("selected");
+				$(".windows-item").removeClass("selected");
 
-            //Delete item with DEL
-            if (e.keyCode == 46)
-                deleteSelectedItems();
+			//Delete item with DEL
+			if (e.keyCode == 46)
+				deleteSelectedItems();
 
-            //Arrow up browsing
-            if (e.keyCode == 38) {
-                var currentElement = $(".selected").first();
+			//Arrow up browsing
+			if (e.keyCode == 38) {
+				var currentElement = $(".selected").first();
 
-                if (currentElement.length == 0) {
-                    currentElement = $("#content > table > tbody tr:first").addClass("selected");
-                    return;    
-                }
+				if (currentElement.length == 0) {
+					currentElement = $("#content > table > tbody tr:first").addClass("selected");
+					return;    
+				}
 
-                if (!e.shiftKey)
-                    $(".selected").removeClass("selected")
+				if (!e.shiftKey)
+					$(".selected").removeClass("selected")
 
-                currentElement.prev().addClass("selected");
-            }
-            //Arrow down browsing
-            if (e.keyCode == 40) {
-                var currentElement = $(".selected").last();
+				currentElement.prev().addClass("selected");
+			}
+			//Arrow down browsing
+			if (e.keyCode == 40) {
+				var currentElement = $(".selected").last();
 
-                if (currentElement.length == 0) {
-                    currentElement = $("#content > table > tbody tr:first").addClass("selected");
-                    return;
-                }
+				if (currentElement.length == 0) {
+					currentElement = $("#content > table > tbody tr:first").addClass("selected");
+					return;
+				}
 
-                if (!e.shiftKey)
-                    $(".selected").removeClass("selected")
-                currentElement.next().addClass("selected");
-            }
+				if (!e.shiftKey)
+					$(".selected").removeClass("selected")
+				currentElement.next().addClass("selected");
+			}
 		});
 
 		$("tbody").niceScroll({cursorcolor: "#1a2326", cursorborder: "0 solid #000", scrollspeed: 40});
@@ -296,37 +378,42 @@
 	var enablePage = function () {
 		$(".container-fluid").removeClass("disabled");
 		$("body").css("overflow", "visible");
-        $("#status-dialog").addClass("invisible");
-        refreshDirectory();
+		$("#status-dialog").addClass("invisible");
+		refreshDirectory();
 	}
 
 	var toParentDirectory = function () {
 		//Prevent from browsing "lower than" the root directory
 		if (viewModel.CurrentDirectory().length <= 3)
-			return;
-		var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
+            return;
+        var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
 		browseDirectory(parentDirectory, "Folder");
 	}
 
-    var deleteSelectedItems = function () {
-        swal({
-            title: 'Confirmation',
-            text: 'Are you sure you want to delete the selected items?',
-            type: 'warning',
-            showCancelButton: true
+	var deleteSelectedItems = function () {
+		swal({
+			title: 'Confirmation',
+			text: 'Are you sure you want to delete the selected items?',
+			type: 'warning',
+			showCancelButton: true
 
-        }).then(function () {
-            $(".selected").each(function (i, obj) {
-                $.when(deleteItem(viewModel.Client().ClientId, obj.id)).done(function (result) {
-                    if (result == "")
-                        refreshDirectory();
-                    else
-                        swal(result);
+		}).then(function () {
+			$(".selected").each(function (i, obj) {
+				$.when(deleteItem(viewModel.Client().ClientId, obj.id)).done(function (result) {
+					if (result == "")
+						refreshDirectory();
+					else
+						swal(result);
 
-                });
-            });
-        });
+				});
+			});
+		});
+	};
+
+    var displayFileTransfers = function () {
+        $("#filetransfers").addClass("show-filetransfers").removeClass("hide-filetransfers");
     };
+
 
 	ko.punches.enableAll();
 	ko.applyBindings(viewModel);
@@ -411,7 +498,7 @@
 				name: "Delete",
 				icon: "fa-trash",
 				callback: function (key, opt) {
-                    deleteSelectedItems();
+					deleteSelectedItems();
 				}
 			},
 			Upload: {
@@ -420,15 +507,27 @@
 				callback: function (key, opt) {
 					$(".selected").each(function (i, obj) {
 						uploadFile(viewModel.Client().ClientId, obj.id);
-					});
-					$("#filetransfers").addClass("show-filetransfers").removeClass("hide-filetransfers");
+                    });
+                    displayFileTransfers();
 				}
 			},
 			Download: {
 				name: "Download to client",
 				icon: "fa-download",
 				callback: function (key, opt) {
-					
+					swal({
+						title: 'Select a file to send to the client',
+						text: 'Enter a file name',
+						input: 'text',
+						showCancelButton: true
+					}).then(function (fileName) {
+						$.when(createFile(viewModel.Client().ClientId, viewModel.CurrentDirectory(), fileName)).done(function (result) {
+							if (result == "")
+								refreshDirectory();
+							else
+								swal(result);
+						});
+					})
 				}
 			},
 			CreateFile: {        

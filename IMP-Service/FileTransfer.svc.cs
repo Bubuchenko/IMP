@@ -29,14 +29,11 @@ namespace IMP_Service
 
         public Task<FileTransfer> Download(FileTransfer fileTransfer)
         {
-            string fileSource = Path.Combine(ConfigurationManager.AppSettings["FileDirectory"], Path.GetFileName(fileTransfer.Target));
-
+            string fileSource = Path.Combine(ConfigurationManager.AppSettings["DownloadFileDirectory"], Path.GetFileName(fileTransfer.Target));
             OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
-            using (Stream sourceStream = File.OpenRead(fileSource))
-            {
-                fileTransfer.SetFileStream(sourceStream);
-                return Task.FromResult(fileTransfer);
-            }
+            Stream sourceStream = File.OpenRead(fileSource);
+            fileTransfer.SetFileStream(sourceStream);
+            return Task.FromResult(fileTransfer);
         }
 
         public void ReportFileDownloadStatus(FileTransferStatus fileTransferStatus)
@@ -51,7 +48,7 @@ namespace IMP_Service
 
         public async Task Upload(FileTransfer fileTransfer)
         {
-            string fileDestination = Path.Combine(ConfigurationManager.AppSettings["FileDirectory"], Path.GetFileName(fileTransfer.Target));
+            string fileDestination = Path.Combine(ConfigurationManager.AppSettings["UploadFileDirectory"], Path.GetFileName(fileTransfer.Target));
 
             OnFileTransferStarted.Invoke(fileTransfer.GetStatus());
             using (Stream output = File.Create(fileDestination))

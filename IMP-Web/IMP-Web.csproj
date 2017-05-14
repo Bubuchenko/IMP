@@ -189,6 +189,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ControlController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -210,6 +211,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\clientControl.css" />
     <Content Include="Content\dashboard.css" />
+    <Content Include="Content\dropzone.css" />
     <Content Include="Content\FileBrowser.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
@@ -319,6 +321,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\clientControl.js" />
     <Content Include="Scripts\dashboard.js" />
+    <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\FileBrowser.js" />
     <Content Include="Scripts\IMP.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
@@ -376,6 +379,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -41,7 +41,7 @@ namespace IMP_Service.Hubs
                 ConnectionID = Context.ConnectionId,
                 ClientID = ClientID,
                 Target = Destination,
-                TransferType = FileTransferType.UPLOAD,
+                TransferType = FileTransferType.DOWNLOAD,
             };
 
             await WCFServer.Connections[ClientID].Download(fileTransfer);

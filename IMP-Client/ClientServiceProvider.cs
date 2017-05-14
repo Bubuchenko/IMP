@@ -77,32 +77,28 @@ namespace IMP_Client
         {
             IFileTransferContract fileChannel = Program.FileChannelFactory.CreateChannel();
 
-            var data = await fileChannel.Download(fileTransfer);
-
-            using (Stream input = data.GetFileStream())
+            using (fileTransfer = await fileChannel.Download(fileTransfer))
             {
                 using (Stream output = File.Create(fileTransfer.Target))
                 {
                     byte[] buffer = new byte[4 * 1024];
                     int length;
-
                     double progressCheck = 0;
 
-                    while ((length = await input.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    while ((length = await fileTransfer.GetFileStream().ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
                         await output.WriteAsync(buffer, 0, length);
-                        fileTransfer.Progress = ((double)output.Position / (double)input.Length) * (double)100;
+                        fileTransfer.Progress = ((double)output.Position / (double)fileTransfer.FileSize) * (double)100;
 
                         if (fileTransfer.Progress > progressCheck)
                         {
                             Task.Run(() => fileChannel.ReportFileDownloadStatus(fileTransfer.GetStatus()));
-                            progressCheck += fileTransfer.ProgressPercentReport; //Report progress every n%
+                            progressCheck += fileTransfer.ProgressPercentReport;
                         }
                     }
                 }
+                fileChannel.ReportFileDownloadCompleted(fileTransfer.GetStatus());
             }
-
-            fileChannel.ReportFileDownloadCompleted(fileTransfer.GetStatus());
         }
 
         public Task<List<WindowsItem>> GetDirectoryContents(string path)
