@@ -17,7 +17,10 @@ namespace IMP_Lib.Models
         public FileTransfer()
         {
             //Stream must be initialized
+
             Data = Stream.Null;
+            FileTransferID = Guid.NewGuid().ToString();
+            StartTime = DateTime.UtcNow;
         }
 
 
@@ -31,7 +34,7 @@ namespace IMP_Lib.Models
         }
 
         [MessageHeader]
-        public string FileTransferID { get; set; }
+        public string FileTransferID { get; private set; }
         [MessageHeader]
         public string ClientID { get; set; }
         [MessageHeader]
@@ -52,7 +55,6 @@ namespace IMP_Lib.Models
         //Report progress every 5%
         [MessageHeader]
         public int ProgressPercentReport = 5;
-
         [MessageBodyMember]
         private Stream Data { get; set; }
 
@@ -71,10 +73,12 @@ namespace IMP_Lib.Models
         {
             return new FileTransferStatus
             {
+                FileName = this.FileName,
                 ClientID = this.ClientID,
                 ConnectionID = this.ConnectionID,
                 FileTransferID = this.FileTransferID,
-                Progress = this.Progress
+                Progress = this.Progress,
+                StartTime = this.StartTime
             };
         }
     }

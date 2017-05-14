@@ -26,13 +26,21 @@ hub.client.clientDisconnected = function (client) {
     }
 }
 
-hub.client.newFileUpload = function (message) {
-    alert(message);
+hub.client.newFileUpload = function (fileStatus) {
+    
 };
 
 
-hub.client.fileProgessUpdate = function (filename, progress) {
-    console.log(filename + " is at " + progress + "%");
+hub.client.updateFileProgress = function (fileStatus) {
+    var fileTransfer = ko.utils.arrayFirst(viewModel.FileTransfers(), function (fileTransfer) {
+        return fileTransfer.FileTransferID() == fileStatus.FileTransferID;
+    });
+
+
+    if (fileTransfer != null)
+        fileTransfer.FriendlyProgress(fileStatus.FriendlyProgress);
+    else
+        addFileTransfer(fileStatus);
 };
 
 // Start the connection.

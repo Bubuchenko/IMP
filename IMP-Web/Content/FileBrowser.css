@@ -1,4 +1,8 @@
-﻿#header {
+﻿body {
+    overflow: hidden !important;
+}
+
+#header {
     position: fixed;
     height: 60px;
     width: 100%;
@@ -21,11 +25,13 @@
 
 #filetransfers {
     position: fixed;
-    height: 0;
+    height: 200px;
     width: 100%;
     bottom: 0;
     left: 0;
     background-color: #1a2326;
+    transition: all 0.25s ease;
+    overflow-y: auto;
 }
 
 .fa-folder {
@@ -45,14 +51,14 @@ thead tr th {
     border-right: 1px solid #1a2326;
 }
 
-tbody tr {
+.container-fluid tbody tr {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 13px;
     user-select: none;
 }
 
-tbody tr:hover {
+.container-fluid tbody tr:hover {
     background-color: #1a2326;
     transition: all 0.1s ease;
 }
@@ -108,4 +114,40 @@ tbody tr:hover {
 
 .invisible {
     opacity: 0;
+}
+
+#filetransfer-button {
+    cursor: pointer;
+}
+
+#filetransfer-button:hover {
+    background-color: #1a2326;
+}
+
+#filetransfers thead tr {
+    background-color: #111;
+}
+
+#filetransfers tbody td {
+    padding: 5px 20px 0px 5px;
+}
+
+.show-filetransfers {
+    height: 200px !important;
+}
+.hide-filetransfers {
+    height: 37px !important;
+}
+
+.progress {
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+}
+
+.progress-bar {
+    transition: all 0.5s ease;
+}
+
+#filetransfers tbody th {
+    padding: 6px 8px 8px 8px !important;
 }

@@ -45,8 +45,8 @@ namespace IMP_Service
             IsDisconnected = true;
 
             string SessionID = ((IContextChannel)sender).SessionId;
-            await ServerClientHandler.CloseClientConnection(SessionID);
             Client client = await SessionRepository.GetClientBySessionID(SessionID);
+            await ServerClientHandler.CloseClientConnection(client.ClientId, SessionID);
 
             OnClientDisconnect.Invoke(client);
         }
@@ -63,7 +63,6 @@ namespace IMP_Service
             //Client already connected
             if (await SessionRepository.ClientHasActiveSession(ClientId))
                 return ConnectResult.AlreadyConnected;
-
             
             await ServerClientHandler.AcceptClientConnection(ClientId, OperationContext.Current);
 

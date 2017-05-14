@@ -23,10 +23,10 @@ namespace IMP_Service.Hubs
         {
             List<IHubContext> Hubs = new List<IHubContext>
             {
-                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<FileManageHub>(),
             };
 
-            //Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).updateFileProgress());
+            Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).newFileUpload(fileTransferStatus));
         }
 
         private static void FileTransferService_OnFileTransferCompleted(FileTransferStatus fileTransferStatus)
@@ -35,20 +35,20 @@ namespace IMP_Service.Hubs
 
             List<IHubContext> Hubs = new List<IHubContext>
             {
-                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<FileManageHub>(),
             };
 
-            //Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).updateFileProgress());
+            Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).updateFileProgress(fileTransferStatus));
         }
 
         private static void FileTransferService_OnFileProgressUpdate(FileTransferStatus fileTransferStatus)
         {
             List<IHubContext> Hubs = new List<IHubContext>
             {
-                GlobalHost.ConnectionManager.GetHubContext<ClientControlHub>(),
+                GlobalHost.ConnectionManager.GetHubContext<FileManageHub>(),
             };
 
-            Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).updateFileProgress());
+            Hubs.ForEach(f => f.Clients.Client(fileTransferStatus.ConnectionID).updateFileProgress(fileTransferStatus));
         }
 
         private static void MainService_OnClientConnect(Client client)

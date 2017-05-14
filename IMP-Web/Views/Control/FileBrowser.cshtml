@@ -14,6 +14,8 @@
 	<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 	<script src="~/Scripts/bootstrap.js"></script>
 	<script src="~/Scripts/FileBrowser.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 	<script src="~/Scripts/knockout.punches.min.js"></script>
@@ -72,11 +74,35 @@
 				</tbody>
 			</table>
 		</div>
-
-		<div id="filetransfers">
-
-		</div>
 	</div>
+    <div id="filetransfers" class="hide-filetransfers dropshadow">
+        <table class="table">
+            <thead>
+                <tr class="dropshadow">
+                    <th id="filetransfer-button"><i class="fa fa-exchange" aria-hidden="true"></i></th>
+                    <th>Filename</th>
+                    <th>Progress</th>
+                    <th>Started at</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: FileTransfers">
+                <tr class="file-transfer-item">
+                    <th>
+                        <i aria-hidden="true" data-bind="css: getTransferTypeIcon(TransferType)"></i>
+                    </th>
+                    <td data-bind="text: FileName"></td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                 aria-valuemin="0" aria-valuemax="100" data-bind="style: { width: FriendlyProgress }">                                
+                            </div>
+                        </div>
+                    </td>
+                    <td data-bind="text: getFriendlyDate(StartTime)"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
 
@@ -85,8 +111,26 @@
 	var viewModel = {
 		Client: ko.observable(@Html.Raw((IMP_Data.JSONSerializeExtensionMethods.Serialize<IMP_Lib.Models.Client>(Model.Client)))),
 		DirectoryItems: ko.observable(),
-		CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')")
-	};
+        CurrentDirectory: ko.observable("@Model.Drive.TrimEnd(' ')"),
+        FileTransfers: ko.observableArray()
+    };
+
+    var addFileTransfer = function (ft) {
+        var observableFt =
+            {
+                TransferType: ft.TransferType,
+                FileTransferID: ko.observable(ft.FileTransferID),
+                FileName: ko.observable(ft.FileName),
+                FriendlyProgress: ko.observable(ft.FriendlyProgress),
+                StartTime: ft.StartTime
+            };
+
+
+        console.log(observableFt);
+        viewModel.FileTransfers.push(observableFt);
+    };
+    
+
 
 	viewModel.CurrentDirectory.subscribe(function (newValue) {
 		if (newValue.length == 2)
@@ -112,7 +156,7 @@
 				return "";
 			else
 				return "(empty)";
-	}
+    }
 
 	var getFriendlyDate = function (date) {
 		return new Date(date).toLocaleString();
@@ -121,6 +165,13 @@
 	var getFileName = function (path) {
 		return path.split('\\').pop().split('/').pop();
     }
+
+    var getTransferTypeIcon = function (transferType) {
+        if (transferType == "UPLOAD")
+            return 'fa fa-arrow-circle-up';
+        else
+            return 'fa fa-arrow-circle-down';
+    };
 
     var browseDirectory = function (path, type) {
         console.log(path);
@@ -135,11 +186,14 @@
             });
         }
     }
-
 	
 	$("#parent-directory-button").click(function () {
 		toParentDirectory();
 	});
+
+    $("#filetransfer-button").click(function () {
+        $("#filetransfers").toggleClass("show-filetransfers").toggleClass("hide-filetransfers");
+    });
 
     $(document).ready(function () {
 
@@ -183,12 +237,15 @@
             if (e.keyCode == 27)
                 $(".windows-item").removeClass("selected");
         });
+
+        $("tbody").niceScroll({cursorcolor: "#1a2326", cursorborder: "0 solid #000"});
+        $("#filetransfers").niceScroll({ cursorcolor: "#111",cursorborder: "0 solid #000"});
+
     });
 
-
-    var refreshDirectory = function() {
+    var refreshDirectory = function () {
         browseDirectory(viewModel.CurrentDirectory());
-    }
+    };
 
     var disablePage = function () {
         $(".container-fluid").addClass("disabled");
@@ -212,6 +269,21 @@
 
 	ko.punches.enableAll();
 	ko.applyBindings(viewModel);
+
+
+    $.contextMenu({
+        selector: '.file-transfer-item',
+        items: {
+            Clear: {
+                name: "Clear",
+                icon: "fa-ban",
+                callback: function (key, opt) {
+                    viewModel.FileTransfers.removeAll();
+                }
+            }
+        }
+    });
+
 
 	$.contextMenu({
 		selector: '.windows-item',
@@ -304,6 +376,7 @@
                     $(".selected").each(function (i, obj) {
                         uploadFile(viewModel.Client().ClientId, obj.id);
                     });
+                    $("#filetransfers").addClass("show-filetransfers").removeClass("hide-filetransfers");
 				}
 			},
 			Download: {

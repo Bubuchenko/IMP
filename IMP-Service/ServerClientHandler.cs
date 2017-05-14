@@ -33,13 +33,12 @@ namespace IMP_Service
             await SessionRepository.CreateSession(session);
         }
 
-        public static async Task CloseClientConnection(string SessionID)
+        public static async Task CloseClientConnection(string ClientId, string SessionID)
         {
             await SessionRepository.EndSession(SessionID);
-            Client Client = await SessionRepository.GetClientBySessionID(SessionID);
 
-            if(WCFServer.Connections.ContainsKey(Client.ClientId))
-                WCFServer.Connections.Remove(Client.ClientId);
+            if(WCFServer.Connections.ContainsKey(ClientId))
+                WCFServer.Connections.Remove(ClientId);
         }
 
         public static string GenerateClientID(SystemInfo systemInfo)
