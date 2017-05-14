@@ -34,7 +34,7 @@
     overflow-y: auto;
 }
 
-.fa-folder {
+#content tr th .fa-folder {
     color: #f2be35;
 }
 
@@ -114,6 +114,7 @@ thead tr th {
 
 .invisible {
     opacity: 0;
+    transition: all 0.5s ease;
 }
 
 #filetransfer-button {

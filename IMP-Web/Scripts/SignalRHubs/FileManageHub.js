@@ -120,5 +120,8 @@ $.connection.hub.start().done(function () {
 
 
     //Load the directly once we're connected
-    browseDirectory(viewModel.CurrentDirectory(), "Folder");
+    if (viewModel.Client().IsOnline)
+        browseDirectory(viewModel.CurrentDirectory());
+    else
+        disablePage();
 });
