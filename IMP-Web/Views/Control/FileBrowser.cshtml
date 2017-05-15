@@ -364,7 +364,8 @@
 				deleteSelectedItems();
 
 			//Arrow up browsing
-			if (e.keyCode == 38) {
+            if (e.keyCode == 38) {
+                e.preventDefault();
 				var currentElement = $(".selected").first();
 
 				if (currentElement.length == 0) {
@@ -378,9 +379,9 @@
 				currentElement.prev().addClass("selected");
 			}
 			//Arrow down browsing
-			if (e.keyCode == 40) {
+            if (e.keyCode == 40) {
+                e.preventDefault();
 				var currentElement = $(".selected").last();
-
 				if (currentElement.length == 0) {
 					currentElement = $("#content > table > tbody tr:first").addClass("selected");
 					return;
@@ -422,7 +423,10 @@
 		browseDirectory(parentDirectory);
 	}
 
-	var deleteSelectedItems = function () {
+    var deleteSelectedItems = function () {
+        if ($(".selected").length == 0)
+            return;
+
 		swal({
 			title: 'Confirmation',
 			text: 'Are you sure you want to delete the selected items?',
