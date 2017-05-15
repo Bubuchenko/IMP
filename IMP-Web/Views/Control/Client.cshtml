@@ -184,7 +184,8 @@
     addClientToMap(viewModel.Client());
 
 
-    var openInNewWindow = function(address) {
-        window.open(encodeURI(address), 'window', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=yes,width=852,height=700');
+    var openInNewWindow = function (address) {
+        var randomnumber = Math.floor((Math.random() * 100) + 1);
+        window.open(encodeURI(address), "_blank", 'PopUp', randomnumber, 'scrollbars=1,menubar=0,resizable=1,width=952,height=700');
     }
 </script>

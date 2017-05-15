@@ -36,12 +36,12 @@ hub.client.updateFileProgress = function (fileStatus) {
         return fileTransfer.FileTransferID() == fileStatus.FileTransferID;
     });
 
-
     if (fileTransfer != null)
     {
         if (fileTransfer.FriendlyProgress() == "100%")
             refreshDirectory();
 
+        fileTransfer.ETA(fileStatus.ETA);
         fileTransfer.FriendlyProgress(fileStatus.FriendlyProgress);
     }
     else

@@ -76,6 +76,7 @@ namespace IMP_Service.Hubs
                 GlobalHost.ConnectionManager.GetHubContext<FileManageHub>()
             };
 
+            client.IsOnline = false;
             Hubs.ForEach(f => f.Clients.All.clientDisconnected(client));
         }
     }

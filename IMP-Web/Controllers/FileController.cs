@@ -29,5 +29,12 @@ namespace IMP_Web.Controllers
             }
             return false;
         }
+
+        [HttpGet]
+        public ActionResult Download(string filename)
+        {
+            byte[] fileData = System.IO.File.ReadAllBytes(Path.Combine(ConfigurationManager.AppSettings["UploadFileDirectory"], filename));
+            return File(fileData, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
+        }
     }
 }

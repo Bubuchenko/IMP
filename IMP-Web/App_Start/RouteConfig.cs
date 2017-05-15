@@ -33,6 +33,12 @@ namespace IMP_Web
             );
 
             routes.MapRoute(
+                name: "FileDownload",
+                url: "File/Download/{filename}",
+                defaults: new { controller = "File", action = "Download" }
+            );
+
+            routes.MapRoute(
                 name: "FileBrowser",
                 url: "{controller}/{action}/{clientID}/{Drive}",
                 defaults: new { controller = "Control", action = "FileBrowser" }

@@ -35,5 +35,18 @@ namespace IMP_Lib.Models
                 return Math.Round(Progress, 0).ToString() + "%";
             } set { }
         }
+
+        public string ETA
+        {
+            get
+            {
+                //Prevent our formula from dividing by zero
+                if (Progress == 0)
+                    Progress = 0.0001;
+
+                return Convert.ToInt32((DateTime.UtcNow - StartTime).TotalSeconds / Convert.ToDouble(Progress / (double)100) - (DateTime.UtcNow - StartTime).TotalSeconds).ToString();
+            }
+            set { }
+        }
     }
 }

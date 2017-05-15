@@ -60,7 +60,7 @@ namespace IMP_Service
                 while ((length = await fileTransfer.GetFileStream().ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
                     await output.WriteAsync(buffer, 0, length);
-                    fileTransfer.Progress = ((double)output.Position / (double)fileTransfer.FileSize) * (double)100;
+                    fileTransfer.Progress = Math.Round(((double)output.Position / (double)fileTransfer.FileSize) * (double)100, 0);
 
                     if (fileTransfer.Progress > progressCheck)
                     {

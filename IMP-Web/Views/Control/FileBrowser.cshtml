@@ -25,6 +25,7 @@
 	<script src="~/Scripts/SignalRHubs/FileManageHub.js"></script>
 	<script src="~/Scripts/sweetalert2.min.js"></script>
 	<script src="~/Scripts/dropzone.js"></script>
+    <script src="~/Scripts/moment.js"></script>
 
 	<link href="~/Content/dropzone.css" rel="stylesheet" />
 	<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
@@ -55,7 +56,12 @@
 		<div id="content">
 
 			<div id="filedrop-dialog">
-				<i class="fa fa-download" aria-hidden="true"></i>
+                <div>
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <span>
+                        Drop file to upload
+                    </span>
+                </div>
 			</div>
 
 			<table class="table">
@@ -87,11 +93,12 @@
 					<th id="filetransfer-button"><i class="fa fa-exchange" aria-hidden="true"></i></th>
 					<th>Filename</th>
 					<th>Progress</th>
-					<th>Started at</th>
+					<th>Started</th>
+                    <th>Completed</th>
 				</tr>
 			</thead>
 			<tbody data-bind="foreach: FileTransfers">
-				<tr class="file-transfer-item">
+				<tr class="file-transfer-item" data-bind="event: { click: TransferType == 'UPLOAD' ? getFileFromServer.bind($data, FileName()) : null }, css: { downloadabletransfer: (TransferType == 'UPLOAD') }">
 					<th>
 						<i aria-hidden="true" data-bind="css: getTransferTypeIcon(TransferType)"></i>
 					</th>
@@ -104,6 +111,7 @@
 						</div>
 					</td>
 					<td data-bind="text: getFriendlyDate(StartTime)"></td>
+                    <td data-bind="text: ETA() == 0 ? getFriendlyDate(new Date()) : getFriendlyETA(ETA)"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -127,7 +135,8 @@
 				FileTransferID: ko.observable(ft.FileTransferID),
 				FileName: ko.observable(ft.FileName),
 				FriendlyProgress: ko.observable(ft.FriendlyProgress),
-				StartTime: ft.StartTime
+                StartTime: ft.StartTime,
+                ETA: ko.observable(ft.ETA)
 			};
 
 		viewModel.FileTransfers.push(observableFt);
@@ -142,9 +151,10 @@
     });
 
 
+
+    $("#filedrop-dialog").hide();
     //FILE DROP
 	$(function () {
-		$("#filedrop-dialog").hide();
 
 		var counter = 0;
         var filedropZone = new Dropzone("html",
@@ -160,7 +170,7 @@
 			$("#filedrop-dialog").fadeIn("fast");
 		});
 		filedropZone.on("dragleave", function (event) {
-			counter--;
+            counter--;
 			if (counter == 0) {
 				$("#filedrop-dialog").fadeOut("fast");
 			}
@@ -184,15 +194,20 @@
             });
 
             if (fileTransfer != null) {
+                var ETA = Math.round(((new Date().getTime() - fileTransfer.StartTime.getTime()) / 1000) / (progress / 100) - ((new Date().getTime() - fileTransfer.StartTime.getTime()) / 1000));
+
                 fileTransfer.FriendlyProgress(progress + "%");
+                fileTransfer.ETA(ETA);
             }
             else {
+
                 var fileTransfer = {
                     TransferType: "UPLOADTOSERVER",
                     FileTransferID: file.name,
                     FileName: file.name,
                     FriendlyProgress: 0,
-                    StartTime: new Date()
+                    StartTime: new Date(),
+                    ETA: new Date()
                 }
                 addFileTransfer(fileTransfer);
             }
@@ -238,13 +253,30 @@
 				return "(empty)";
 	}
 
-	var getFriendlyDate = function (date) {
-		return new Date(date).toLocaleString();
+    var getFriendlyDate = function (date) {
+        return new Date(date).toLocaleString();
 	}
+
+    var getFriendlyETA = function (seconds) {
+        if (seconds() < 44)
+            return "in " + seconds() + " seconds"
+        else
+            return moment().add(seconds(), 'seconds').fromNow();
+    }
 
 	var getFileName = function (path) {
 		return path.split('\\').pop().split('/').pop();
-	}
+    }
+
+    var getFileFromServer = function (fileName) {
+        var link = document.createElement("a");
+        link.download = fileName;
+        link.href = document.location.origin + "/IMP-Web/File/Download?filename=" + fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+    }
 
 	var getTransferTypeIcon = function (transferType) {
 		if (transferType == "UPLOAD")
@@ -386,8 +418,8 @@
 		//Prevent from browsing "lower than" the root directory
 		if (viewModel.CurrentDirectory().length <= 3)
             return;
-        var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().lastIndexOf('\\'));
-		browseDirectory(parentDirectory, "Folder");
+        var parentDirectory = viewModel.CurrentDirectory().substring(0, viewModel.CurrentDirectory().slice(0, -1).lastIndexOf('\\'));
+		browseDirectory(parentDirectory);
 	}
 
 	var deleteSelectedItems = function () {
@@ -414,6 +446,10 @@
         $("#filetransfers").addClass("show-filetransfers").removeClass("hide-filetransfers");
     };
 
+    var hideFileTransfers = function () {
+        $("#filetransfers").removeClass("show-filetransfers").addClass("hide-filetransfers");
+    };
+
 
 	ko.punches.enableAll();
 	ko.applyBindings(viewModel);
@@ -426,7 +462,8 @@
 				name: "Clear",
 				icon: "fa-ban",
 				callback: function (key, opt) {
-					viewModel.FileTransfers.removeAll();
+                    viewModel.FileTransfers.removeAll();
+                    hideFileTransfers();
 				}
 			}
 		}
@@ -434,7 +471,7 @@
 
 
 	$.contextMenu({
-		selector: '.windows-item',
+		selector: 'body',
 		items: {
 			Open: {
 				name: "Open",
@@ -509,25 +546,6 @@
 						uploadFile(viewModel.Client().ClientId, obj.id);
                     });
                     displayFileTransfers();
-				}
-			},
-			Download: {
-				name: "Download to client",
-				icon: "fa-download",
-				callback: function (key, opt) {
-					swal({
-						title: 'Select a file to send to the client',
-						text: 'Enter a file name',
-						input: 'text',
-						showCancelButton: true
-					}).then(function (fileName) {
-						$.when(createFile(viewModel.Client().ClientId, viewModel.CurrentDirectory(), fileName)).done(function (result) {
-							if (result == "")
-								refreshDirectory();
-							else
-								swal(result);
-						});
-					})
 				}
 			},
 			CreateFile: {        
